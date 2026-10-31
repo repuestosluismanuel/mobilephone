@@ -3,4 +3,4 @@
 Sitio estático de un solo archivo (index.html + img/). Para verlo: doble clic en index.html.
 Para publicarlo: subir esta carpeta a un repositorio de GitHub y conectarlo en Vercel (sin configuración).
 
-Pendiente: número de WhatsApp (buscar 5490000000000), horarios ("A confirmar") y fotos del local.
+Pendiente: fotos y videos del local y de trabajos (van en img/).
