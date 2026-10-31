@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!--
+  Mobile Phone — Página de opciones para enviar a clientes
+  (mobilephone-nu.vercel.app/opciones). El cliente elige qué quiere ver.
+  WhatsApp: 5491126785588 · Catálogo de accesorios: mobilephone.dongestion.com/ecommerce
+-->
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Phone — ¿Qué estás buscando?</title>
+<meta name="description" content="Mobile Phone: celulares, accesorios y servicio técnico en Ingeniero Budge, Lomas de Zamora. Elegí qué querés ver.">
+<meta name="theme-color" content="#0B0B0B">
+<meta property="og:title" content="Mobile Phone — ¿Qué estás buscando?">
+<meta property="og:description" content="Celulares, accesorios y servicio técnico. Elegí qué querés ver.">
+<meta property="og:image" content="img/logo-completo.png">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro: #0B0B0B;
+    --blanco: #FFFFFF;
+    --azul: #1677FF;
+    --azul-hover: #0F5FD6;
+    --acento: #5AA9FF;
+    --tarjeta: #141414;
+    --line: rgba(255,255,255,0.08);
+    --font-display: 'Jost', 'Outfit', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100dvh;
+    background-color: var(--negro);
+    background-image:
+      radial-gradient(circle at 50% -10%, rgba(22,119,255,0.28), transparent 55%),
+      linear-gradient(rgba(22,119,255,0.10) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(22,119,255,0.10) 1px, transparent 1px);
+    background-size: 100% 100%, 36px 36px, 36px 36px;
+    color: var(--blanco);
+    font-family: 'Outfit', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 2.5rem 16px 2rem;
+  }
+  main { width: 100%; max-width: 520px; display: flex; flex-direction: column; align-items: center; flex: 1; }
+
+  /* Marca */
+  .logo { width: 104px; height: auto; filter: drop-shadow(0 0 26px rgba(22,119,255,0.5)); animation: flota 6s ease-in-out infinite; }
+  .wordmark { width: min(240px, 66vw); height: auto; margin-top: 1rem; }
+  .sub { margin-top: .55rem; font-size: .78rem; letter-spacing: .32em; text-transform: uppercase; color: rgba(255,255,255,.6); }
+  @keyframes flota { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 7vw, 2.4rem); text-align: center; margin: 2.2rem 0 .4rem; line-height: 1.15; }
+  h1 span { color: var(--acento); }
+  .intro { color: rgba(255,255,255,.65); text-align: center; font-size: .98rem; margin-bottom: 1.8rem; }
+
+  /* Opciones */
+  .opciones { width: 100%; display: flex; flex-direction: column; gap: 1rem; }
+  .opcion {
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; gap: 1.1rem;
+    padding: 1.25rem 1.2rem; border-radius: 20px;
+    background: var(--tarjeta); border: 1px solid var(--line);
+    color: inherit; text-decoration: none;
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    opacity: 0; transform: translateY(14px); animation: entra .6s ease forwards;
+  }
+  .opcion:nth-child(1) { animation-delay: .15s; }
+  .opcion:nth-child(2) { animation-delay: .3s; }
+  .opcion:nth-child(3) { animation-delay: .45s; }
+  @keyframes entra { to { opacity: 1; transform: translateY(0); } }
+  .opcion::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(120deg, rgba(22,119,255,0.16), transparent 60%);
+    opacity: 0; transition: opacity .25s ease;
+  }
+  .opcion:hover, .opcion:focus-visible { border-color: rgba(22,119,255,0.6); box-shadow: 0 14px 40px rgba(22,119,255,0.18); transform: translateY(-3px); outline: none; }
+  .opcion:hover::before, .opcion:focus-visible::before { opacity: 1; }
+  .opcion:active { transform: scale(.98); }
+  .icono {
+    position: relative; flex-shrink: 0; width: 60px; height: 60px; border-radius: 16px;
+    display: grid; place-items: center; background: rgba(22,119,255,0.14); color: var(--acento);
+  }
+  .icono svg { width: 30px; height: 30px; }
+  .opcion--azul .icono { background: var(--azul); color: #fff; }
+  .texto { position: relative; flex: 1; }
+  .titulo, .desc { display: block; }
+  .titulo { font-family: var(--font-display); font-weight: 700; font-size: 1.22rem; }
+  .desc { color: rgba(255,255,255,.6); font-size: .88rem; margin-top: .15rem; line-height: 1.4; }
+  .flecha { position: relative; color: var(--acento); font-size: 1.4rem; transition: transform .25s ease; }
+  .opcion:hover .flecha { transform: translateX(4px); }
+
+  /* WhatsApp y pie */
+  .wa {
+    margin-top: 1.6rem; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: .6rem;
+    padding: 1rem; border-radius: 14px; background: var(--azul); color: #fff;
+    font-family: var(--font-display); font-weight: 600; font-size: 1rem; letter-spacing: .02em; text-decoration: none;
+    box-shadow: 0 12px 32px rgba(22,119,255,0.3); transition: background .2s ease, transform .2s ease;
+    opacity: 0; animation: entra .6s ease .6s forwards;
+  }
+  .wa:hover { background: var(--azul-hover); transform: translateY(-2px); }
+  .wa svg { width: 22px; height: 22px; }
+  .confianza { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.1rem; margin-top: 1.3rem; font-size: .82rem; color: rgba(255,255,255,.7); }
+  .confianza i { font-style: normal; color: var(--acento); margin-right: .3rem; }
+  footer { margin-top: 2.2rem; text-align: center; font-size: .8rem; color: rgba(255,255,255,.5); line-height: 1.7; }
+  footer a { color: rgba(255,255,255,.75); text-decoration: none; }
+  footer a:hover { color: var(--acento); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo, .opcion, .wa { animation: none; opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <img src="img/emblema.png" alt="" class="logo">
+  <img src="img/wordmark.png" alt="Mobile Phone" class="wordmark">
+  <p class="sub">Servicio técnico</p>
+
+  <h1>¿Qué estás <span>buscando?</span></h1>
+  <p class="intro">Elegí una opción y te mostramos todo.</p>
+
+  <nav class="opciones" aria-label="Opciones">
+    <a class="opcion opcion--azul" href="/#celulares">
+      <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="10.5" y1="18" x2="13.5" y2="18"/></svg></span>
+      <span class="texto"><span class="titulo">Celulares</span><span class="desc">Nuevos y usados, con garantía. Mirá los disponibles.</span></span>
+      <span class="flecha" aria-hidden="true">›</span>
+    </a>
+    <a class="opcion" href="https://mobilephone.dongestion.com/ecommerce" target="_blank" rel="noopener">
+      <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
+      <span class="texto"><span class="titulo">Accesorios</span><span class="desc">Fundas, vidrios, cargadores y auriculares. Catálogo con precios.</span></span>
+      <span class="flecha" aria-hidden="true">›</span>
+    </a>
+    <a class="opcion" href="/#servicios">
+      <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 4.6L3 17.2V21h3.8l6.3-6.3a4 4 0 0 0 4.6-5.4l-2.6 2.6-2-2 2.6-2.6z"/></svg></span>
+      <span class="texto"><span class="titulo">Servicio técnico</span><span class="desc">Pantallas, baterías, pin de carga y placa. Diagnóstico gratis.</span></span>
+      <span class="flecha" aria-hidden="true">›</span>
+    </a>
+  </nav>
+
+  <a class="wa" href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone!%20Quiero%20hacer%20una%20consulta" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Escribinos por WhatsApp
+  </a>
+
+  <div class="confianza">
+    <span><i>✓</i>Diagnóstico gratis</span>
+    <span><i>✓</i>Entrega en el día</span>
+    <span><i>✓</i>Con garantía</span>
+  </div>
+
+  <footer>
+    <a href="https://www.google.com/maps/search/?api=1&query=Epecu%C3%A9n%20645%2C%20Ingeniero%20Budge%2C%20Lomas%20de%20Zamora%2C%20Buenos%20Aires" target="_blank" rel="noopener">Epecuén 645, Ingeniero Budge</a><br>
+    Lunes a sábado · 9:30–13 h y 16:30–20 h<br>
+    <a href="https://www.instagram.com/mobilephone.ar/" target="_blank" rel="noopener">@mobilephone.ar</a> · <a href="/">Ver página completa</a>
+  </footer>
+</main>
+</body>
+</html>
