@@ -108,6 +108,13 @@
   .problemas span { display: inline-block; font-size: .85rem; font-weight: 500; padding: .5rem .8rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.16); background: #0d0d0d; transition: all .15s ease; }
   .problemas input:checked + span { background: var(--azul); border-color: var(--azul); }
   .problemas input:focus-visible + span { box-shadow: 0 0 0 3px rgba(22,119,255,0.35); }
+  .atajos { display: flex; gap: .5rem; }
+  .atajo { flex: 1; padding: .6rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.16); background: #0d0d0d; color: #fff; font: inherit; font-weight: 500; cursor: pointer; transition: all .15s ease; }
+  .atajo.activo { background: var(--azul); border-color: var(--azul); }
+  input[type="date"] { color-scheme: dark; }
+  .aviso-dom { display: none; color: #ffb366; font-size: .82rem; }
+  .aviso-dom.ver { display: block; }
+  .horario-nota { font-size: .78rem; color: rgba(255,255,255,.5); }
   .error { color: #ff8080; font-size: .82rem; display: none; margin-top: .3rem; }
   .error.ver { display: block; }
   .form-card .btn { width: 100%; margin-top: .4rem; }
@@ -186,18 +193,25 @@
         <label for="nombre">Tu nombre</label>
         <input id="nombre" name="nombre" autocomplete="given-name" placeholder="Ej: Juan" required>
       </div>
-      <div class="fila">
-        <div class="campo">
-          <label for="marca">Marca</label>
-          <select id="marca" name="marca" required>
-            <option value="" disabled selected>Elegí</option>
-            <option>Samsung</option><option>Motorola</option><option>iPhone</option><option>Xiaomi</option><option>Otra</option>
-          </select>
+      <div class="campo">
+        <span class="etiqueta" id="et-marca">Marca de tu celular</span>
+        <div class="problemas marcas-op" role="radiogroup" aria-labelledby="et-marca">
+          <label><input type="radio" name="marca" value="Samsung"><span>Samsung</span></label>
+          <label><input type="radio" name="marca" value="Motorola"><span>Motorola</span></label>
+          <label><input type="radio" name="marca" value="iPhone"><span>iPhone</span></label>
+          <label><input type="radio" name="marca" value="Xiaomi"><span>Xiaomi</span></label>
+          <label><input type="radio" name="marca" value="Huawei"><span>Huawei</span></label>
+          <label><input type="radio" name="marca" value="TCL"><span>TCL</span></label>
+          <label><input type="radio" name="marca" value="ZTE"><span>ZTE</span></label>
+          <label><input type="radio" name="marca" value="Alcatel"><span>Alcatel</span></label>
+          <label><input type="radio" name="marca" value="LG"><span>LG</span></label>
+          <label><input type="radio" name="marca" value="Otra"><span>Otra</span></label>
         </div>
-        <div class="campo">
-          <label for="modelo">Modelo <small>(si lo sabés)</small></label>
-          <input id="modelo" name="modelo" placeholder="Ej: A32, G54, 11">
-        </div>
+        <p class="error" id="errMarca">Elegí la marca.</p>
+      </div>
+      <div class="campo">
+        <label for="modelo">Modelo <small>(si lo sabés)</small></label>
+        <input id="modelo" name="modelo" placeholder="Ej: A32, G54, iPhone 11">
       </div>
       <div class="campo">
         <span class="etiqueta" id="et-problema">¿Qué le pasa? <small style="font-weight:400;color:rgba(255,255,255,.5)">(podés elegir varias)</small></span>
@@ -218,10 +232,15 @@
         <textarea id="detalle" name="detalle" rows="3" placeholder="Ej: se me cayó y la pantalla quedó negra, pero vibra"></textarea>
       </div>
       <div class="campo">
-        <label for="cuando">¿Cuándo podés traerlo?</label>
-        <select id="cuando" name="cuando">
-          <option>Hoy</option><option>Mañana</option><option>Esta semana</option><option>Todavía no sé</option>
-        </select>
+        <label for="fecha">¿Qué día lo traés?</label>
+        <div class="atajos">
+          <button type="button" class="atajo" data-dias="0">Hoy</button>
+          <button type="button" class="atajo" data-dias="1">Mañana</button>
+        </div>
+        <input type="date" id="fecha" name="fecha">
+        <p class="aviso-dom" id="avisoDom">Los domingos estamos cerrados. Elegí otro día.</p>
+        <p class="horario-nota">Lunes a sábado · 9:30–13 h y 16:30–20 h</p>
+        <p class="error" id="errFecha">Elegí el día.</p>
       </div>
       <button type="submit" class="btn">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -254,13 +273,38 @@
     document.getElementById('formulario').scrollIntoView({ behavior: 'smooth' });
   }));
 
-  form.addEventListener('change', () => err.classList.remove('ver'));
+  const errMarca = document.getElementById('errMarca');
+  const errFecha = document.getElementById('errFecha');
+  const avisoDom = document.getElementById('avisoDom');
+  const fecha = form.fecha;
+  const iso = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  fecha.min = iso(hoy);
+  const desdeIso = (v) => { const [a, m, d] = v.split('-').map(Number); return new Date(a, m - 1, d); };
+  const esDomingo = (v) => v && desdeIso(v).getDay() === 0;
+  const marcarAtajos = () => document.querySelectorAll('.atajo').forEach((b) => {
+    const d = new Date(hoy); d.setDate(d.getDate() + Number(b.dataset.dias)); b.classList.toggle('activo', fecha.value === iso(d));
+  });
+  const revisarFecha = () => { avisoDom.classList.toggle('ver', esDomingo(fecha.value)); errFecha.classList.remove('ver'); marcarAtajos(); };
+  document.querySelectorAll('.atajo').forEach((b) => b.addEventListener('click', () => {
+    const d = new Date(hoy); d.setDate(d.getDate() + Number(b.dataset.dias)); fecha.value = iso(d); revisarFecha();
+  }));
+  fecha.addEventListener('input', revisarFecha);
+  fecha.addEventListener('change', revisarFecha);
+  const fechaTexto = (v) => {
+    const d = desdeIso(v); const t = d.toLocaleDateString('es-AR', { weekday: 'long' }) + ' ' + d.getDate() + '/' + (d.getMonth() + 1);
+    const dias = Math.round((d - hoy) / 86400000);
+    return (dias === 0 ? 'hoy, ' : dias === 1 ? 'mañana, ' : '') + t;
+  };
+  form.addEventListener('change', () => { err.classList.remove('ver'); if (form.marca.value) errMarca.classList.remove('ver'); });
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const problemas = [...form.querySelectorAll('input[name="problema"]:checked')].map((c) => c.value);
     if (!form.nombre.value.trim()) { form.nombre.value = ''; form.nombre.reportValidity(); return; }
-    if (!form.marca.value) { form.marca.reportValidity(); return; }
-    if (!problemas.length) { err.classList.add('ver'); return; }
+    if (!form.marca.value) { errMarca.classList.add('ver'); errMarca.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    if (!problemas.length) { err.classList.add('ver'); err.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+    if (!fecha.value) { errFecha.classList.add('ver'); fecha.focus(); return; }
+    if (esDomingo(fecha.value)) { avisoDom.classList.add('ver'); fecha.focus(); return; }
     const equipo = [form.marca.value, form.modelo.value.trim()].filter(Boolean).join(' ');
     const lineas = [
       'Hola Mobile Phone! Quiero consultar por una reparación.', '',
@@ -269,7 +313,7 @@
       '▸ Problema: ' + problemas.join(', '),
     ];
     if (form.detalle.value.trim()) lineas.push('▸ Detalle: ' + form.detalle.value.trim());
-    lineas.push('▸ Lo puedo llevar: ' + form.cuando.value);
+    lineas.push('▸ Lo llevo: ' + fechaTexto(fecha.value));
     window.open('https://wa.me/5491126785588?text=' + encodeURIComponent(lineas.join('\n')), '_blank', 'noopener');
   });
 </script>
