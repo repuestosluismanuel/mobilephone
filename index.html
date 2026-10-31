@@ -1234,6 +1234,12 @@
   }
   .marca-panel img { width: min(260px, 70%); height: auto; }
   .marca-panel p { font-family: var(--font-display); letter-spacing: 0.32em; text-transform: uppercase; font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+  .foto-combo { position: relative; padding: 0 0 2.2rem; }
+  .foto-principal { display: block; width: 86%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 20px; border: 1px solid rgba(22,119,255,0.25); box-shadow: 0 0 50px rgba(22,119,255,0.10); }
+  .foto-chica { position: absolute; right: 0; bottom: 0; width: 44%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 16px; border: 4px solid var(--negro); box-shadow: 0 18px 40px rgba(0,0,0,0.6); }
+  .foto-sello { position: absolute; top: 18px; left: 18px; display: flex; align-items: center; gap: .55rem; padding: .6rem .9rem; border-radius: 14px; background: rgba(11,11,11,0.82); backdrop-filter: blur(6px); border: 1px solid rgba(22,119,255,0.4); }
+  .foto-sello b { font-family: var(--font-display); font-size: 1.8rem; color: var(--acento); line-height: 1; }
+  .foto-sello span { font-size: .72rem; line-height: 1.25; color: rgba(255,255,255,.8); text-transform: uppercase; letter-spacing: .06em; }
   .ig-card { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
     border: 1px solid rgba(22,119,255,0.4); border-radius: 18px; padding: 1.8rem 2rem;
     background: linear-gradient(135deg, rgba(22,119,255,0.14), rgba(22,119,255,0.02)); }
@@ -1487,11 +1493,21 @@
           <p>Se trata de que vuelvas a confiar en nosotros la próxima vez.</p>
         </div>
       </div>
-      <!-- Cuando haya foto del local o del taller, reemplazar este panel por:
-           <div class="store-img-wrap"><img src="img/local.jpg" alt="..." loading="lazy"></div> -->
-      <div class="marca-panel">
-        <img src="img/emblema.png" alt="Emblema de Mobile Phone">
-        <p>Servicio técnico</p>
+      <!-- Videos de Pexels (licencia libre, uso comercial permitido).
+           Cuando haya fotos propias del local, reemplazar los src por img/archivo.jpg -->
+      <div class="foto-combo">
+        <!-- Video de Pexels (licencia libre): técnico reparando con microscopio -->
+        <video class="foto-principal" autoplay muted loop playsinline preload="metadata"
+          poster="https://images.pexels.com/videos/6754825/pexels-photo-6754825.jpeg?auto=compress&w=1000"
+          aria-label="Técnico reparando un celular con microscopio">
+          <source src="https://videos.pexels.com/video-files/6754825/6754825-sd_960_540_25fps.mp4" type="video/mp4">
+        </video>
+        <video class="foto-chica" autoplay muted loop playsinline preload="metadata"
+          poster="https://images.pexels.com/videos/2825517/pexels-photo-2825517.jpeg?auto=compress&w=600"
+          aria-label="iPhone nuevo saliendo de su caja">
+          <source src="https://videos.pexels.com/video-files/2825517/2825517-sd_640_360_24fps.mp4" type="video/mp4">
+        </video>
+        <div class="foto-sello"><b>10</b><span>años en<br>el rubro</span></div>
       </div>
     </div>
   </div>
