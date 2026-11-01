@@ -134,11 +134,15 @@
   .card:hover { box-shadow: 0 10px 26px rgba(0,0,0,.08); transform: translateY(-2px); }
   .card-img { position: relative; aspect-ratio: 4 / 3; background: linear-gradient(160deg, #F7F9FC, #E9EEF6); display: grid; place-items: center; color: #9fb3d1; }
   .card-img svg { width: 44%; height: 44%; }
-  .card-img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 8%; background: #fff; }
+  .card-img img.foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 8%; background: #fff; }
   .card-img.con-foto { background: #fff; }
-  .card-img.con-foto svg { display: none; }
-  .card-marca { position: absolute; left: .6rem; top: .6rem; font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-2); background: rgba(255,255,255,.9); padding: .2rem .45rem; border-radius: 6px; }
-  .card-etq { position: absolute; right: .6rem; top: .6rem; font-size: .66rem; font-weight: 700; color: #fff; background: var(--azul); padding: .2rem .45rem; border-radius: 6px; }
+  .card-img.con-foto .logo-vacio { display: none; }
+  .card-img.sin-foto { background: radial-gradient(circle at 50% 0%, rgba(22,119,255,.35), transparent 70%), #0B0B0B; }
+  .logo-vacio { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 62%; }
+  .logo-vacio img:first-child { width: 42%; height: auto; }
+  .logo-vacio img:last-child { width: 100%; height: auto; }
+  .card-marca { position: absolute; z-index: 1; left: .6rem; top: .6rem; font-size: .66rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--texto-2); background: rgba(255,255,255,.9); padding: .2rem .45rem; border-radius: 6px; }
+  .card-etq { position: absolute; z-index: 1; right: .6rem; top: .6rem; font-size: .66rem; font-weight: 700; color: #fff; background: var(--azul); padding: .2rem .45rem; border-radius: 6px; }
   .card-cuerpo { padding: .8rem .85rem .9rem; display: flex; flex-direction: column; gap: .35rem; flex: 1; }
   .card-nombre { font-size: .88rem; font-weight: 500; line-height: 1.3; min-height: 2.6em; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .card-tags { font-size: .72rem; color: var(--texto-2); }
@@ -546,10 +550,12 @@
 
   function tarjeta(it) {
     const c = el('article', 'card');
-    const img = el('div', 'card-img' + (it.foto ? ' con-foto' : '')); img.innerHTML = ICONOS[it.cat] || ICONOS.otros;
+    // Sin foto: se muestra el logo de Mobile Phone.
+    const img = el('div', 'card-img' + (it.foto ? ' con-foto' : ' sin-foto'));
+    img.innerHTML = '<div class="logo-vacio"><img src="img/emblema.png" alt=""><img src="img/wordmark.png" alt="Mobile Phone"></div>';
     if (it.foto) {
-      const f = el('img'); f.src = it.foto; f.alt = it.nombre; f.loading = 'lazy'; f.decoding = 'async';
-      f.addEventListener('error', () => { f.remove(); img.classList.remove('con-foto'); });
+      const f = el('img', 'foto'); f.src = it.foto; f.alt = it.nombre; f.loading = 'lazy'; f.decoding = 'async';
+      f.addEventListener('error', () => { f.remove(); img.classList.replace('con-foto', 'sin-foto'); });
       img.append(f);
     }
     img.append(el('span', 'card-marca', it.marca));
