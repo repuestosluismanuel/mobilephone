@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!--
+  Mobile Phone — Repuestos para técnicos (mobilephone-nu.vercel.app/gremio)
+  Los repuestos y precios gremio salen de LM Gestión (negocio Mobile Phone).
+  Se entra con el código que se pone en LM Gestión → Datos del negocio →
+  «Catálogo para técnicos». Sin el código no se ve ningún precio.
+  EDITAR: EMPRESA (identificador del negocio que figura en esa misma tarjeta).
+-->
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Phone — Repuestos para técnicos</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B0B0B">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --negro: #0B0B0B; --blanco: #FFFFFF; --azul: #1677FF; --azul-hover: #0F5FD6; --acento: #5AA9FF;
+    --tarjeta: #141414; --line: rgba(255,255,255,0.08); --font-display: 'Jost', 'Outfit', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100dvh; background-color: var(--negro);
+    background-image: radial-gradient(circle at 50% -10%, rgba(22,119,255,0.26), transparent 50%),
+      linear-gradient(rgba(22,119,255,0.09) 1px, transparent 1px), linear-gradient(90deg, rgba(22,119,255,0.09) 1px, transparent 1px);
+    background-size: 100% 900px, 36px 36px, 36px 36px; background-repeat: no-repeat, repeat, repeat;
+    color: var(--blanco); font-family: 'Outfit', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.5;
+    padding-bottom: 6rem;
+  }
+  .wrap { width: 100%; max-width: 680px; margin: 0 auto; padding: 0 16px; }
+  .barra { position: sticky; top: 0; z-index: 10; background: rgba(11,11,11,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .barra .wrap { display: flex; align-items: center; justify-content: space-between; height: 58px; }
+  .volver { color: rgba(255,255,255,.75); text-decoration: none; font-size: .9rem; }
+  .volver:hover { color: var(--acento); }
+  .marca { display: inline-flex; align-items: center; gap: .5rem; }
+  .marca img:first-child { height: 30px; } .marca img:last-child { height: 14px; }
+  header { text-align: center; padding: 2rem 0 1.2rem; }
+  .eyebrow { font-size: .74rem; letter-spacing: .3em; text-transform: uppercase; color: var(--acento); font-weight: 600; }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.8rem, 7vw, 2.4rem); line-height: 1.15; margin: .5rem 0 .5rem; }
+  h1 span { color: var(--acento); }
+  .lead { color: rgba(255,255,255,.68); max-width: 460px; margin: 0 auto; }
+  .card { background: var(--tarjeta); border: 1px solid rgba(22,119,255,0.35); border-radius: 20px; padding: 1.4rem 1.2rem; }
+  label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: .4rem; }
+  input { width: 100%; padding: .85rem .9rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.14); background: #0d0d0d; color: #fff; font: inherit; font-size: 1rem; }
+  input:focus { outline: none; border-color: var(--azul); box-shadow: 0 0 0 3px rgba(22,119,255,0.25); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: .9rem 1.3rem; border-radius: 14px; border: 0; cursor: pointer;
+    background: var(--azul); color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 1rem; text-decoration: none; transition: background .2s ease; }
+  .btn:hover { background: var(--azul-hover); }
+  .btn:disabled { opacity: .6; cursor: wait; }
+  .btn svg { width: 20px; height: 20px; }
+  .ancho { width: 100%; margin-top: .9rem; }
+  .error { color: #ff8080; font-size: .85rem; margin-top: .6rem; min-height: 1.2em; }
+  .nota { text-align: center; font-size: .8rem; color: rgba(255,255,255,.5); margin-top: 1rem; }
+  .nota a { color: var(--acento); }
+  .oculto { display: none !important; }
+  .buscar { position: sticky; top: 58px; z-index: 5; padding: .8rem 0; background: var(--negro); }
+  .fila-buscar { display: flex; gap: .6rem; align-items: center; }
+  .salir { background: none; border: 1px solid var(--line); color: rgba(255,255,255,.7); border-radius: 12px; padding: .8rem .9rem; font: inherit; font-size: .85rem; cursor: pointer; white-space: nowrap; }
+  .contador { font-size: .8rem; color: rgba(255,255,255,.5); margin-top: .4rem; }
+  .lista { display: flex; flex-direction: column; gap: .6rem; }
+  .item { display: flex; align-items: center; gap: .8rem; background: var(--tarjeta); border: 1px solid var(--line); border-radius: 16px; padding: .85rem 1rem; }
+  .item-info { flex: 1; min-width: 0; }
+  .item-nombre { font-weight: 600; font-size: .95rem; }
+  .item-sub { font-size: .78rem; color: rgba(255,255,255,.55); }
+  .item-precio { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--acento); white-space: nowrap; text-align: right; }
+  .stock { display: block; font-family: 'Outfit', sans-serif; font-weight: 500; font-size: .72rem; color: #6fdc8c; }
+  .stock.sin { color: #ffb366; }
+  .agregar { flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; border: 1px solid rgba(22,119,255,0.5); background: rgba(22,119,255,0.12); color: var(--acento); font-size: 1.3rem; cursor: pointer; }
+  .agregar.si { background: var(--azul); color: #fff; border-color: var(--azul); }
+  .vacio { text-align: center; color: rgba(255,255,255,.55); padding: 2rem 0; }
+  .pedido { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: rgba(11,11,11,0.96); border-top: 1px solid var(--line); padding: .8rem 0; }
+  .pedido .wrap { display: flex; align-items: center; justify-content: space-between; gap: .8rem; }
+  .pedido-txt { font-size: .9rem; }
+  .pedido-txt b { color: var(--acento); }
+</style>
+</head>
+<body>
+
+<div class="barra">
+  <div class="wrap">
+    <a href="/opciones" class="volver">‹ Volver</a>
+    <a href="/" class="marca" aria-label="Mobile Phone"><img src="img/emblema.png" alt=""><img src="img/wordmark.png" alt="Mobile Phone"></a>
+  </div>
+</div>
+
+<main class="wrap">
+  <header>
+    <span class="eyebrow">Solo técnicos y locales</span>
+    <h1>Repuestos <span>precio gremio</span></h1>
+    <p class="lead">Módulos, baterías, pines y más, con stock al día. Elegí lo que necesitás y pedilo por WhatsApp.</p>
+  </header>
+
+  <!-- Paso 1: código de acceso -->
+  <form class="card" id="formCodigo" autocomplete="off">
+    <label for="codigo">Código de acceso</label>
+    <input id="codigo" name="codigo" placeholder="Te lo pasamos por WhatsApp" required minlength="6" maxlength="40" autocapitalize="characters">
+    <button class="btn ancho" type="submit" id="btnEntrar">Ver repuestos</button>
+    <p class="error" id="errCodigo" role="alert"></p>
+    <p class="nota">¿No tenés código? <a id="pedirCodigo" href="#" target="_blank" rel="noopener">Pedilo por WhatsApp</a></p>
+  </form>
+
+  <!-- Paso 2: catálogo -->
+  <section id="catalogo" class="oculto">
+    <div class="buscar">
+      <div class="fila-buscar">
+        <input id="buscar" type="search" placeholder="Buscá por modelo: A12, G54, iPhone 11…" aria-label="Buscar repuesto">
+        <button class="salir" type="button" id="salir">Salir</button>
+      </div>
+      <p class="contador" id="contador"></p>
+    </div>
+    <div class="lista" id="lista"></div>
+  </section>
+</main>
+
+<div class="pedido oculto" id="pedido">
+  <div class="wrap">
+    <span class="pedido-txt" id="pedidoTxt"></span>
+    <button class="btn" type="button" id="enviar">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Pedir
+    </button>
+  </div>
+</div>
+
+<script>
+  // ── Datos a editar ──
+  const LM_GESTION = 'https://gczcymtwkpsnmivnvwwk.supabase.co';
+  const CLAVE_PUBLICA = 'sb_publishable_C5ARVFwTQvpBTwRVnkdDxQ_1F1cdXVm'; // clave publicable: hecha para estar a la vista
+  const EMPRESA = 'e0008943-0c00-47f4-bc2d-b60e1de2942b'; // LM Gestión → Datos del negocio → Catálogo para técnicos
+  const WHATSAPP = '5491126785588';
+
+  const $ = (id) => document.getElementById(id);
+  const guardado = { leer() { try { return localStorage.getItem('codigo-gremio') || ''; } catch { return ''; } },
+    poner(v) { try { v ? localStorage.setItem('codigo-gremio', v) : localStorage.removeItem('codigo-gremio'); } catch {} } };
+  const pesos = (n) => '$' + Math.round(n).toLocaleString('es-AR');
+  const normal = (t) => (t || '').toString().normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  $('pedirCodigo').href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Hola Mobile Phone! Soy técnico y quiero el código para ver los repuestos a precio gremio.');
+
+  let items = [];
+  const pedido = new Map(); // id → item
+
+  async function cargar(codigo) {
+    const r = await fetch(LM_GESTION + '/rest/v1/rpc/catalogo_gremio', {
+      method: 'POST',
+      headers: { apikey: CLAVE_PUBLICA, Authorization: 'Bearer ' + CLAVE_PUBLICA, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_empresa: EMPRESA, p_codigo: codigo }),
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      throw new Error(/incorrecto/i.test(e.message || '') ? 'Código incorrecto. Revisalo o pedilo por WhatsApp.' : 'No se pudo cargar. Probá de nuevo en un rato.');
+    }
+    const productos = await r.json();
+    items = productos.flatMap((p) => p.variantes.map((v) => ({
+      id: v.id, nombre: p.nombre, detalle: [p.marca, p.modelo, v.color, v.capacidad].filter(Boolean).join(' · '),
+      precio: Number(v.precio), stock: Number(v.stock),
+      busca: normal([p.nombre, p.marca, p.modelo, p.subcategoria, v.color, v.capacidad].join(' ')),
+    })));
+  }
+
+  function mostrar() {
+    const q = normal($('buscar').value).split(/\s+/).filter(Boolean);
+    const vis = items.filter((it) => q.every((w) => it.busca.includes(w)));
+    $('contador').textContent = vis.length + (vis.length === 1 ? ' repuesto' : ' repuestos');
+    const lista = $('lista');
+    lista.replaceChildren();
+    if (!vis.length) { const p = document.createElement('p'); p.className = 'vacio'; p.textContent = 'No encontramos ese repuesto. Consultanos por WhatsApp.'; lista.append(p); return; }
+    for (const it of vis.slice(0, 200)) {
+      const fila = document.createElement('div'); fila.className = 'item';
+      const info = document.createElement('div'); info.className = 'item-info';
+      const n = document.createElement('div'); n.className = 'item-nombre'; n.textContent = it.nombre;
+      const d = document.createElement('div'); d.className = 'item-sub'; d.textContent = it.detalle;
+      info.append(n, d);
+      const pr = document.createElement('div'); pr.className = 'item-precio'; pr.textContent = pesos(it.precio);
+      const st = document.createElement('span'); st.className = 'stock' + (it.stock > 0 ? '' : ' sin'); st.textContent = it.stock > 0 ? 'Disponible' : 'Consultar';
+      pr.append(st);
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'agregar' + (pedido.has(it.id) ? ' si' : '');
+      b.textContent = pedido.has(it.id) ? '✓' : '+'; b.setAttribute('aria-label', (pedido.has(it.id) ? 'Quitar ' : 'Agregar ') + it.nombre);
+      b.addEventListener('click', () => { pedido.has(it.id) ? pedido.delete(it.id) : pedido.set(it.id, it); mostrar(); barraPedido(); });
+      fila.append(info, pr, b); lista.append(fila);
+    }
+  }
+
+  function barraPedido() {
+    const n = pedido.size;
+    $('pedido').classList.toggle('oculto', n === 0);
+    const total = [...pedido.values()].reduce((a, it) => a + it.precio, 0);
+    $('pedidoTxt').innerHTML = '';
+    const b = document.createElement('b'); b.textContent = n + (n === 1 ? ' repuesto' : ' repuestos');
+    $('pedidoTxt').append(b, ' · ' + pesos(total));
+  }
+
+  async function entrar(codigo, silencioso) {
+    $('btnEntrar').disabled = true; $('errCodigo').textContent = '';
+    try {
+      await cargar(codigo);
+      guardado.poner(codigo);
+      $('formCodigo').classList.add('oculto'); $('catalogo').classList.remove('oculto');
+      mostrar();
+    } catch (e) {
+      guardado.poner('');
+      if (!silencioso) $('errCodigo').textContent = e.message;
+    } finally { $('btnEntrar').disabled = false; }
+  }
+
+  $('formCodigo').addEventListener('submit', (e) => { e.preventDefault(); const c = $('codigo').value.trim(); if (c.length >= 6) entrar(c); });
+  $('buscar').addEventListener('input', mostrar);
+  $('salir').addEventListener('click', () => { guardado.poner(''); items = []; pedido.clear(); barraPedido(); $('catalogo').classList.add('oculto'); $('formCodigo').classList.remove('oculto'); $('codigo').value = ''; });
+  $('enviar').addEventListener('click', () => {
+    const lineas = ['Hola Mobile Phone! Soy técnico y quiero pedir:', ''];
+    for (const it of pedido.values()) lineas.push('▸ ' + it.nombre + (it.detalle ? ' (' + it.detalle + ')' : '') + ' — ' + pesos(it.precio));
+    window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(lineas.join('\n')), '_blank', 'noopener');
+  });
+
+  const previo = guardado.leer();
+  if (previo) entrar(previo, true);
+</script>
+</body>
+</html>
