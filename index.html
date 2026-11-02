@@ -1265,6 +1265,14 @@
   .cel-info { padding: 1.1rem 1.1rem 1.25rem; display: flex; flex-direction: column; gap: .55rem; flex: 1; }
   .cel-nombre { font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; }
   .cel-datos { font-size: .8rem; color: rgba(255,255,255,.6); }
+  .cel-desc { font-size: .82rem; line-height: 1.45; color: rgba(255,255,255,.75); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
+  .cel-desc.abierta { -webkit-line-clamp: unset; }
+  .cel-fotos { width: 100%; height: 100%; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .cel-fotos::-webkit-scrollbar { display: none; }
+  .cel-fotos img { flex: 0 0 100%; scroll-snap-align: center; }
+  .cel-puntos { position: absolute; bottom: .55rem; left: 0; right: 0; display: flex; justify-content: center; gap: .3rem; pointer-events: none; }
+  .cel-puntos span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.45); }
+  .cel-puntos span.activo { background: #fff; }
   .cel-precio { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; color: var(--acento); margin-top: auto; }
   .cel-precio s { white-space: nowrap; font-size: .85rem; color: rgba(255,255,255,.45); font-weight: 500; margin-left: .4rem; }
   .cel-card .btn-consultar { text-align: center; }
@@ -1980,18 +1988,31 @@
         const datos = [v.capacidad, v.ram ? v.ram + ' RAM' : null, varios ? null : v.color, c.bateria ? 'Batería ' + c.bateria + '%' : null, c.estado].filter(Boolean).join(' · ');
         const badges = [c.condicion ? '<span class="cel-badge' + (c.condicion === 'Nuevo' ? ' cel-badge--azul' : '') + '">' + esc(c.condicion) + '</span>' : '',
           c.oferta ? '<span class="cel-badge cel-badge--azul">Oferta</span>' : '', c.destacado ? '<span class="cel-badge">Destacado</span>' : ''].join('');
-        const foto = c.fotos[0] ? '<img src="' + esc(c.fotos[0]) + '" alt="' + esc(c.nombre) + '" loading="lazy">' : '<img class="sin-foto" src="img/emblema.png" alt="">';
+        // Todas las fotos del equipo: se pasan deslizando (con puntitos si hay más de una).
+        const foto = c.fotos.length > 1
+          ? '<div class="cel-fotos">' + c.fotos.map((f, k) => '<img src="' + esc(f) + '" alt="' + esc(c.nombre) + ' foto ' + (k + 1) + '" loading="lazy">').join('') + '</div>' +
+            '<div class="cel-puntos">' + c.fotos.map((_, k) => '<span' + (k ? '' : ' class="activo"') + '></span>').join('') + '</div>'
+          : c.fotos[0] ? '<img src="' + esc(c.fotos[0]) + '" alt="' + esc(c.nombre) + '" loading="lazy">' : '<img class="sin-foto" src="img/emblema.png" alt="">';
+        // Descripción (sin repetir el nombre si empieza igual).
+        let desc = String(c.descripcion || '').trim();
+        if (desc.toLowerCase().startsWith(String(c.nombre).toLowerCase())) desc = desc.slice(String(c.nombre).length).replace(/^[\s.·:-]+/, '');
         const msg = 'Hola Mobile Phone! Me interesa el ' + c.nombre + (v.capacidad ? ' ' + v.capacidad : '') + (!varios && v.color ? ' ' + v.color : '') + ' que vi en la página.';
         return '<article class="cel-card">' +
           '<div class="cel-foto">' + foto + '<div class="cel-badges">' + badges + '</div></div>' +
           '<div class="cel-info"><div class="cel-nombre">' + esc(c.nombre) + '</div>' +
           (datos ? '<div class="cel-datos">' + esc(datos) + '</div>' : '') +
           (c.garantia ? '<div class="cel-datos">Garantía: ' + esc(c.garantia) + '</div>' : '') +
+          (desc ? '<p class="cel-desc" title="Tocá para ver todo">' + esc(desc) + '</p>' : '') +
           '<div class="cel-precio">' + (varios ? 'Desde ' : '') + pesos(v.precio) + (c.precioAnterior ? '<s>' + pesos(c.precioAnterior) + '</s>' : '') + '</div>' +
           '<a class="btn-consultar" target="_blank" rel="noopener" href="https://wa.me/' + WA_NUMERO + '?text=' + encodeURIComponent(msg) + '">Consultar</a>' +
           '</div></article>';
       }).join('');
       grid.querySelectorAll('a[href*="wa.me"]').forEach((a) => a.addEventListener('click', () => trackWhatsApp('celular')));
+      grid.querySelectorAll('.cel-desc').forEach((d) => d.addEventListener('click', () => d.classList.toggle('abierta')));
+      grid.querySelectorAll('.cel-fotos').forEach((f) => f.addEventListener('scroll', () => {
+        const n = Math.round(f.scrollLeft / f.clientWidth);
+        f.parentElement.querySelectorAll('.cel-puntos span').forEach((p, k) => p.classList.toggle('activo', k === n));
+      }, { passive: true }));
     } catch (e) { mostrarVacio(); }
   })();
 
