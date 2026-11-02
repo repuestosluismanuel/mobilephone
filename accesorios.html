@@ -1284,6 +1284,12 @@
   .cel-compartir { background: none; border: 0; color: rgba(255,255,255,.6); text-decoration: underline; font: inherit; font-size: .85rem; cursor: pointer; align-self: flex-start; padding: 0; }
   @media (max-width: 720px) { .cel-modal-cuerpo { grid-template-columns: 1fr; padding: 1rem; } .cel-pagina { padding-top: 7.5rem; } }
   .ac-mas { display: flex; margin: 1.8rem auto 0; }
+  /* Buscador predictivo */
+  .predictivo { position: fixed; z-index: 9999; list-style: none; margin: 0; padding: .3rem 0; background: #fff; color: #1d1d1f; border: 1px solid #dfe3ea; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.18); max-height: 60vh; overflow-y: auto; font-size: .92rem; text-align: left; }
+  .predictivo li { display: flex; align-items: center; gap: .6rem; padding: .6rem .9rem; cursor: pointer; line-height: 1.3; }
+  .predictivo li svg { width: 16px; height: 16px; flex-shrink: 0; color: #9aa3b2; }
+  .predictivo li b { color: #1677ff; font-weight: 700; }
+  .predictivo li:hover, .predictivo li[aria-selected="true"] { background: #eef4ff; }
 </style>
 </head>
 <body id="inicio">
@@ -1437,7 +1443,7 @@
       if (!r.ok) throw new Error(r.status);
       todos = (await r.json()).accesorios || [];
     } catch (e) { todos = []; }
-    todos.forEach((a) => { a._texto = sinAcentos([a.nombre, a.marca, a.categoria, a.descripcion, ...a.variantes.map((v) => v.color)].join(' ')); });
+    todos.forEach((a) => { a._texto = sinAcentos([a.nombre, a.marca, a.categoria, a.descripcion, ...a.variantes.map((v) => v.color)].join(' ')) + ' ' + sinAcentos(a.nombre).replace(/[\s\-\/.,]+/g, ''); });
 
     function tarjeta(a) {
       const varios = a.variantes.length > 1;
@@ -1531,6 +1537,70 @@
     modal.addEventListener('click', (e) => { if (e.target === modal) cerrar(); });
     modal.addEventListener('close', () => history.replaceState(null, '', location.pathname + location.search));
 
+  // ── Buscador predictivo: sugerencias mientras se escribe ──
+  // input: el buscador; nombres(): lista de nombres; elegir(nombre): qué hacer al tocar una sugerencia.
+  function predictivo(input, nombres, elegir) {
+    const sa = (t) => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+    const compacto = (t) => sa(t).replace(/[\s\-\/.,]+/g, '');
+    const lista = document.createElement('ul');
+    lista.className = 'predictivo'; lista.setAttribute('role', 'listbox'); lista.hidden = true;
+    document.body.appendChild(lista);
+    input.setAttribute('autocomplete', 'off'); input.setAttribute('aria-autocomplete', 'list');
+    let actual = -1, opciones = [];
+    const ubicar = () => {
+      const r = input.getBoundingClientRect();
+      lista.style.left = Math.max(8, r.left) + 'px';
+      lista.style.top = (r.bottom + 4) + 'px';
+      lista.style.width = Math.min(window.innerWidth - 16, Math.max(r.width, 280)) + 'px';
+    };
+    const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const resaltar = (nombre, palabras) => {
+      let html = esc(nombre);
+      palabras.forEach((p) => {
+        if (p.length < 2) return;
+        const i = sa(nombre).indexOf(p);
+        if (i >= 0) { const parte = nombre.slice(i, i + p.length); html = html.replace(esc(parte), '<b>' + esc(parte) + '</b>'); }
+      });
+      return html;
+    };
+    const cerrar = () => { lista.hidden = true; actual = -1; };
+    const pintar = () => {
+      const q = sa(input.value).trim();
+      if (q.length < 2) return cerrar();
+      const palabras = q.split(/\s+/).filter(Boolean), qc = compacto(q);
+      const vistos = new Set();
+      opciones = nombres().map((n) => {
+        const s = sa(n), c = compacto(n);
+        const todas = palabras.every((p) => s.includes(p)) || c.includes(qc);
+        if (!todas || vistos.has(s)) return null;
+        vistos.add(s);
+        const puntos = (s.startsWith(palabras[0]) ? 0 : 1) + (s.split(/\s+/).some((w) => w.startsWith(palabras[palabras.length - 1])) ? 0 : 1);
+        return { n, puntos };
+      }).filter(Boolean).sort((a, b) => a.puntos - b.puntos || a.n.length - b.n.length).slice(0, 7);
+      if (!opciones.length) return cerrar();
+      lista.innerHTML = opciones.map((o, k) => '<li role="option" data-k="' + k + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16" y2="16"/></svg><span>' + resaltar(o.n, palabras) + '</span></li>').join('');
+      actual = -1; ubicar(); lista.hidden = false;
+    };
+    const usar = (k) => { const o = opciones[k]; if (!o) return; input.value = o.n; cerrar(); input.dispatchEvent(new Event('input', { bubbles: true })); cerrar(); elegir && elegir(o.n); };
+    lista.addEventListener('mousedown', (e) => e.preventDefault());
+    lista.addEventListener('click', (e) => { const li = e.target.closest('li'); if (li) usar(Number(li.dataset.k)); });
+    input.addEventListener('input', () => { if (document.activeElement === input) pintar(); });
+    input.addEventListener('focus', pintar);
+    input.addEventListener('blur', () => setTimeout(cerrar, 150));
+    input.addEventListener('keydown', (e) => {
+      if (lista.hidden) return;
+      const items = [...lista.children];
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        actual = (actual + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+        items.forEach((li, k) => li.setAttribute('aria-selected', String(k === actual)));
+      } else if (e.key === 'Enter') { if (actual >= 0) { e.preventDefault(); usar(actual); } else cerrar(); }
+      else if (e.key === 'Escape') cerrar();
+    });
+    window.addEventListener('resize', () => { if (!lista.hidden) ubicar(); });
+    window.addEventListener('scroll', () => { if (!lista.hidden) ubicar(); }, { passive: true });
+  }
+    predictivo(buscar, () => todos.map((a) => a.nombre));
     mas.addEventListener('click', verMas);
     buscar.addEventListener('input', pintar);
     orden.addEventListener('change', pintar);
