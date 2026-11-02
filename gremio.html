@@ -900,7 +900,9 @@
       const vistos = new Set();
       opciones = nombres().map((n) => {
         const s = sa(n), c = compacto(n);
-        const todas = palabras.every((p) => s.includes(p)) || c.includes(qc);
+        // Cada palabra escrita tiene que ser el comienzo de una palabra del nombre (o coincidir todo junto, sin espacios).
+        const partes = s.split(/[^a-z0-9]+/).filter(Boolean);
+        const todas = palabras.every((p) => partes.some((w) => w.startsWith(p))) || c.includes(qc);
         if (!todas || vistos.has(s)) return null;
         vistos.add(s);
         const puntos = (s.startsWith(palabras[0]) ? 0 : 1) + (s.split(/\s+/).some((w) => w.startsWith(palabras[palabras.length - 1])) ? 0 : 1);

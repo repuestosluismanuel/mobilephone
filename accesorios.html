@@ -1290,6 +1290,27 @@
   .predictivo li svg { width: 16px; height: 16px; flex-shrink: 0; color: #9aa3b2; }
   .predictivo li b { color: #1677ff; font-weight: 700; }
   .predictivo li:hover, .predictivo li[aria-selected="true"] { background: #eef4ff; }
+  /* Accesorios: categorías en una fila deslizable y productos de a dos (celular) */
+  #acCategorias { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; padding: .1rem 0 .4rem; margin-bottom: .2rem; -webkit-overflow-scrolling: touch; }
+  #acCategorias::-webkit-scrollbar { display: none; }
+  #acCategorias button { flex: 0 0 auto; white-space: nowrap; padding: .35rem .8rem; font-size: .78rem; }
+  #acGrid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); justify-content: stretch; gap: 1rem; }
+  @media (max-width: 720px) {
+    .cel-pagina .sec-head { margin-bottom: 1rem; }
+    .cel-pagina .sec-desc { display: none; }
+    .cel-filtros { flex-wrap: nowrap; gap: .5rem; margin-bottom: .6rem; }
+    .cel-filtros input { flex: 1 1 auto; min-width: 0; padding: .65rem .8rem; font-size: .9rem; }
+    .cel-filtros select { padding: .65rem .5rem; font-size: .85rem; max-width: 42%; }
+    .cel-cuenta { margin: .2rem 0 .7rem; }
+    #acGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+    #acGrid .cel-card { border-radius: 14px; }
+    #acGrid .cel-info { padding: .65rem .7rem .8rem; gap: .35rem; }
+    #acGrid .cel-nombre { font-size: .82rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    #acGrid .cel-desc { display: none; }
+    #acGrid .cel-precio { font-size: 1rem; }
+    #acGrid .cel-badges { display: none; }
+    #acGrid .btn-consultar { padding: .45rem .5rem; font-size: .7rem; }
+  }
 </style>
 </head>
 <body id="inicio">
@@ -1571,7 +1592,9 @@
       const vistos = new Set();
       opciones = nombres().map((n) => {
         const s = sa(n), c = compacto(n);
-        const todas = palabras.every((p) => s.includes(p)) || c.includes(qc);
+        // Cada palabra escrita tiene que ser el comienzo de una palabra del nombre (o coincidir todo junto, sin espacios).
+        const partes = s.split(/[^a-z0-9]+/).filter(Boolean);
+        const todas = palabras.every((p) => partes.some((w) => w.startsWith(p))) || c.includes(qc);
         if (!todas || vistos.has(s)) return null;
         vistos.add(s);
         const puntos = (s.startsWith(palabras[0]) ? 0 : 1) + (s.split(/\s+/).some((w) => w.startsWith(palabras[palabras.length - 1])) ? 0 : 1);
