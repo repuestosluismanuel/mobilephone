@@ -200,6 +200,31 @@
   .card-stock { font-size: .74rem; font-weight: 600; color: var(--verde); }
   .card-stock.sin { color: var(--naranja); }
   .card .btn { width: 100%; padding: .65rem; font-size: .92rem; margin-top: .35rem; }
+  .card-img, .card-nombre { cursor: pointer; }
+  .card-ver { background: none; border: 0; padding: 0; color: var(--azul); font-size: .78rem; font-weight: 600; text-align: left; cursor: pointer; }
+  /* Buscando: los resultados quedan arriba (se ocultan ofertas, categorías y marcas) */
+  #tienda.buscando #slider, #tienda.buscando .seccion { display: none; }
+  #tienda.buscando .resultados { margin-top: 1rem; }
+  /* Ficha del repuesto */
+  .ficha { width: min(760px, calc(100% - 20px)); max-height: calc(100% - 20px); padding: 0; border: 0; border-radius: 16px; overflow: auto; }
+  .ficha::backdrop { background: rgba(0,0,0,.6); }
+  .ficha-cuerpo { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; padding: 1.2rem; }
+  .ficha-img { position: relative; aspect-ratio: 1 / 1; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid var(--linea); display: grid; place-items: center; }
+  .ficha-img img.foto { width: 100%; height: 100%; object-fit: contain; padding: 6%; }
+  .ficha-img.sin-foto { background: radial-gradient(circle at 50% 0%, rgba(22,119,255,.35), transparent 70%), #0B0B0B; }
+  .ficha h3 { font-family: var(--font-display); font-size: 1.2rem; line-height: 1.25; padding-right: 2.5rem; }
+  .ficha-datos { display: flex; flex-direction: column; gap: .7rem; }
+  .ficha-tabla { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  .ficha-tabla th { text-align: left; font-weight: 600; color: var(--texto-2); padding: .4rem .6rem .4rem 0; vertical-align: top; white-space: nowrap; }
+  .ficha-tabla td { padding: .4rem 0; border-bottom: 1px solid var(--linea); }
+  .ficha-compat { display: flex; flex-wrap: wrap; gap: .35rem; }
+  .ficha-compat span { background: var(--azul-suave); color: var(--azul-osc); font-size: .8rem; font-weight: 600; padding: .25rem .55rem; border-radius: 999px; }
+  .ficha-desc { font-size: .9rem; line-height: 1.55; white-space: pre-line; color: var(--texto); }
+  .ficha-nota { font-size: .74rem; color: var(--texto-2); }
+  .ficha .cerrar { position: sticky; top: .5rem; float: right; margin: .5rem .5rem 0 0; background: rgba(255,255,255,.9); z-index: 2; }
+  .ficha .btn { width: 100%; }
+  .ficha .btn-wa { background: #25D366; }
+  @media (max-width: 640px) { .ficha-cuerpo { grid-template-columns: 1fr; padding: 1rem; } }
   .cant { display: flex; align-items: center; justify-content: space-between; border: 1.5px solid var(--azul); border-radius: 10px; margin-top: .35rem; overflow: hidden; }
   .cant button { width: 40px; height: 38px; border: 0; background: var(--azul-suave); color: var(--azul); font-size: 1.15rem; font-weight: 700; }
   .cant span { font-weight: 700; }
@@ -342,6 +367,12 @@
     <button class="mas oculto" type="button" id="verMas">Ver más productos</button>
   </div>
 </main>
+
+<!-- Ficha de un repuesto: foto, compatibilidad, calidad, descripción y precio -->
+<dialog class="ficha" id="ficha" aria-label="Detalle del repuesto">
+  <button class="cerrar" type="button" id="fichaCerrar" aria-label="Cerrar">×</button>
+  <div class="ficha-cuerpo" id="fichaCuerpo"></div>
+</dialog>
 
 <section class="beneficios">
   <div class="wrap">
@@ -503,7 +534,9 @@
         id: v.id, nombre: nombreLindo(p.nombre) + (extra ? ' — ' + extra : ''), foto: fotoDe(p.nombre),
         cat: categoriaDe(n), marca: marcaDe(p.marca, n), original: /100% original|\borig(inal)?\b/.test(n), tags: tagsDe(n),
         precio: Number(v.precio), stock: Number(v.stock),
-        busca: normal([p.nombre, p.marca, p.modelo, p.subcategoria, v.color, v.capacidad].join(' ')),
+        nombreBase: p.nombre, descripcion: (p.descripcion || '').trim(), modeloCargado: (p.modelo || '').trim(), calidad: (p.calidad || '').trim(),
+        color: v.color, capacidad: v.capacidad,
+        busca: normal([p.nombre, p.marca, p.modelo, p.subcategoria, p.descripcion, v.color, v.capacidad].join(' ')),
       };
     }));
   }
@@ -663,14 +696,71 @@
     img.append(el('span', 'card-marca', it.marca));
     if (it.original) img.append(el('span', 'card-etq', 'ORIGINAL'));
     const cu = el('div', 'card-cuerpo');
-    cu.append(el('h3', 'card-nombre', it.nombre));
+    const h = el('h3', 'card-nombre', it.nombre); cu.append(h);
     if (it.tags.length) cu.append(el('div', 'card-tags', it.tags.join(' · ')));
+    const ver = el('button', 'card-ver', 'Ver descripción y compatibilidad ›'); ver.type = 'button'; cu.append(ver);
+    [img, h, ver].forEach((x) => x.addEventListener('click', () => abrirFicha(it)));
     cu.append(el('div', 'card-precio', pesos(it.precio)));
     cu.append(el('div', 'card-stock' + (it.stock > 0 ? '' : ' sin'), it.stock > 0 ? '● En stock' : '● Consultar stock'));
     cu.append(controlCantidad(it, 'Agregar'));
     c.append(img, cu);
     return c;
   }
+
+  // ── Ficha del repuesto ──
+  // Compatibilidad: la que se cargó en LM Gestión (modelo compatible) o, si no hay, la que dice el nombre.
+  const RUIDO = /\b(modulo|mmodulo|modelo|pantalla|display|bateria|pin de carga|placa de carga|flex|tapa|camara|con marco|sin marco|c\/m|s\/m|goster|svc|sunlong|premium|incell|oled|tft|jcid|soft|hard|diag|diagnosticable|diagnoticable|100% orig(inal)?|orig(inal)?|clase a|bolsa roja|actualizado|preto|samsung|motorola|moto|xiaomi|apple|zte|tcl|infinix|tecno|lg|huawei|nokia|alcatel)\b/g;
+  function compatibilidadDe(it) {
+    if (it.modeloCargado) return it.modeloCargado.split(/\s*[\/,;|]\s*|\s+-\s+/).filter(Boolean);
+    let t = normal(it.nombreBase).replace(/\s+-\s+(gris|negro|azul|verde|celeste|violeta|fucsia|turquesa|gris oscuro|blanco|rojo|dorado)\b.*$/, '');
+    t = t.replace(RUIDO, ' ').replace(/[()]/g, ' ');
+    return [...new Set(t.split(/\s*\/\s*|\s*,\s*|\s+-\s+|-(?=[a-z]\d)/).map((x) => x.replace(/\s+/g, ' ').trim()).filter((x) => /\d/.test(x) && x.length <= 30)
+      .map((x) => x.toUpperCase().replace(/^IPHONE/, 'iPhone').replace(/\bPRO\b/g, 'Pro').replace(/\bMAX\b/g, 'Max').replace(/\bPLUS\b/g, 'Plus').replace(/\bPOWER\b/g, 'Power').replace(/\bLITE\b/g, 'Lite').replace(/\bNOTE\b/g, 'Note').replace(/\bREDMI\b/g, 'Redmi').replace(/\bPOCO\b/g, 'Poco').replace(/\bEDGE\b/g, 'Edge')))];
+  }
+  function calidadDe(it) {
+    if (it.calidad) return it.calidad;
+    const n = normal(it.nombreBase);
+    const q = [];
+    if (/100% orig|\borig(inal)?\b/.test(n)) q.push('Original');
+    if (/jcid/.test(n)) q.push('JCID');
+    if (/oled/.test(n)) q.push('OLED'); if (/incell/.test(n)) q.push('Incell'); if (/\btft\b/.test(n)) q.push('TFT');
+    if (/goster/.test(n)) q.push('Goster'); if (/\bsvc\b/.test(n)) q.push('SVC'); if (/sunlong/.test(n)) q.push('Sunlong'); if (/premium/.test(n)) q.push('Premium');
+    if (/clase a/.test(n)) q.push('Clase A'); if (/diag/.test(n)) q.push('Diagnosticable');
+    return q.join(' · ');
+  }
+  function abrirFicha(it) {
+    const cuerpo = $('fichaCuerpo');
+    const img = el('div', 'ficha-img' + (it.foto ? '' : ' sin-foto'));
+    if (it.foto) { const f = el('img', 'foto'); f.src = it.foto; f.alt = it.nombre; img.append(f); }
+    else img.innerHTML = '<div class="logo-vacio"><img src="img/emblema.png" alt=""><img src="img/wordmark.png" alt="Mobile Phone"></div>';
+    const d = el('div', 'ficha-datos');
+    d.append(el('h3', null, it.nombre));
+    const tabla = el('table', 'ficha-tabla'); const tb = el('tbody');
+    const fila = (k, v) => { if (!v) return; const tr = el('tr'); tr.append(el('th', null, k)); const td = el('td'); typeof v === 'string' ? td.textContent = v : td.append(v); tr.append(td); tb.append(tr); };
+    const compat = compatibilidadDe(it);
+    if (compat.length) { const w = el('div', 'ficha-compat'); compat.forEach((c) => w.append(el('span', null, (it.marca && it.marca !== 'Otras' && !/^iphone/i.test(c) && !new RegExp('^' + it.marca, 'i').test(c) ? it.marca + ' ' : '') + c))); fila('Compatible con', w); }
+    fila('Marca', it.marca !== 'Otras' ? it.marca : '');
+    fila('Tipo', (todasCats().find((c) => c.id === it.cat) || {}).nombre || '');
+    fila('Calidad', calidadDe(it));
+    fila('Marco', it.tags.find((t) => /marco/i.test(t)) || '');
+    fila('Color', it.color || ''); fila('Capacidad', it.capacidad || '');
+    fila('Stock', it.stock > 0 ? 'En stock' : 'Consultar stock');
+    tabla.append(tb); d.append(tabla);
+    if (it.descripcion) d.append(el('p', 'ficha-desc', it.descripcion));
+    if (!it.modeloCargado && compat.length) d.append(el('p', 'ficha-nota', 'Compatibilidad según el nombre del repuesto. Ante la duda, consultanos antes de pedir.'));
+    d.append(el('div', 'card-precio', pesos(it.precio)));
+    const accion = el('div'); accion.append(controlCantidad(it, 'Agregar al pedido'));
+    const wa = el('a', 'btn btn-wa', 'Consultar por WhatsApp');
+    wa.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Hola Mobile Phone! Consulto por: ' + it.nombre + ' (' + pesos(it.precio) + ').'); wa.target = '_blank'; wa.rel = 'noopener';
+    d.append(accion, wa);
+    cuerpo.replaceChildren(img, d);
+    fichaActual = it;
+    if (!$('ficha').open) $('ficha').showModal();
+  }
+  let fichaActual = null;
+  $('fichaCerrar').addEventListener('click', () => $('ficha').close());
+  $('ficha').addEventListener('click', (e) => { if (e.target === $('ficha')) $('ficha').close(); });
+  $('ficha').addEventListener('close', () => { fichaActual = null; });
 
   function controlCantidad(it, textoAgregar) {
     const en = pedido.get(it.id);
@@ -691,6 +781,12 @@
   function mostrar() {
     const q = normal($('buscar').value).split(/\s+/).filter(Boolean);
     const soloStock = $('soloStock').checked;
+    // Al buscar, los resultados van primero (sin ofertas, categorías ni marcas arriba).
+    const buscando = q.length > 0;
+    if ($('tienda').classList.contains('buscando') !== buscando) {
+      $('tienda').classList.toggle('buscando', buscando);
+      if (buscando) window.scrollTo({ top: 0 });
+    }
     let vis = items.filter((it) => (!filtro.cat || it.cat === filtro.cat) && (!filtro.marca || it.marca === filtro.marca)
       && q.every((w) => it.busca.includes(w)) && (!soloStock || it.stock > 0));
     const orden = $('orden').value;
@@ -737,6 +833,7 @@
 
   function actualizar() {
     mostrar(); pintarCarrito();
+    if (fichaActual && $('ficha').open) abrirFicha(fichaActual);
     const unidades = [...pedido.values()].reduce((a, p) => a + p.cant, 0);
     const total = [...pedido.values()].reduce((a, p) => a + p.cant * p.item.precio, 0);
     $('burbuja').textContent = unidades;
