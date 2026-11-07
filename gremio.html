@@ -200,7 +200,7 @@
   .card-stock { font-size: .74rem; font-weight: 600; color: var(--verde); }
   /* Precio x Mayor y x Menor (como en las tiendas de repuestos); precios pagando en efectivo */
   .precios-mm { margin-top: auto; display: flex; flex-direction: column; gap: .1rem; }
-  .pm-fila { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
+  .pm-fila { display: flex; align-items: baseline; gap: .5rem; }
   .pm-etq { font-size: .72rem; color: var(--texto-2); }
   .pm-mayor { font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; }
   .pm-menor { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: #DC2626; }
@@ -726,13 +726,14 @@
     return c;
   }
 
-  // Precio x Mayor (gremio) y x Menor (cliente final, si es más alto). Son precios pagando en efectivo.
+  // Precio de gremio (negro) y de cliente final (rojo, si es más alto). Son precios pagando en efectivo.
   const RECARGO_TRANSFERENCIA = 10;
   function preciosMm(it, grande) {
     const w = el('div', 'precios-mm' + (grande ? ' grande' : ''));
-    const fila = (etq, clase, valor) => { const f = el('div', 'pm-fila'); f.append(el('span', 'pm-etq', etq), el('b', clase, pesos(valor))); return f; };
-    w.append(fila('Precio x Mayor', 'pm-mayor', it.precio));
-    if (it.precioMenor && it.precioMenor > it.precio) w.append(fila('Precio x Menor', 'pm-menor', it.precioMenor));
+    // Sin los textos «x Mayor» / «x Menor»: el negro es el de gremio y el rojo, el de cliente final.
+    const fila = (clase, valor) => { const f = el('div', 'pm-fila'); f.append(el('b', clase, pesos(valor))); return f; };
+    w.append(fila('pm-mayor', it.precio));
+    if (it.precioMenor && it.precioMenor > it.precio) w.append(fila('pm-menor', it.precioMenor));
     w.append(el('div', 'pm-efectivo', grande
       ? '💵 Precios pagando en efectivo · con transferencia +' + RECARGO_TRANSFERENCIA + ' %'
       : 'En efectivo · transferencia +' + RECARGO_TRANSFERENCIA + ' %'));
@@ -783,7 +784,7 @@
     d.append(preciosMm(it, true));
     const accion = el('div'); accion.append(controlCantidad(it, 'Agregar al pedido'));
     const wa = el('a', 'btn btn-wa', 'Consultar por WhatsApp');
-    wa.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Hola Mobile Phone! Consulto por: ' + it.nombre + ' (' + pesos(it.precio) + ' x mayor, en efectivo).'); wa.target = '_blank'; wa.rel = 'noopener';
+    wa.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Hola Mobile Phone! Consulto por: ' + it.nombre + ' (' + pesos(it.precio) + ' en efectivo).'); wa.target = '_blank'; wa.rel = 'noopener';
     d.append(accion, wa);
     cuerpo.replaceChildren(img, d);
     fichaActual = it;
@@ -984,7 +985,7 @@
       total += cant * item.precio;
       lineas.push('▸ ' + cant + ' × ' + item.nombre + ' — ' + pesos(item.precio * cant));
     }
-    lineas.push('', 'Total: ' + pesos(total) + ' (precio x mayor, en efectivo)');
+    lineas.push('', 'Total: ' + pesos(total) + ' (en efectivo)');
     window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(lineas.join('\n')), '_blank', 'noopener');
   });
 
