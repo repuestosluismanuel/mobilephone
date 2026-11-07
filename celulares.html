@@ -1247,18 +1247,18 @@
   .cel-puntos span.activo { background: #fff; }
   .cel-precio { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; color: var(--acento); margin-top: auto; }
   .cel-precio s { white-space: nowrap; font-size: .85rem; color: rgba(255,255,255,.45); font-weight: 500; margin-left: .4rem; }
-  /* Precio en efectivo destacado; con transferencia, chico arriba (decisión del negocio 07/11/2026) */
-  .cel-precios { margin-top: auto; }
-  .cel-precios .cel-precio { margin-top: 0; color: #4ADE80; }
-  .cel-precio small { font-family: var(--font-body, inherit); font-size: .72rem; font-weight: 600; color: #4ADE80; }
-  .cel-trans { font-size: .78rem; color: rgba(255,255,255,.6); }
-  .cel-ahorro { font-size: .78rem; font-weight: 700; color: #4ADE80; }
-  .cel-caja-precio { border: 1px solid rgba(74,222,128,.35); background: rgba(74,222,128,.06); border-radius: 16px; padding: 1rem; text-align: center; }
+  /* Precios como en las grandes tiendas (decisión del negocio 07/11/2026): precio en efectivo en blanco con letra
+     limpia y números parejos, beneficio en verde («% OFF»), precio con transferencia en gris como referencia. */
+  .cel-precios { margin-top: auto; font-family: 'Outfit', system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+  .cel-precios .cel-precio, .cel-caja-precio .cel-precio { margin-top: 0; font-family: 'Outfit', system-ui, sans-serif; font-weight: 500; color: #fff; letter-spacing: -.01em; }
+  .cel-off { font-size: .8rem; font-weight: 600; color: #2BD47D; white-space: nowrap; letter-spacing: 0; }
+  .cel-trans { font-size: .78rem; color: rgba(255,255,255,.55); }
+  .cel-ahorro { font-size: .78rem; font-weight: 600; color: #2BD47D; }
+  .cel-caja-precio { font-variant-numeric: tabular-nums; border: 1px solid var(--line); background: rgba(255,255,255,.03); border-radius: 12px; padding: 1rem; }
   .cel-caja-precio .cel-trans { font-size: .9rem; }
-  .cel-caja-precio hr { border: 0; border-top: 1px dashed rgba(74,222,128,.35); margin: .7rem 0; }
-  .cel-caja-precio .cel-etiqueta { font-size: .85rem; font-weight: 700; color: #4ADE80; }
-  .cel-caja-precio .cel-precio { font-size: 2.2rem; color: #4ADE80; }
-  .cel-caja-precio .cel-ahorro { display: inline-block; margin-top: .4rem; background: rgba(74,222,128,.15); border-radius: 999px; padding: .3rem .8rem; font-size: .82rem; }
+  .cel-caja-precio .cel-precio { font-size: 2.2rem; line-height: 1.15; }
+  .cel-caja-precio .cel-off { font-size: 1rem; }
+  .cel-caja-precio .cel-ahorro { margin-top: .2rem; font-size: .9rem; }
   .cel-card .btn-consultar { text-align: center; }
   .cel-vacio { text-align: center; border: 1px dashed rgba(22,119,255,0.4); border-radius: 18px; padding: 2.2rem 1.5rem; color: rgba(255,255,255,.7); }
   .cel-vacio .btn-principal { margin-top: 1.1rem; }
@@ -1456,7 +1456,8 @@
     const minimo = (c) => Math.min(...c.variantes.map((v) => v.precio));
     // El precio cargado en LM Gestión es en EFECTIVO. Con transferencia: este % más, redondeado a $100 hacia arriba.
     const RECARGO_TRANSFERENCIA = 10;
-    const conTransferencia = (n) => Math.ceil(Math.round(n * (100 + RECARGO_TRANSFERENCIA)) / 10000) * 100;
+    // Redondeo hacia arriba: a $100 (a $10 si es menos de $20.000, para que el «% OFF» no se deforme en precios chicos).
+    const conTransferencia = (n) => { const r = n < 20000 ? 10 : 100; return Math.ceil(Math.round(n * (100 + RECARGO_TRANSFERENCIA)) / (100 * r)) * r; };
     // Precio anterior tachado solo si es más alto que el de transferencia (si no, se repite el mismo número).
     const tachado = (c, t) => (c.precioAnterior && c.precioAnterior > t ? ' <s>' + pesos(c.precioAnterior) + '</s>' : '');
     const descSinNombre = (c) => {
@@ -1479,10 +1480,11 @@
       el.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { filtro[clave] = b.dataset.v; pintar(); }));
     };
 
+    const off = (efectivo, t) => Math.round(((t - efectivo) / t) * 100);
     function precios(c, v, varios) {
       const t = conTransferencia(v.precio);
       return '<div class="cel-precios"><div class="cel-trans">Con transferencia ' + (varios ? 'desde ' : '') + pesos(t) + '</div>' +
-        '<div class="cel-precio">' + (varios ? 'Desde ' : '') + pesos(v.precio) + ' <small>en efectivo</small>' + tachado(c, t) + '</div>' +
+        '<div class="cel-precio">' + (varios ? 'Desde ' : '') + pesos(v.precio) + tachado(c, t) + ' <span class="cel-off">' + off(v.precio, t) + '% OFF en efectivo</span></div>' +
         '<div class="cel-ahorro">Ahorrás ' + pesos(t - v.precio) + '</div></div>';
     }
 
@@ -1541,9 +1543,8 @@
         '<div><div class="cel-galeria-grande"><img id="celFotoGrande" src="' + esc(fotos[0]) + '" alt="' + esc(c.nombre) + '"></div>' +
         (fotos.length > 1 ? '<div class="cel-miniaturas">' + fotos.map((f, k) => '<button type="button" data-k="' + k + '" aria-pressed="' + (k === 0) + '" aria-label="Foto ' + (k + 1) + '"><img src="' + esc(f) + '" alt="" loading="lazy"></button>').join('') + '</div>' : '') + '</div>' +
         '<div class="cel-detalle"><h2>' + esc(c.nombre) + '</h2>' +
-        '<div class="cel-caja-precio"><div class="cel-trans">Precio con transferencia ' + (varios ? 'desde ' : '') + '<strong>' + pesos(t0) + '</strong></div><hr>' +
-        '<div class="cel-etiqueta">💵 Precio pagando en efectivo</div>' +
-        '<div class="cel-precio">' + (varios ? 'Desde ' : '') + pesos(v0.precio) + tachado(c, t0) + '</div>' +
+        '<div class="cel-caja-precio"><div class="cel-trans">Con transferencia ' + (varios ? 'desde ' : '') + pesos(t0) + '</div>' +
+        '<div class="cel-precio">' + (varios ? 'Desde ' : '') + pesos(v0.precio) + tachado(c, t0) + ' <span class="cel-off">' + off(v0.precio, t0) + '% OFF en efectivo</span></div>' +
         '<div class="cel-ahorro">Ahorrás ' + pesos(t0 - v0.precio) + ' pagando en efectivo en el local</div></div>' +
         (descSinNombre(c) ? '<p class="cel-texto">' + esc(descSinNombre(c)) + '</p>' : '') +
         (datos.length ? '<div class="cel-variantes">' + datos.map((x) => '<div><span>' + esc(x[0]) + '</span><strong>' + esc(x[1]) + '</strong></div>').join('') + '</div>' : '') +
