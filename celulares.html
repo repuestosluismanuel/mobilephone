@@ -1526,6 +1526,21 @@
       todos = (await r.json()).celulares || [];
     } catch (e) { todos = []; }
     if (marcaPedida) filtro.marca = normalizarMarca(marcaPedida);
+    // Precios mal cargados (p. ej. en dólares como si fueran pesos): no se muestran hasta corregirlos en LM Gestión.
+    todos = todos.map((c) => Object.assign(c, { variantes: c.variantes.filter((v) => v.precio >= 20000) })).filter((c) => c.variantes.length);
+    // Si la variante no trae RAM / capacidad / color, se leen del nombre («MOTOROLA G06 4RAM / 128GB - AZUL»).
+    const gb = (x) => x ? String(x).replace(/\s+/g, '').replace(/^(\d+(?:\+\d+)?)$/, '$1GB').replace(/(\d)(GB|TB)$/i, '$1 $2').toUpperCase() : x;
+    todos.forEach((c) => {
+      const n = c.nombre || '';
+      const ram = (n.match(/(\d+(?:\s*\+\s*\d+)?)\s*(?:GB)?\s*RAM/i) || [])[1];
+      const cap = (n.match(/\/\s*(\d+)\s*(GB|TB)/i) || n.match(/(\d+)\s*(GB|TB)(?!\s*RAM)/i) || []);
+      const color = (n.match(/\s-\s*([A-Za-zÁÉÍÓÚÑáéíóúñ ]+)\s*$/) || [])[1];
+      c.variantes.forEach((v) => {
+        v.ram = gb(v.ram || ram);
+        v.capacidad = gb(v.capacidad || (cap[1] ? cap[1] + cap[2] : null));
+        if (!v.color && color && c.variantes.length === 1) v.color = color.trim().toUpperCase();
+      });
+    });
     todos.forEach((c) => { c._marca = marcaDe(c); c._texto = sinAcentos([c.nombre, c._marca, c.descripcion, ...c.variantes.map((v) => [v.capacidad, v.ram, v.color].join(' '))].join(' ')) + ' ' + sinAcentos(c.nombre).replace(/[\s\-\/.,]+/g, ''); });
 
     const chips = (el, valores, clave) => {
