@@ -1,164 +1,266 @@
 <!DOCTYPE html>
 <!--
-  Mobile Phone — Página de opciones para enviar a clientes
-  (mobilephone-nu.vercel.app/opciones). El cliente elige qué quiere ver.
-  WhatsApp: 5491126785588 · Catálogo de accesorios: /accesorios
+  Mobile Phone — Página de opciones para enviar a clientes (mobilephone.com.ar/opciones).
+  El cliente elige qué quiere ver. WhatsApp: 5491126785588.
+  Fotos de la portada: img/portada-*.jpg (fotos de stock libres de uso).
 -->
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mobile Phone — ¿Qué estás buscando?</title>
-<meta name="description" content="Mobile Phone: celulares, accesorios y servicio técnico en Ingeniero Budge, Lomas de Zamora. Elegí qué querés ver.">
-<meta name="theme-color" content="#0B0B0B">
-<meta property="og:title" content="Mobile Phone — ¿Qué estás buscando?">
-<meta property="og:description" content="Celulares, accesorios y servicio técnico. Elegí qué querés ver.">
-<meta property="og:image" content="img/logo-completo.png">
+<meta name="description" content="Mobile Phone: celulares, accesorios y servicio técnico en Ingeniero Budge, Lomas de Zamora. Todo para tu celular, en un solo lugar.">
+<meta name="theme-color" content="#05070D">
+<meta property="og:title" content="Mobile Phone — Todo para tu celular, en un solo lugar">
+<meta property="og:description" content="Celulares, accesorios y servicio técnico. Epecuén 645, Ingeniero Budge.">
+<meta property="og:image" content="img/portada-celulares.jpg">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/portada-celulares.jpg">
 <style>
   :root {
-    --negro: #0B0B0B;
+    --fondo: #05070D;
+    --tarjeta: #0D1220;
     --blanco: #FFFFFF;
+    --gris: rgba(255,255,255,.66);
     --azul: #1677FF;
     --azul-hover: #0F5FD6;
     --acento: #5AA9FF;
-    --tarjeta: #141414;
-    --line: rgba(255,255,255,0.08);
-    --font-display: 'Jost', 'Outfit', sans-serif;
+    --linea: rgba(90,169,255,.22);
+    --display: 'Jost', 'Outfit', sans-serif;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
-    min-height: 100dvh;
-    background-color: var(--negro);
-    background-image:
-      radial-gradient(circle at 50% -10%, rgba(22,119,255,0.28), transparent 55%),
-      linear-gradient(rgba(22,119,255,0.10) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(22,119,255,0.10) 1px, transparent 1px);
-    background-size: 100% 100%, 36px 36px, 36px 36px;
-    color: var(--blanco);
-    font-family: 'Outfit', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    display: flex; flex-direction: column; align-items: center;
-    padding: 2.5rem 16px 2rem;
+    min-height: 100dvh; background: var(--fondo); color: var(--blanco);
+    font-family: 'Outfit', sans-serif; -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(circle at 80% -5%, rgba(22,119,255,.32), transparent 45%),
+      radial-gradient(circle at 0% 40%, rgba(22,119,255,.14), transparent 40%);
   }
-  main { width: 100%; max-width: 520px; display: flex; flex-direction: column; align-items: center; flex: 1; }
+  a { color: inherit; text-decoration: none; }
+  .contenedor { width: 100%; max-width: 560px; margin: 0 auto; padding: 0 16px; }
 
-  /* Marca */
-  .logo { width: 104px; height: auto; filter: drop-shadow(0 0 26px rgba(22,119,255,0.5)); animation: flota 6s ease-in-out infinite; }
-  .wordmark { width: min(240px, 66vw); height: auto; margin-top: 1rem; }
-  .sub { margin-top: .55rem; font-size: .78rem; letter-spacing: .32em; text-transform: uppercase; color: rgba(255,255,255,.6); }
-  @keyframes flota { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  /* Encabezado */
+  header { position: sticky; top: 0; z-index: 10; background: rgba(5,7,13,.55); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.06); }
+  .barra { display: flex; align-items: center; gap: .6rem; height: 64px; }
+  .barra img.emblema { width: 38px; height: 38px; }
+  .barra img.wordmark { height: 22px; width: auto; }
+  .barra .wa-mini { margin-left: auto; display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .8rem; border-radius: 999px; border: 1px solid var(--linea); color: var(--acento); font-size: .82rem; font-weight: 500; }
+  .barra .wa-mini svg { width: 16px; height: 16px; }
 
-  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 7vw, 2.4rem); text-align: center; margin: 2.2rem 0 .4rem; line-height: 1.15; }
-  h1 span { color: var(--acento); }
-  .intro { color: rgba(255,255,255,.65); text-align: center; font-size: .98rem; margin-bottom: 1.8rem; }
+  /* Portada: las fotos ocupan toda la pantalla de fondo y van cambiando */
+  .portada { position: relative; min-height: 100vh; min-height: 100svh; margin-top: -65px; padding: calc(65px + 1.5rem) 0 1.6rem; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; isolation: isolate; }
+  .portada > .contenedor { position: relative; z-index: 1; max-width: 1100px; }
+  .fondo { position: absolute; inset: 0; z-index: -1; background: var(--fondo); }
+  .diapo { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
+  .diapo.activa { opacity: 1; }
+  .diapo img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); transition: transform 7s ease-out; }
+  .diapo.activa img { transform: scale(1); }
+  .fondo::after { content: ''; position: absolute; inset: 0; background:
+      linear-gradient(180deg, rgba(5,7,13,.7) 0%, rgba(5,7,13,.15) 28%, rgba(5,7,13,.35) 50%, rgba(5,7,13,.9) 78%, var(--fondo) 100%),
+      linear-gradient(90deg, rgba(5,7,13,.55), transparent 65%); }
+  .sello { display: inline-block; padding: .35rem .75rem; border-radius: 8px; background: var(--azul); font-family: var(--display); font-weight: 600; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.3rem, 9.5vw, 4.2rem); line-height: 1.03; margin: .9rem 0 .7rem; text-shadow: 0 4px 24px rgba(0,0,0,.45); }
+  h1 span { display: block; color: var(--acento); }
+  .bajada { color: rgba(255,255,255,.82); font-size: 1.05rem; line-height: 1.45; max-width: 32ch; }
+  .estado { display: flex; align-items: center; gap: 12px; margin-top: 1.3rem; }
+  .leyenda { display: inline-flex; flex-direction: column; padding: .55rem .9rem; border-radius: 14px; background: rgba(5,7,13,.5); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(8px); }
+  .leyenda b { font-family: var(--display); font-size: 1.08rem; }
+  .leyenda small { color: var(--gris); font-size: .8rem; }
+  .puntos { display: flex; gap: 6px; margin-left: auto; }
+  .puntos button { width: 8px; height: 8px; border-radius: 99px; border: 0; background: rgba(255,255,255,.4); cursor: pointer; transition: width .3s, background .3s; }
+  .puntos button[aria-current="true"] { width: 22px; background: var(--acento); }
+  .portada .cta { max-width: 520px; margin-left: 0; }
+  @media (min-width: 800px) { .portada { justify-content: center; padding-bottom: 3rem; } .estado { max-width: 520px; } }
 
-  /* Opciones */
-  .opciones { width: 100%; display: flex; flex-direction: column; gap: 1rem; }
-  .opcion {
-    position: relative; overflow: hidden;
-    display: flex; align-items: center; gap: 1.1rem;
-    padding: 1.25rem 1.2rem; border-radius: 20px;
-    background: var(--tarjeta); border: 1px solid var(--line);
-    color: inherit; text-decoration: none;
-    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-    opacity: 0; transform: translateY(14px); animation: entra .6s ease forwards;
-  }
-  .opcion:nth-child(1) { animation-delay: .15s; }
-  .opcion:nth-child(2) { animation-delay: .3s; }
-  .opcion:nth-child(3) { animation-delay: .45s; }
-  @keyframes entra { to { opacity: 1; transform: translateY(0); } }
-  .opcion::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(120deg, rgba(22,119,255,0.16), transparent 60%);
-    opacity: 0; transition: opacity .25s ease;
-  }
-  .opcion:hover, .opcion:focus-visible { border-color: rgba(22,119,255,0.6); box-shadow: 0 14px 40px rgba(22,119,255,0.18); transform: translateY(-3px); outline: none; }
-  .opcion:hover::before, .opcion:focus-visible::before { opacity: 1; }
-  .opcion:active { transform: scale(.98); }
-  .icono {
-    position: relative; flex-shrink: 0; width: 60px; height: 60px; border-radius: 16px;
-    display: grid; place-items: center; background: rgba(22,119,255,0.14); color: var(--acento);
-  }
-  .icono svg { width: 30px; height: 30px; }
-  .opcion--azul .icono { background: var(--azul); color: #fff; }
-  .texto { position: relative; flex: 1; }
-  .titulo, .desc { display: block; }
-  .titulo { font-family: var(--font-display); font-weight: 700; font-size: 1.22rem; }
-  .desc { color: rgba(255,255,255,.6); font-size: .88rem; margin-top: .15rem; line-height: 1.4; }
-  .flecha { position: relative; color: var(--acento); font-size: 1.4rem; transition: transform .25s ease; }
-  .opcion:hover .flecha { transform: translateX(4px); }
+  .cta { display: flex; align-items: center; justify-content: center; gap: .55rem; margin: 1.1rem auto 0; width: 100%; padding: 1rem; border-radius: 999px; background: var(--azul); font-family: var(--display); font-weight: 600; font-size: 1.08rem; box-shadow: 0 14px 34px rgba(22,119,255,.35); transition: background .2s, transform .2s; }
+  .cta:hover { background: var(--azul-hover); transform: translateY(-2px); }
+  .cta svg { width: 22px; height: 22px; }
 
-  /* WhatsApp y pie */
-  .wa {
-    margin-top: 1.6rem; width: 100%;
-    display: flex; align-items: center; justify-content: center; gap: .6rem;
-    padding: 1rem; border-radius: 14px; background: var(--azul); color: #fff;
-    font-family: var(--font-display); font-weight: 600; font-size: 1rem; letter-spacing: .02em; text-decoration: none;
-    box-shadow: 0 12px 32px rgba(22,119,255,0.3); transition: background .2s ease, transform .2s ease;
-    opacity: 0; animation: entra .6s ease .6s forwards;
-  }
-  .wa:hover { background: var(--azul-hover); transform: translateY(-2px); }
-  .wa svg { width: 22px; height: 22px; }
-  .confianza { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.1rem; margin-top: 1.3rem; font-size: .82rem; color: rgba(255,255,255,.7); }
-  .confianza i { font-style: normal; color: var(--acento); margin-right: .3rem; }
-  footer { margin-top: 2.2rem; text-align: center; font-size: .8rem; color: rgba(255,255,255,.5); line-height: 1.7; }
-  footer a { color: rgba(255,255,255,.75); text-decoration: none; }
-  footer a:hover { color: var(--acento); }
+  /* Las tres opciones */
+  .opciones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 1.4rem; }
+  .opcion { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 168px; padding: 12px; border-radius: 18px; overflow: hidden; border: 1px solid var(--linea); background: var(--tarjeta); transition: transform .25s, border-color .25s, box-shadow .25s; }
+  .opcion img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; transition: opacity .25s, transform .4s; }
+  .opcion::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,7,13,.05), rgba(5,7,13,.92) 72%); }
+  .opcion > span { position: relative; z-index: 1; }
+  .opcion b { display: block; font-family: var(--display); font-size: 1.02rem; line-height: 1.15; }
+  .opcion small { display: block; color: var(--gris); font-size: .74rem; margin-top: 2px; line-height: 1.3; }
+  .opcion i { position: absolute; z-index: 1; top: 10px; right: 10px; width: 26px; height: 26px; border-radius: 99px; background: var(--azul); display: grid; place-items: center; font-style: normal; font-size: .9rem; }
+  .opcion:hover { transform: translateY(-3px); border-color: rgba(90,169,255,.6); box-shadow: 0 16px 36px rgba(22,119,255,.22); }
+  .opcion:hover img { opacity: .75; transform: scale(1.05); }
 
-  @media (prefers-reduced-motion: reduce) {
-    .logo, .opcion, .wa { animation: none; opacity: 1; transform: none; }
-  }
+  /* Marcas */
+  .bloque { margin-top: 1.2rem; padding: 14px; border-radius: 18px; border: 1px solid var(--linea); background: var(--tarjeta); }
+  .bloque h2 { font-family: var(--display); font-size: 1.05rem; display: flex; align-items: center; gap: .45rem; }
+  .bloque h2 small { margin-left: auto; font-family: 'Outfit', sans-serif; font-weight: 400; font-size: .76rem; color: var(--gris); }
+  .marcas { display: flex; gap: 8px; overflow-x: auto; margin-top: .75rem; padding-bottom: 2px; scrollbar-width: none; }
+  .marcas::-webkit-scrollbar { display: none; }
+  .marcas a { flex: 0 0 auto; padding: .55rem 1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); font-family: var(--display); font-weight: 600; letter-spacing: .04em; font-size: .9rem; }
+  .marcas a:hover { border-color: var(--acento); color: var(--acento); }
+
+  /* Confianza */
+  .confianza { display: flex; align-items: center; gap: 14px; margin-top: 1.2rem; padding: 16px; border-radius: 18px; background: linear-gradient(110deg, var(--tarjeta) 60%, rgba(22,119,255,.35)); border: 1px solid var(--linea); }
+  .confianza svg { width: 40px; height: 40px; flex-shrink: 0; color: var(--acento); }
+  .confianza b { display: block; font-family: var(--display); font-size: 1.15rem; }
+  .confianza span { color: var(--gris); font-size: .9rem; }
+  .ventajas { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1rem; margin-top: .9rem; font-size: .82rem; color: var(--gris); }
+  .ventajas i { font-style: normal; color: var(--acento); margin-right: .25rem; }
+
+  /* Pie */
+  footer { margin: 1.4rem 0 6.5rem; padding: 14px; border-radius: 18px; border: 1px solid var(--linea); background: var(--tarjeta); display: grid; gap: .7rem; font-size: .9rem; }
+  footer a, footer p { display: flex; align-items: center; gap: .6rem; color: rgba(255,255,255,.85); }
+  footer svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--acento); }
+  footer .gremio { color: var(--acento); font-size: .84rem; }
+
+  .wa-flotante { position: fixed; right: 16px; bottom: 18px; z-index: 20; width: 58px; height: 58px; border-radius: 99px; background: #25D366; display: grid; place-items: center; box-shadow: 0 10px 28px rgba(0,0,0,.45); }
+  .wa-flotante svg { width: 30px; height: 30px; color: #fff; }
+
+  @media (prefers-reduced-motion: reduce) { .diapo, .diapo img { transition: none; } .opcion, .opcion img, .cta { transition: none; } }
 </style>
 </head>
 <body>
+<header>
+  <div class="contenedor barra">
+    <img src="img/emblema.png" alt="" class="emblema">
+    <img src="img/wordmark.png" alt="Mobile Phone" class="wordmark">
+    <a class="wa-mini" href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone!%20Quiero%20hacer%20una%20consulta" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0012.05 0zm5.422 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+      Consultar
+    </a>
+  </div>
+</header>
+
 <main>
-  <img src="img/emblema.png" alt="" class="logo">
-  <img src="img/wordmark.png" alt="Mobile Phone" class="wordmark">
-  <p class="sub">Servicio técnico</p>
+  <section class="portada">
+    <!-- Fotos de fondo a pantalla completa: cambian solas cada 4,5 s (también deslizando con el dedo) -->
+    <div class="fondo" id="pista" aria-hidden="true">
+      <div class="diapo activa" data-titulo="Celulares" data-texto="Nuevos y usados, con garantía" data-link="/celulares">
+        <img src="img/portada-celulares.jpg" alt="" fetchpriority="high">
+      </div>
+      <div class="diapo" data-titulo="Accesorios" data-texto="Fundas, cargadores, auriculares y más" data-link="/accesorios">
+        <img src="img/portada-accesorios.jpg" alt="">
+      </div>
+      <div class="diapo" data-titulo="Servicio técnico" data-texto="Reparaciones con garantía" data-link="/servicio-tecnico">
+        <img src="img/portada-servicio.jpg" alt="">
+      </div>
+    </div>
 
-  <h1>¿Qué estás <span>buscando?</span></h1>
-  <p class="intro">Elegí una opción y te mostramos todo.</p>
+    <div class="contenedor">
+      <span class="sello">Mobile Phone · Servicio técnico</span>
+      <h1>Todo para tu celular, <span>en un solo lugar</span></h1>
+      <p class="bajada">Elegí lo que estás buscando y encontrá nuestros productos y servicios.</p>
 
-  <nav class="opciones" aria-label="Opciones">
-    <a class="opcion opcion--azul" href="/celulares">
-      <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="10.5" y1="18" x2="13.5" y2="18"/></svg></span>
-      <span class="texto"><span class="titulo">Celulares</span><span class="desc">Nuevos y usados, con garantía. Mirá los disponibles.</span></span>
-      <span class="flecha" aria-hidden="true">›</span>
+      <div class="estado">
+        <a class="leyenda" id="leyenda" href="/celulares"><b>Celulares</b><small>Nuevos y usados, con garantía</small></a>
+        <div class="puntos" id="puntos">
+          <button type="button" aria-label="Celulares" aria-current="true"></button>
+          <button type="button" aria-label="Accesorios"></button>
+          <button type="button" aria-label="Servicio técnico"></button>
+        </div>
+      </div>
+
+      <a class="cta" href="/celulares">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 11.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L21 7H6"/></svg>
+        Ver catálogo ›
+      </a>
+    </div>
+  </section>
+
+  <div class="contenedor">
+  <nav class="opciones" aria-label="¿Qué estás buscando?">
+    <a class="opcion" href="/celulares">
+      <img src="img/portada-celulares.jpg" alt="" loading="lazy">
+      <i aria-hidden="true">›</i>
+      <span><b>Celulares</b><small>Nuevos y usados</small></span>
     </a>
     <a class="opcion" href="/accesorios">
-      <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>
-      <span class="texto"><span class="titulo">Accesorios</span><span class="desc">Fundas, vidrios, cargadores y auriculares. Catálogo con precios.</span></span>
-      <span class="flecha" aria-hidden="true">›</span>
+      <img src="img/portada-accesorios.jpg" alt="" loading="lazy">
+      <i aria-hidden="true">›</i>
+      <span><b>Accesorios</b><small>Fundas, cargadores y más</small></span>
     </a>
     <a class="opcion" href="/servicio-tecnico">
-      <span class="icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 4.6L3 17.2V21h3.8l6.3-6.3a4 4 0 0 0 4.6-5.4l-2.6 2.6-2-2 2.6-2.6z"/></svg></span>
-      <span class="texto"><span class="titulo">Servicio técnico</span><span class="desc">Pantallas, baterías, pin de carga y placa. Diagnóstico gratis.</span></span>
-      <span class="flecha" aria-hidden="true">›</span>
+      <img src="img/portada-servicio.jpg" alt="" loading="lazy">
+      <i aria-hidden="true">›</i>
+      <span><b>Servicio técnico</b><small>Reparaciones y garantía</small></span>
     </a>
   </nav>
 
-  <a class="wa" href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone!%20Quiero%20hacer%20una%20consulta" target="_blank" rel="noopener">
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    Escribinos por WhatsApp
-  </a>
+  <section class="bloque" aria-labelledby="t-marcas">
+    <h2 id="t-marcas">★ Marcas disponibles <small>Deslizá para ver todas ›</small></h2>
+    <div class="marcas">
+      <a href="/celulares?marca=Samsung">SAMSUNG</a>
+      <a href="/celulares?marca=Motorola">MOTOROLA</a>
+      <a href="/celulares?marca=Xiaomi">XIAOMI</a>
+      <a href="/celulares?marca=Tecno">TECNO</a>
+      <a href="/celulares?marca=Honor">HONOR</a>
+      <a href="/celulares?marca=Blu">BLU</a>
+      <a href="/celulares?marca=Nokia">NOKIA</a>
+      <a href="/celulares">VER TODAS</a>
+    </div>
+  </section>
 
-  <div class="confianza">
+  <section class="confianza">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+    <div><b>Comprá con confianza</b><span>Calidad, garantía y el mejor servicio.</span></div>
+  </section>
+  <div class="ventajas">
     <span><i>✓</i>Diagnóstico gratis</span>
     <span><i>✓</i>Entrega en el día</span>
     <span><i>✓</i>Con garantía</span>
   </div>
 
   <footer>
-    <a href="https://www.google.com/maps/search/?api=1&query=Epecu%C3%A9n%20645%2C%20Ingeniero%20Budge%2C%20Lomas%20de%20Zamora%2C%20Buenos%20Aires" target="_blank" rel="noopener">Epecuén 645, Ingeniero Budge</a><br>
-    Lunes a sábado · 9:30–13 h y 16:30–20 h<br>
-    <a href="https://www.instagram.com/mobilephone.ar/" target="_blank" rel="noopener">@mobilephone.ar</a> · <a href="/">Ver página completa</a><br>
-    <a href="/gremio">¿Sos técnico? Repuestos precio gremio</a>
+    <a href="https://www.google.com/maps/search/?api=1&query=Epecu%C3%A9n%20645%2C%20Ingeniero%20Budge%2C%20Lomas%20de%20Zamora%2C%20Buenos%20Aires" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+      Epecuén 645 – Ingeniero Budge
+    </a>
+    <p>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      Lunes a sábado · 9:30–13 h y 16:30–20 h
+    </p>
+    <a href="https://www.instagram.com/mobilephone.ar/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+      @mobilephone.ar
+    </a>
+    <a class="gremio" href="/gremio">¿Sos técnico? Repuestos precio gremio ›</a>
   </footer>
+  </div>
 </main>
+
+<a class="wa-flotante" href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone!%20Quiero%20hacer%20una%20consulta" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0012.05 0zm5.422 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+</a>
+
+<script>
+  // Fondo de la portada: cambia de foto cada 4,5 s; se pausa si el cliente toca un puntito; se puede deslizar con el dedo.
+  (function () {
+    var diapos = Array.prototype.slice.call(document.querySelectorAll('#pista .diapo'));
+    var puntos = Array.prototype.slice.call(document.querySelectorAll('#puntos button'));
+    var leyenda = document.getElementById('leyenda');
+    var actual = 0, pausa = false;
+    function ir(i) {
+      actual = (i + diapos.length) % diapos.length;
+      diapos.forEach(function (d, j) { d.classList.toggle('activa', j === actual); });
+      puntos.forEach(function (b, j) { b.setAttribute('aria-current', j === actual ? 'true' : 'false'); });
+      var d = diapos[actual].dataset;
+      leyenda.href = d.link;
+      leyenda.innerHTML = '<b>' + d.titulo + '</b><small>' + d.texto + '</small>';
+    }
+    puntos.forEach(function (b, i) { b.addEventListener('click', function () { pausa = true; ir(i); }); });
+    var x0 = null, portada = document.querySelector('.portada');
+    portada.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    portada.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 45) { pausa = true; ir(actual + (dx < 0 ? 1 : -1)); }
+    }, { passive: true });
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setInterval(function () { if (!pausa && !document.hidden) ir(actual + 1); }, 4500);
+    }
+  })();
+</script>
 </body>
 </html>

@@ -1295,6 +1295,39 @@
   .cel-detalle .btn-principal { justify-content: center; }
   .cel-compartir { background: none; border: 0; color: rgba(255,255,255,.6); text-decoration: underline; font: inherit; font-size: .85rem; cursor: pointer; align-self: flex-start; padding: 0; }
   @media (max-width: 720px) { .cel-modal-cuerpo { grid-template-columns: 1fr; padding: 1rem; } .cel-pagina { padding-top: 7.5rem; } }
+  /* ── Portada con video (07/11/2026) ── */
+  .cel-hero { position: relative; margin: 0 auto 1.4rem; max-width: 980px; border-radius: 22px; overflow: hidden; aspect-ratio: 16 / 9; min-height: 300px; background: #000; border: 1px solid rgba(22,119,255,0.3); box-shadow: 0 24px 60px rgba(22,119,255,0.18); }
+  .cel-hero video, .cel-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .cel-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.05) 30%, rgba(0,0,0,.82)); }
+  .cel-hero-texto { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 1.4rem; }
+  .cel-hero-texto .eyebrow { margin-bottom: .4rem; }
+  .cel-hero-texto h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.7rem, 6vw, 2.8rem); line-height: 1.08; margin: 0 0 .5rem; }
+  .cel-hero-texto h1 span { color: var(--acento); }
+  .cel-hero-texto p { color: rgba(255,255,255,.78); font-size: .95rem; margin: 0 0 1rem; max-width: 46ch; }
+  .cel-hero-texto a { display: inline-flex; align-items: center; gap: .5rem; padding: .8rem 1.3rem; border-radius: 999px; background: var(--azul); color: #fff; font-family: var(--font-display); font-weight: 600; text-decoration: none; }
+  /* Marcas y condición plegadas: no ocupan lugar hasta que el cliente las abre. */
+  .cel-mas-filtros { max-width: 760px; margin: 0 auto .4rem; }
+  .cel-mas-filtros summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; padding: .55rem 1rem; border-radius: 999px; border: 1px solid var(--line); color: rgba(255,255,255,.85); font-size: .88rem; }
+  .cel-mas-filtros summary::-webkit-details-marker { display: none; }
+  .cel-mas-filtros summary b { color: var(--acento); font-weight: 600; }
+  .cel-mas-filtros[open] summary { border-color: var(--azul); margin-bottom: .7rem; }
+  .cel-mas-filtros .cel-chips { justify-content: flex-start; }
+  .cel-filtros-fila { display: flex; justify-content: center; }
+  @media (max-width: 680px) {
+    .cel-pagina { padding-top: 5.5rem; }
+    .cel-hero { aspect-ratio: 4 / 5; min-height: 0; border-radius: 18px; }
+    .cel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
+    .cel-card { border-radius: 14px; }
+    .cel-info { padding: .7rem .7rem .8rem; gap: .35rem; }
+    .cel-nombre { font-size: .86rem; line-height: 1.25; }
+    .cel-datos { font-size: .72rem; }
+    .cel-desc { display: none; }
+    .cel-precios .cel-precio { font-size: 1.05rem; }
+    .cel-off, .cel-trans, .cel-ahorro { font-size: .68rem; }
+    .cel-off { display: block; white-space: normal; }
+    .cel-badge { font-size: .58rem; padding: .2rem .4rem; }
+    .cel-card .btn-consultar { padding: .55rem .4rem; font-size: .78rem; }
+  }
   /* Buscador predictivo */
   .predictivo { position: fixed; z-index: 9999; list-style: none; margin: 0; padding: .3rem 0; background: #fff; color: #1d1d1f; border: 1px solid #dfe3ea; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.18); max-height: 60vh; overflow-y: auto; font-size: .92rem; text-align: left; }
   .predictivo li { display: flex; align-items: center; gap: .6rem; padding: .6rem .9rem; cursor: pointer; line-height: 1.3; }
@@ -1346,12 +1379,19 @@
 <main id="contenido-principal">
 <section class="section cel-pagina">
   <div class="container">
-    <div class="sec-head">
-      <span class="eyebrow">Equipos</span>
-      <h1 class="sec-titulo">Celulares <span>disponibles</span></h1>
-      <p class="sec-desc">Nuevos y usados, revisados en nuestro servicio técnico. Tocá un equipo para ver sus fotos y detalles.</p>
+    <!-- Portada: video de un celular nuevo (img/celular.mp4, stock libre de Coverr). Mientras carga, la foto. -->
+    <div class="cel-hero">
+      <video autoplay muted loop playsinline preload="metadata" poster="img/portada-celulares.jpg" aria-hidden="true">
+        <source src="img/celular.mp4" type="video/mp4">
+      </video>
+      <div class="cel-hero-texto">
+        <span class="eyebrow">Mobile Phone · Celulares</span>
+        <h1>Encontrá acá tu <span>próximo celular</span></h1>
+        <p>Nuevos y usados, revisados en nuestro servicio técnico y con garantía. Tocá un equipo para ver sus fotos.</p>
+        <a href="#equipos">Ver equipos ↓</a>
+      </div>
     </div>
-    <div class="cel-filtros">
+    <div class="cel-filtros" id="equipos">
       <input type="search" id="celBuscar" placeholder="Buscá por marca, modelo o capacidad…" aria-label="Buscar celular">
       <select id="celOrden" aria-label="Ordenar">
         <option value="destacados">Destacados</option>
@@ -1360,8 +1400,13 @@
         <option value="nombre">Nombre (A-Z)</option>
       </select>
     </div>
-    <div class="cel-chips" id="celMarcas" role="group" aria-label="Filtrar por marca"></div>
-    <div class="cel-chips" id="celCondicion" role="group" aria-label="Filtrar por condición"></div>
+    <div class="cel-filtros-fila">
+      <details class="cel-mas-filtros" id="celMasFiltros">
+        <summary>Filtrar por marca <b id="celMarcaElegida"></b> ▾</summary>
+        <div class="cel-chips" id="celMarcas" role="group" aria-label="Filtrar por marca"></div>
+        <div class="cel-chips" id="celCondicion" role="group" aria-label="Filtrar por condición"></div>
+      </details>
+    </div>
     <p class="cel-cuenta" id="celCuenta" aria-live="polite"></p>
     <div class="cel-grid" id="celGrid"></div>
     <div class="cel-vacio" id="celVacio" hidden>
@@ -1445,8 +1490,14 @@
     const esc = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const sinAcentos = (t) => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
     const MARCAS = ['Samsung', 'Motorola', 'Apple', 'Xiaomi', 'Redmi', 'Blu', 'TCL', 'ZTE', 'LG', 'Nokia', 'Huawei', 'Realme', 'Oppo', 'Tecno', 'Infinix', 'Honor', 'Alcatel'];
+    const normalizarMarca = (m) => {
+      const x = MARCAS.find((y) => sinAcentos(y) === sinAcentos(m));
+      if (x) return x === 'Redmi' ? 'Xiaomi' : x;
+      const t = String(m).trim().toLowerCase();
+      return t.charAt(0).toUpperCase() + t.slice(1);
+    };
     const marcaDe = (c) => {
-      if (c.marca) return c.marca;
+      if (c.marca && String(c.marca).trim()) return normalizarMarca(c.marca);
       const n = sinAcentos(c.nombre);
       if (/iphone/.test(n)) return 'Apple';
       if (/moto|motorola/.test(n)) return 'Motorola';
@@ -1467,17 +1518,21 @@
     };
     let todos = [];
     const filtro = { marca: '', cond: '' };
+    const marcaPedida = new URLSearchParams(location.search).get('marca') || '';
 
     try {
       const r = await fetch(API + EMPRESA_ID);
       if (!r.ok) throw new Error(r.status);
       todos = (await r.json()).celulares || [];
     } catch (e) { todos = []; }
+    if (marcaPedida) filtro.marca = normalizarMarca(marcaPedida);
     todos.forEach((c) => { c._marca = marcaDe(c); c._texto = sinAcentos([c.nombre, c._marca, c.descripcion, ...c.variantes.map((v) => [v.capacidad, v.ram, v.color].join(' '))].join(' ')) + ' ' + sinAcentos(c.nombre).replace(/[\s\-\/.,]+/g, ''); });
 
     const chips = (el, valores, clave) => {
       el.innerHTML = ['', ...valores].map((v) => '<button type="button" data-v="' + esc(v) + '" aria-pressed="' + (filtro[clave] === v) + '">' + (v ? esc(v) : 'Todas') + '</button>').join('');
       el.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { filtro[clave] = b.dataset.v; pintar(); }));
+      const elegida = document.getElementById('celMarcaElegida');
+      if (elegida) elegida.textContent = filtro.marca ? '· ' + filtro.marca : '';
     };
 
     const off = (efectivo, t) => Math.round(((t - efectivo) / t) * 100);
