@@ -1316,17 +1316,18 @@
   @media (max-width: 680px) {
     .cel-pagina { padding-top: 5.5rem; }
     .cel-hero { aspect-ratio: 4 / 5; min-height: 0; border-radius: 18px; }
-    .cel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
-    .cel-card { border-radius: 14px; }
-    .cel-info { padding: .7rem .7rem .8rem; gap: .35rem; }
-    .cel-nombre { font-size: .86rem; line-height: 1.25; }
-    .cel-datos { font-size: .72rem; }
+    .cel-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .45rem; }
+    .cel-card { border-radius: 12px; }
+    .cel-info { padding: .45rem .45rem .55rem; gap: .25rem; }
+    .cel-nombre { font-size: .7rem; line-height: 1.22; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .cel-datos { font-size: .6rem; line-height: 1.25; }
     .cel-desc { display: none; }
-    .cel-precios .cel-precio { font-size: 1.05rem; }
-    .cel-off, .cel-trans, .cel-ahorro { font-size: .68rem; }
+    .cel-precios .cel-precio { font-size: .86rem; }
+    .cel-off, .cel-trans { font-size: .56rem; }
+    .cel-ahorro { display: none; }
     .cel-off { display: block; white-space: normal; }
-    .cel-badge { font-size: .58rem; padding: .2rem .4rem; }
-    .cel-card .btn-consultar { padding: .55rem .4rem; font-size: .78rem; }
+    .cel-badge { font-size: .5rem; padding: .15rem .3rem; }
+    .cel-card .btn-consultar { padding: .45rem .2rem; font-size: .64rem; letter-spacing: 0; white-space: normal; line-height: 1.15; }
   }
   /* Buscador predictivo */
   .predictivo { position: fixed; z-index: 9999; list-style: none; margin: 0; padding: .3rem 0; background: #fff; color: #1d1d1f; border: 1px solid #dfe3ea; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.18); max-height: 60vh; overflow-y: auto; font-size: .92rem; text-align: left; }
