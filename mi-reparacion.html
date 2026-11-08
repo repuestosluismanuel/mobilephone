@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   Mobile Phone — Consultá tu reparación (mobilephone.com.ar/mi-reparacion)
-  El cliente pone el N.º de orden y los últimos 4 números de su teléfono; LM Gestión
+  El cliente pone el N.º de orden y su DNI completo; LM Gestión
   devuelve el enlace de seguimiento (el mismo del QR del comprobante) y lo abre.
   No guarda datos en esta página.
 -->
@@ -126,8 +126,9 @@
       <span class="ayuda">Está en el comprobante que te dimos al dejar el equipo.</span>
     </div>
     <div class="campo">
-      <label for="tel">Últimos 4 números de tu teléfono <small>(el que nos dejaste)</small></label>
-      <input id="tel" name="tel" inputmode="numeric" autocomplete="off" placeholder="Ej.: 5588" maxlength="4" required>
+      <label for="dni">Tu DNI <small>(sin puntos)</small></label>
+      <input id="dni" name="dni" inputmode="numeric" autocomplete="off" placeholder="Ej.: 30111222" maxlength="11" required>
+      <span class="ayuda">El mismo DNI que nos diste cuando dejaste el equipo.</span>
     </div>
     <button class="btn" id="enviar" type="submit">Ver el estado</button>
     <div class="mensaje" id="mensaje" role="status" aria-live="polite"></div>
@@ -150,15 +151,15 @@
   const EMPRESA = 'e0008943-0c00-47f4-bc2d-b60e1de2942b';
   const form = document.getElementById('form');
   const orden = document.getElementById('orden');
-  const tel = document.getElementById('tel');
+  const dni = document.getElementById('dni');
   const boton = document.getElementById('enviar');
   const mensaje = document.getElementById('mensaje');
 
   // Solo números en los dos campos.
-  [orden, tel].forEach((el) => el.addEventListener('input', () => { el.value = el.value.replace(/\D/g, ''); }));
+  [orden, dni].forEach((el) => el.addEventListener('input', () => { el.value = el.value.replace(/\D/g, ''); }));
   // Si viene ?orden=123 (p. ej. desde un link), se completa solo.
   const pedida = new URLSearchParams(location.search).get('orden');
-  if (pedida && /^\d+$/.test(pedida)) { orden.value = pedida; tel.focus(); }
+  if (pedida && /^\d+$/.test(pedida)) { orden.value = pedida; dni.focus(); }
 
   const avisar = (texto, tipo) => { mensaje.textContent = texto; mensaje.className = 'mensaje ' + tipo; };
 
@@ -166,10 +167,10 @@
     e.preventDefault();
     const nro = orden.value.replace(/^0+/, '');
     if (!nro) { avisar('Poné el número de orden.', 'error'); orden.focus(); return; }
-    if (tel.value.length !== 4) { avisar('Poné los últimos 4 números de tu teléfono.', 'error'); tel.focus(); return; }
+    if (dni.value.length < 6) { avisar('Poné tu DNI completo.', 'error'); dni.focus(); return; }
     boton.disabled = true; boton.textContent = 'Buscando…'; mensaje.className = 'mensaje';
     try {
-      const r = await fetch(API, { method: 'POST', body: new URLSearchParams({ e: EMPRESA, orden: nro, tel: tel.value }) });
+      const r = await fetch(API, { method: 'POST', body: new URLSearchParams({ e: EMPRESA, orden: nro, dni: dni.value }) });
       const d = await r.json().catch(() => ({}));
       if (r.ok && d.url) {
         avisar('¡Listo! Abriendo tu reparación…', 'ok');
