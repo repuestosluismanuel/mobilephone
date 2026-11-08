@@ -40,7 +40,7 @@
   .wrap { width: 100%; max-width: 480px; margin: 0 auto; padding: 0 16px; }
   main { flex: 1; }
 
-  .barra { position: sticky; top: 0; z-index: 10; background: rgba(11,11,11,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .barra { position: sticky; top: 0; z-index: 10; background: rgba(5,7,13,.55); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
   .barra .wrap { display: flex; align-items: center; justify-content: space-between; height: 58px; max-width: 640px; }
   .volver { color: rgba(255,255,255,.75); text-decoration: none; font-size: .9rem; }
   .volver:hover { color: var(--acento); }
@@ -48,10 +48,16 @@
   .marca img:first-child { height: 30px; } .marca img:last-child { height: 14px; }
 
   header.top { text-align: center; padding: 1.4rem 0 1.4rem; }
-  .foto { position: relative; margin: 0 0 1.3rem; border-radius: 20px; overflow: hidden; aspect-ratio: 16 / 9;
-    border: 1px solid rgba(22,119,255,0.35); box-shadow: 0 18px 50px rgba(0,0,0,.45), 0 0 50px rgba(22,119,255,0.1); }
-  .foto img, .foto video { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .foto::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(11,11,11,.55)); }
+  /* Video de fondo en toda la pantalla */
+  .fondo { position: fixed; inset: 0; z-index: -1; background: var(--negro); }
+  .fondo video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .fondo::after { content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(5,7,13,.6) 0%, rgba(5,7,13,.45) 30%, rgba(5,7,13,.35) 60%, rgba(5,7,13,.85) 100%); }
+  header.top { padding-top: 12vh; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
+  .lead { color: rgba(255,255,255,.85); }
+  .form-card { background: rgba(14,14,16,.5); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .donde { color: rgba(255,255,255,.75); }
+  footer { color: rgba(255,255,255,.6); }
   .eyebrow { font-size: .74rem; letter-spacing: .3em; text-transform: uppercase; color: var(--acento); font-weight: 600; }
   h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 7vw, 2.4rem); line-height: 1.15; margin: .5rem 0 .6rem; }
   h1 span { color: var(--acento); }
@@ -88,6 +94,16 @@
 </style>
 </head>
 <body>
+<div class="fondo" aria-hidden="true"><video id="video" autoplay muted loop playsinline preload="auto"></video></div>
+<script>
+  // Video de fondo: vertical en celulares, horizontal en pantallas anchas.
+  (function () {
+    const v = document.getElementById('video');
+    const vertical = matchMedia('(max-aspect-ratio: 1/1)').matches;
+    v.poster = vertical ? 'img/reparacion-v.jpg' : 'img/reparacion.jpg';
+    v.src = vertical ? 'img/reparacion-v.mp4' : 'img/reparacion.mp4';
+  })();
+</script>
 
 <div class="barra">
   <div class="wrap">
@@ -98,7 +114,6 @@
 
 <main class="wrap">
   <header class="top">
-    <div class="foto"><video src="img/reparacion.mp4" poster="img/reparacion.jpg" autoplay muted loop playsinline preload="auto" aria-label="Técnico soldando la placa de un celular" width="1280" height="720"></video></div>
     <span class="eyebrow">Servicio técnico</span>
     <h1>Consultá tu <span>reparación</span></h1>
     <p class="lead">Mirá en qué estado está tu celular, al instante.</p>
