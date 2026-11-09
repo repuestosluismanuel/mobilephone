@@ -1283,6 +1283,25 @@
   .cel-detalle .btn-principal { justify-content: center; }
   .cel-compartir { background: none; border: 0; color: rgba(255,255,255,.6); text-decoration: underline; font: inherit; font-size: .85rem; cursor: pointer; align-self: flex-start; padding: 0; }
   @media (max-width: 720px) { .cel-modal-cuerpo { grid-template-columns: 1fr; padding: 1rem; } .cel-pagina { padding-top: 7.5rem; } }
+  /* Foto del detalle: se toca para verla a pantalla completa */
+  button.cel-galeria-grande { position: relative; width: 100%; padding: 0; border: 0; cursor: zoom-in; color: #fff; font: inherit; }
+  .cel-lupa { position: absolute; right: .6rem; bottom: .6rem; padding: .35rem .7rem; border-radius: 999px; background: rgba(0,0,0,.72); border: 1px solid rgba(255,255,255,.2); font-size: .78rem; pointer-events: none; }
+  /* Visor de fotos a pantalla completa */
+  .cel-visor { width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #000; color: #fff; overflow: hidden; }
+  .cel-visor::backdrop { background: #000; }
+  .cel-visor-top { position: absolute; top: 0; left: 0; right: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; padding: .8rem 1rem; font-size: .9rem; color: rgba(255,255,255,.8); background: linear-gradient(rgba(0,0,0,.6), transparent); }
+  .cel-visor-cerrar { width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.15); color: #fff; font-size: 1.8rem; line-height: 1; cursor: pointer; }
+  .cel-visor-foto { position: absolute; inset: 64px 0 110px; display: grid; place-items: center; overflow: hidden; touch-action: none; cursor: zoom-in; }
+  .cel-visor-foto.zoom { cursor: grab; }
+  .cel-visor-foto img { max-width: 100%; max-height: 100%; object-fit: contain; user-select: none; -webkit-user-select: none; transition: transform .2s ease; }
+  .cel-visor-foto.moviendo img { transition: none; }
+  .cel-visor-flecha { position: absolute; top: 50%; z-index: 2; width: 44px; height: 44px; margin-top: -30px; border-radius: 50%; border: 0; background: rgba(255,255,255,.15); color: #fff; font-size: 1.7rem; line-height: 1; cursor: pointer; }
+  .cel-visor-flecha.prev { left: 10px; } .cel-visor-flecha.next { right: 10px; }
+  .cel-visor-minis { position: absolute; bottom: 40px; left: 0; right: 0; display: flex; justify-content: center; gap: .5rem; padding: 0 1rem; overflow-x: auto; }
+  .cel-visor-minis button { flex: 0 0 54px; height: 54px; padding: 0; border: 2px solid transparent; border-radius: 10px; overflow: hidden; background: #111; opacity: .55; cursor: pointer; }
+  .cel-visor-minis button[aria-pressed="true"] { border-color: #1677ff; opacity: 1; }
+  .cel-visor-minis img { width: 100%; height: 100%; object-fit: cover; }
+  .cel-visor-ayuda { position: absolute; bottom: 12px; left: 0; right: 0; margin: 0; text-align: center; font-size: .78rem; color: rgba(255,255,255,.55); }
   .ac-mas { display: flex; margin: 1.8rem auto 0; }
   /* Buscador predictivo */
   .predictivo { position: fixed; z-index: 9999; list-style: none; margin: 0; padding: .3rem 0; background: #fff; color: #1d1d1f; border: 1px solid #dfe3ea; border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,.18); max-height: 60vh; overflow-y: auto; font-size: .92rem; text-align: left; }
@@ -1388,6 +1407,16 @@
 <dialog class="cel-modal" id="acModal" aria-label="Detalle del accesorio">
   <button type="button" class="cel-cerrar" id="acCerrar" aria-label="Cerrar">×</button>
   <div class="cel-modal-cuerpo" id="acModalCuerpo"></div>
+</dialog>
+
+<!-- Visor de fotos a pantalla completa: deslizar para pasar, doble toque o pellizcar para acercar -->
+<dialog class="cel-visor" id="celVisor" aria-label="Fotos del accesorio">
+  <div class="cel-visor-top"><span id="celVisorCuenta"></span><button type="button" class="cel-visor-cerrar" id="celVisorCerrar" aria-label="Cerrar">×</button></div>
+  <div class="cel-visor-foto" id="celVisorFoto"><img id="celVisorImg" alt="" draggable="false"></div>
+  <button type="button" class="cel-visor-flecha prev" id="celVisorPrev" aria-label="Foto anterior">‹</button>
+  <button type="button" class="cel-visor-flecha next" id="celVisorNext" aria-label="Foto siguiente">›</button>
+  <div class="cel-visor-minis" id="celVisorMinis"></div>
+  <p class="cel-visor-ayuda" id="celVisorAyuda">Doble toque para acercar</p>
 </dialog>
 
 <!-- ══ FOOTER ══ -->
@@ -1531,7 +1560,7 @@
       const varios = a.variantes.length > 1;
       const msg = 'Hola Mobile Phone! Me interesa: ' + a.nombre + '. Lo vi en la página: ' + location.origin + '/accesorios#' + a.id;
       cuerpo.innerHTML =
-        '<div><div class="cel-galeria-grande"><img id="acFotoGrande" src="' + esc(fotos[0]) + '" alt="' + esc(a.nombre) + '"></div>' +
+        '<div><button type="button" class="cel-galeria-grande" id="acAmpliar" aria-label="Ver foto grande"><img id="acFotoGrande" src="' + esc(fotos[0]) + '" alt="' + esc(a.nombre) + '">' + (a.fotos.length ? '<span class="cel-lupa">🔍 Tocá para ampliar</span>' : '') + '</button>' +
         (fotos.length > 1 ? '<div class="cel-miniaturas">' + fotos.map((f, k) => '<button type="button" data-k="' + k + '" aria-pressed="' + (k === 0) + '" aria-label="Foto ' + (k + 1) + '"><img src="' + esc(f) + '" alt="" loading="lazy"></button>').join('') + '</div>' : '') + '</div>' +
         '<div class="cel-detalle"><h2>' + esc(a.nombre) + '</h2>' +
         '<div class="cel-precio">' + (varios ? 'Desde ' : '') + pesos(minimo(a)) + '</div>' +
@@ -1543,7 +1572,10 @@
         '</div>' +
         '<a class="btn-principal" target="_blank" rel="noopener" href="https://wa.me/5491126785588?text=' + encodeURIComponent(msg) + '">Consultar por WhatsApp</a>' +
         '<button type="button" class="cel-compartir" id="acCompartir">Copiar link de este accesorio</button></div>';
+      let fotoActual = 0;
+      if (a.fotos.length) document.getElementById('acAmpliar').addEventListener('click', () => visor.abrir(a.fotos, fotoActual, a.nombre));
       cuerpo.querySelectorAll('.cel-miniaturas button').forEach((b) => b.addEventListener('click', () => {
+        fotoActual = Number(b.dataset.k);
         document.getElementById('acFotoGrande').src = fotos[b.dataset.k];
         cuerpo.querySelectorAll('.cel-miniaturas button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
       }));
@@ -1559,6 +1591,69 @@
     document.getElementById('acCerrar').addEventListener('click', cerrar);
     modal.addEventListener('click', (e) => { if (e.target === modal) cerrar(); });
     modal.addEventListener('close', () => history.replaceState(null, '', location.pathname + location.search));
+
+    // ── Visor de fotos a pantalla completa (deslizar, flechas, doble toque o pellizcar para acercar) ──
+    const visor = (function () {
+      const dlg = document.getElementById('celVisor'), caja = document.getElementById('celVisorFoto'), img = document.getElementById('celVisorImg');
+      const cuenta = document.getElementById('celVisorCuenta'), minis = document.getElementById('celVisorMinis'), ayuda = document.getElementById('celVisorAyuda');
+      const prev = document.getElementById('celVisorPrev'), next = document.getElementById('celVisorNext');
+      let fotos = [], i = 0, z = 1, x = 0, y = 0;
+      const punteros = new Map();
+      let inicio = null, pinza = null, ultimoToque = 0;
+      const aplicar = () => { img.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + z + ')'; caja.classList.toggle('zoom', z > 1); ayuda.textContent = z > 1 ? 'Doble toque para volver' : (fotos.length > 1 ? 'Deslizá para ver más · ' : '') + 'Doble toque para acercar'; };
+      const limitar = () => { const mx = (caja.clientWidth * (z - 1)) / 2, my = (caja.clientHeight * (z - 1)) / 2; x = Math.max(-mx, Math.min(mx, x)); y = Math.max(-my, Math.min(my, y)); };
+      const reset = () => { z = 1; x = 0; y = 0; aplicar(); };
+      function mostrar(k) {
+        i = (k + fotos.length) % fotos.length;
+        img.src = fotos[i]; reset();
+        cuenta.textContent = fotos.length > 1 ? (i + 1) + ' / ' + fotos.length : '';
+        prev.hidden = next.hidden = fotos.length < 2;
+        minis.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
+      }
+      function acercar(px, py) {
+        if (z > 1) return reset();
+        const r = caja.getBoundingClientRect();
+        z = 2.5; x = -(px - r.left - r.width / 2) * (z - 1); y = -(py - r.top - r.height / 2) * (z - 1); limitar(); aplicar();
+      }
+      caja.addEventListener('pointerdown', (e) => {
+        caja.setPointerCapture(e.pointerId); punteros.set(e.pointerId, e);
+        if (punteros.size === 2) { const [a, b] = [...punteros.values()]; pinza = { d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), z }; inicio = null; return; }
+        inicio = { px: e.clientX, py: e.clientY, x, y, t: Date.now() }; caja.classList.add('moviendo');
+      });
+      caja.addEventListener('pointermove', (e) => {
+        if (!punteros.has(e.pointerId)) return;
+        punteros.set(e.pointerId, e);
+        if (pinza && punteros.size === 2) { const [a, b] = [...punteros.values()]; z = Math.max(1, Math.min(4, pinza.z * Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) / pinza.d)); limitar(); aplicar(); return; }
+        if (inicio && z > 1) { x = inicio.x + e.clientX - inicio.px; y = inicio.y + e.clientY - inicio.py; limitar(); aplicar(); }
+      });
+      const soltar = (e) => {
+        if (!punteros.has(e.pointerId)) return;
+        punteros.delete(e.pointerId); caja.classList.remove('moviendo');
+        if (pinza) { if (punteros.size < 2) pinza = null; if (z < 1.05) reset(); return; }
+        if (!inicio) return;
+        const dx = e.clientX - inicio.px, dy = e.clientY - inicio.py;
+        if (z === 1 && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) && fotos.length > 1) mostrar(i + (dx < 0 ? 1 : -1));
+        else if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+          const ahora = Date.now();
+          if (ahora - ultimoToque < 320) { acercar(e.clientX, e.clientY); ultimoToque = 0; } else ultimoToque = ahora;
+        }
+        inicio = null;
+      };
+      caja.addEventListener('pointerup', soltar);
+      caja.addEventListener('pointercancel', soltar);
+      prev.addEventListener('click', () => mostrar(i - 1));
+      next.addEventListener('click', () => mostrar(i + 1));
+      dlg.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') mostrar(i - 1); if (e.key === 'ArrowRight') mostrar(i + 1); });
+      document.getElementById('celVisorCerrar').addEventListener('click', () => dlg.close());
+      return {
+        abrir(lista, k, nombre) {
+          fotos = lista; img.alt = nombre || '';
+          minis.innerHTML = fotos.length > 1 ? fotos.map((f, j) => '<button type="button" aria-label="Foto ' + (j + 1) + '"><img src="' + esc(f) + '" alt=""></button>').join('') : '';
+          minis.querySelectorAll('button').forEach((b, j) => b.addEventListener('click', () => mostrar(j)));
+          dlg.showModal(); mostrar(k || 0);
+        }
+      };
+    })();
 
   // ── Buscador predictivo: sugerencias mientras se escribe ──
   // input: el buscador; nombres(): lista de nombres; elegir(nombre): qué hacer al tocar una sugerencia.
