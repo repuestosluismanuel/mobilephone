@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--
   Mobile Phone — Servicio técnico (mobilephone-nu.vercel.app/servicio-tecnico)
-  Reseñas reales de Google, lo que arreglamos y formulario de reparación que
-  arma el mensaje y lo abre en WhatsApp (5491126785588). No guarda datos.
+  «Contame qué le pasa» → fallas (cada una abre preguntas y arma el WhatsApp),
+  reseñas reales de Google y formulario de reparación. WhatsApp 5491126785588. No guarda datos.
 -->
 <html lang="es-AR">
 <head>
@@ -65,27 +65,44 @@
 
   /* Reseñas */
   .rating { display: flex; align-items: center; justify-content: center; gap: .7rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
-  .score { font-family: var(--font-display); font-weight: 700; font-size: 2.4rem; color: var(--acento); line-height: 1; }
-  .stars { color: var(--acento); letter-spacing: .1em; }
+  .score { font-family: var(--font-display); font-weight: 700; font-size: 2.4rem; color: #fff; line-height: 1; }
+  .stars { color: #FBBC04; letter-spacing: .1em; }
   .g { display: inline-flex; align-items: center; gap: .35rem; font-size: .8rem; color: rgba(255,255,255,.75); text-decoration: none; }
   .g svg { width: 16px; height: 16px; }
   .resenas { display: flex; gap: .9rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: .2rem 2px 1rem; scrollbar-width: thin; }
-  .resena { flex: 0 0 82%; max-width: 320px; scroll-snap-align: center; background: var(--tarjeta); border: 1px solid var(--line); border-radius: 18px; padding: 1.1rem 1.15rem; }
-  .resena:first-child { border-color: rgba(22,119,255,0.4); }
+  /* Reseñas con los colores de Google: tarjeta blanca, estrellas amarillas y logo G */
+  .resena { position: relative; flex: 0 0 82%; max-width: 320px; scroll-snap-align: center; background: #fff; border-radius: 18px; padding: 1.1rem 1.15rem; }
+  .resena::after { content: ''; position: absolute; top: 1.1rem; right: 1.1rem; width: 20px; height: 20px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285F4' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09Z'/%3E%3Cpath fill='%2334A853' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z'/%3E%3Cpath fill='%23FBBC05' d='M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.07H2.18a11 11 0 0 0 0 9.87l3.66-2.84Z'/%3E%3Cpath fill='%23EA4335' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.46 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38Z'/%3E%3C/svg%3E") no-repeat center / contain; }
   .resena-top { display: flex; align-items: center; gap: .7rem; margin-bottom: .6rem; }
-  .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: .9rem; background: rgba(22,119,255,0.18); color: var(--acento); flex-shrink: 0; }
-  .nombre { font-weight: 600; font-size: .92rem; } .resena .stars { font-size: .8rem; }
-  .resena p { color: rgba(255,255,255,.7); font-size: .9rem; }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: .9rem; background: #1A73E8; color: #fff; flex-shrink: 0; }
+  .resena:nth-child(6n+2) .avatar { background: #E8710A; } .resena:nth-child(6n+3) .avatar { background: #188038; }
+  .resena:nth-child(6n+4) .avatar { background: #A142F4; } .resena:nth-child(6n+5) .avatar { background: #D93025; } .resena:nth-child(6n) .avatar { background: #12B5CB; }
+  .nombre { font-weight: 600; font-size: .92rem; color: #202124; } .resena .stars { font-size: .8rem; }
+  .resena p { color: #3c4043; font-size: .9rem; }
   .desliza { text-align: center; font-size: .78rem; color: rgba(255,255,255,.45); }
 
-  /* Lo que arreglamos */
-  .servicios { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
-  .serv { background: var(--tarjeta); border: 1px solid var(--line); border-radius: 16px; padding: 1rem; display: flex; flex-direction: column; gap: .5rem; transition: border-color .2s ease, transform .2s ease; cursor: pointer; text-align: left; color: inherit; font: inherit; }
-  .serv:hover { border-color: rgba(22,119,255,0.5); transform: translateY(-2px); }
-  .serv .ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: rgba(22,119,255,0.14); color: var(--acento); }
-  .serv .ico svg { width: 22px; height: 22px; }
-  .serv b { font-family: var(--font-display); font-size: 1rem; }
-  .serv small { color: rgba(255,255,255,.55); font-size: .78rem; }
+  /* ¿Qué le pasa? (fallas) */
+  section#fallas { scroll-margin-top: 66px; }
+  .fallas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .6rem; }
+  .falla { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .45rem; min-height: 96px; padding: .8rem .3rem; border-radius: 16px; border: 1px solid var(--line); background: var(--tarjeta); color: #fff; font: inherit; font-weight: 600; font-size: .85rem; cursor: pointer; transition: border-color .2s ease, transform .2s ease, background .2s ease; }
+  .falla:hover, .falla:focus-visible { border-color: var(--azul); background: rgba(22,119,255,0.08); transform: translateY(-2px); outline: none; }
+  .falla .ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: rgba(22,119,255,0.14); color: var(--acento); }
+  .falla .ico svg { width: 22px; height: 22px; }
+
+  /* Ventana de preguntas */
+  .falla-dialogo { width: 100%; max-width: 480px; max-height: 92vh; margin: auto auto 0; border: 1px solid rgba(22,119,255,0.4); border-radius: 20px 20px 0 0; background: var(--tarjeta); color: #fff; padding: 0; }
+  .falla-dialogo::backdrop { background: rgba(0,0,0,0.7); }
+  @media (min-width: 600px) { .falla-dialogo { margin: auto; border-radius: 20px; } }
+  .falla-form { display: flex; flex-direction: column; gap: .2rem; padding: 1.2rem 1.1rem 1.4rem; }
+  .falla-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .6rem; }
+  .falla-cabecera h3 { font-family: var(--font-display); font-size: 1.2rem; }
+  .falla-cabecera h3 span { color: var(--acento); }
+  .falla-cerrar { flex: 0 0 auto; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: #fff; font-size: 1.4rem; line-height: 1; cursor: pointer; }
+  .falla-pregunta { border: 0; }
+  .falla-pregunta legend { font-size: .82rem; font-weight: 600; color: rgba(255,255,255,.85); margin-bottom: .35rem; }
+  .falla-consejo { padding: .7rem .85rem; border-radius: 10px; background: rgba(22,119,255,0.1); border: 1px solid rgba(22,119,255,0.35); font-size: .82rem; color: rgba(255,255,255,.85); margin-bottom: .8rem; }
+  .falla-form .btn { width: 100%; }
+
   .marcas { text-align: center; color: rgba(255,255,255,.6); font-size: .85rem; margin-top: 1rem; }
 
   /* Formulario */
@@ -120,13 +137,19 @@
   .form-card .btn { width: 100%; margin-top: .4rem; }
   .nota { text-align: center; font-size: .78rem; color: rgba(255,255,255,.5); margin-top: .8rem; }
 
-  footer { text-align: center; font-size: .8rem; color: rgba(255,255,255,.5); line-height: 1.7; padding: 2.5rem 0 2rem; }
+  footer { text-align: center; font-size: .8rem; color: rgba(255,255,255,.5); line-height: 1.7; padding: 2.5rem 0 6rem; }
+  .wa-flotante { position: fixed; right: 16px; bottom: 18px; z-index: 20; width: 58px; height: 58px; border-radius: 50%; background: #25D366; color: #fff; display: grid; place-items: center; box-shadow: 0 8px 24px rgba(37,211,102,.45), 0 2px 6px rgba(0,0,0,.3); transition: transform .25s ease; }
+  .wa-flotante:hover { transform: scale(1.08); }
+  .wa-flotante::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #25D366; animation: wa-pulso 2.4s infinite; z-index: -1; }
+  @keyframes wa-pulso { 0% { transform: scale(1); opacity: .55; } 70% { transform: scale(1.55); opacity: 0; } 100% { transform: scale(1.55); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .wa-flotante::before { animation: none; } }
+  .wa-flotante svg { width: 32px; height: 32px; color: #fff; }
   footer a { color: rgba(255,255,255,.75); text-decoration: none; }
   footer a:hover { color: var(--acento); }
 
   .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.visible { opacity: 1; transform: none; }
-  @media (min-width: 600px) { .servicios { grid-template-columns: repeat(3, 1fr); } .resena { flex-basis: 300px; } }
+  @media (min-width: 600px) { .resena { flex-basis: 300px; } }
   @media (max-width: 380px) { .fila { grid-template-columns: 1fr; } }
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
 </style>
@@ -146,8 +169,22 @@
     <h1>Tu celu <span>en manos</span><br>de expertos</h1>
     <p class="lead">10 años reparando celulares de todas las marcas. Contanos qué le pasa y te respondemos con el presupuesto.</p>
     <div class="chips"><span class="chip">✓ Diagnóstico gratis</span><span class="chip">✓ Entrega en el día</span><span class="chip">✓ Con garantía</span></div>
-    <a href="#formulario" class="btn">Contanos qué le pasa a tu celu</a>
+    <a href="#fallas" class="btn">Contame qué le pasa <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </header>
+
+  <!-- ¿Qué le pasa?: cada falla abre preguntas cortas y arma el mensaje de WhatsApp -->
+  <section id="fallas" aria-labelledby="t-fallas">
+    <h2 id="t-fallas">¿Qué le pasa <span>a tu celu?</span></h2>
+    <div class="fallas">
+      <button type="button" class="falla" data-falla="pantalla"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8l3 3-2 2 4 3"/></svg></span>Pantalla rota</button>
+      <button type="button" class="falla" data-falla="carga"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v5M15 3v5M6 8h12v4a6 6 0 0 1-12 0V8z"/><path d="M12 18v3"/></svg></span>No carga</button>
+      <button type="button" class="falla" data-falla="bateria"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><line x1="21" y1="10" x2="21" y2="14"/><rect x="5" y="10" width="8" height="4" fill="currentColor" stroke="none"/></svg></span>Batería</button>
+      <button type="button" class="falla" data-falla="mojado"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>Se mojó</button>
+      <button type="button" class="falla" data-falla="prende"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v8"/><path d="M6.3 7.5a8 8 0 1 0 11.4 0"/></svg></span>No prende</button>
+      <button type="button" class="falla" data-falla="otra"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="8" cy="12" r=".6" fill="currentColor"/><circle cx="12" cy="12" r=".6" fill="currentColor"/><circle cx="16" cy="12" r=".6" fill="currentColor"/></svg></span>Otra falla</button>
+    </div>
+    <p class="marcas">Tocá la falla y te armamos el mensaje de WhatsApp · Todas las marcas</p>
+  </section>
 
   <!-- Reseñas reales de Google Maps -->
   <section class="reveal" aria-labelledby="t-resenas">
@@ -170,23 +207,9 @@
     <p class="desliza">Deslizá para ver más →</p>
   </section>
 
-  <!-- Lo que arreglamos: al tocar uno, se marca en el formulario -->
-  <section class="reveal" aria-labelledby="t-serv">
-    <h2 id="t-serv">Lo que <span>arreglamos</span></h2>
-    <div class="servicios">
-      <button type="button" class="serv" data-problema="Pantalla rota o no se ve"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8l3 3-2 2 4 3"/></svg></span><b>Pantalla</b><small>Rota, manchada o sin imagen · En el día</small></button>
-      <button type="button" class="serv" data-problema="La batería dura poco"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><line x1="21" y1="10" x2="21" y2="14"/><rect x="5" y="10" width="8" height="4" fill="currentColor" stroke="none"/></svg></span><b>Batería</b><small>Dura poco o se infla · En el día</small></button>
-      <button type="button" class="serv" data-problema="No carga"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v5M15 3v5M6 8h12v4a6 6 0 0 1-12 0V8z"/><path d="M12 18v3"/></svg></span><b>Pin de carga</b><small>No carga o carga lento · En el día</small></button>
-      <button type="button" class="serv" data-problema="Se mojó"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span><b>Equipos mojados</b><small>Limpieza y diagnóstico</small></button>
-      <button type="button" class="serv" data-problema="No prende o se reinicia"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v8"/><path d="M6.3 7.5a8 8 0 1 0 11.4 0"/></svg></span><b>No prende</b><small>Placa y fallas complejas</small></button>
-      <button type="button" class="serv" data-problema="Cámara"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span><b>Cámara y otros</b><small>Cámara, audio, botones</small></button>
-    </div>
-    <p class="marcas">Samsung · Motorola · iPhone · Xiaomi · y todas las marcas</p>
-  </section>
-
   <!-- Formulario de reparación → WhatsApp -->
   <section id="formulario" class="reveal" aria-labelledby="t-form">
-    <h2 id="t-form">Contanos qué <span>le pasa</span></h2>
+    <h2 id="t-form">O completá <span>el formulario</span></h2>
     <p class="form-intro">Completá estos datos y te respondemos por WhatsApp con el presupuesto. Te lleva menos de un minuto.</p>
     <form class="form-card" id="formReparacion" novalidate>
       <div class="campo">
@@ -251,11 +274,33 @@
   </section>
 </main>
 
+<dialog class="falla-dialogo" id="fallaDialogo" aria-labelledby="fallaTitulo">
+  <form class="falla-form" id="fallaForm" method="dialog" novalidate>
+    <div class="falla-cabecera"><h3 id="fallaTitulo"></h3><button type="button" class="falla-cerrar" id="fallaCerrar" aria-label="Cerrar">×</button></div>
+    <p class="falla-consejo" id="fallaConsejo" hidden></p>
+    <div id="fallaPreguntas"></div>
+    <div class="campo">
+      <label for="fallaModelo">Marca y modelo</label>
+      <input id="fallaModelo" placeholder="Ej: Samsung A32, Moto G54, iPhone 11">
+      <p class="error" id="fallaError">Escribí la marca y el modelo.</p>
+    </div>
+    <div class="campo">
+      <label for="fallaDetalle">Algo más <small>(opcional)</small></label>
+      <textarea id="fallaDetalle" rows="2" placeholder="Ej: se me cayó y la pantalla quedó negra, pero vibra"></textarea>
+    </div>
+    <button type="submit" class="btn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Enviar por WhatsApp</button>
+  </form>
+</dialog>
+
 <footer class="wrap">
   <a href="https://www.google.com/maps/search/?api=1&query=Epecu%C3%A9n%20645%2C%20Ingeniero%20Budge%2C%20Lomas%20de%20Zamora%2C%20Buenos%20Aires" target="_blank" rel="noopener">Epecuén 645, Ingeniero Budge</a><br>
   Lunes a sábado · 9:30–13 h y 16:30–20 h<br>
   <a href="https://www.instagram.com/mobilephone.ar/" target="_blank" rel="noopener">@mobilephone.ar</a> · <a href="/opciones">Volver a opciones</a>
 </footer>
+
+<a class="wa-flotante" href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Quiero%20consultar%20por%20una%20reparaci%C3%B3n." target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 
 <script>
   // Aparición suave al scrollear
@@ -265,13 +310,87 @@
   const form = document.getElementById('formReparacion');
   const err = document.getElementById('errProblema');
 
-  // Tocar un servicio lo marca en el formulario y baja hasta él
-  document.querySelectorAll('.serv').forEach((b) => b.addEventListener('click', () => {
-    const cb = form.querySelector('input[name="problema"][value="' + b.dataset.problema + '"]');
-    if (cb) cb.checked = true;
-    err.classList.remove('ver');
-    document.getElementById('formulario').scrollIntoView({ behavior: 'smooth' });
-  }));
+  // Fallas: cada una abre preguntas cortas y arma el mensaje de WhatsApp
+  (function () {
+    const FALLAS = {
+      pantalla: { nombre: 'Pantalla rota', preguntas: [
+        ['¿Se ve la imagen?', ['Sí, se ve bien', 'Con manchas o líneas', 'No se ve nada']],
+        ['¿Funciona el táctil?', ['Sí', 'A veces', 'No']],
+        ['¿Cómo pasó?', ['Se cayó', 'Se mojó', 'De a poco, sin golpe']]
+      ] },
+      carga: { nombre: 'No carga', preguntas: [
+        ['¿Qué pasa cuando lo enchufás?', ['No hace nada', 'Carga muy lento', 'Carga solo si muevo el cable']],
+        ['¿Probaste con otro cargador y cable?', ['Sí, igual no carga', 'No probé']],
+        ['¿Tuvo algún golpe o se mojó?', ['Golpe', 'Se mojó', 'No', 'No sé']]
+      ] },
+      bateria: { nombre: 'Batería', preguntas: [
+        ['¿Qué le pasa?', ['Dura poco', 'Se apaga con batería', 'Se calienta', 'Está hinchada']],
+        ['¿Qué antigüedad tiene el celular?', ['Menos de 1 año', '1 a 3 años', 'Más de 3 años']]
+      ] },
+      mojado: { nombre: 'Se mojó', consejo: 'Mientras tanto: apagalo, no lo cargues y no lo pongas en arroz. Cuanto antes lo revisemos, mejor.', preguntas: [
+        ['¿Con qué se mojó?', ['Agua', 'Agua de pileta o mar', 'Otro líquido']],
+        ['¿Cuándo pasó?', ['Hoy', 'Ayer', 'Hace varios días']],
+        ['¿Prende ahora?', ['Sí', 'No', 'Prende con fallas']]
+      ] },
+      prende: { nombre: 'No prende', preguntas: [
+        ['¿Qué pasa cuando lo cargás?', ['No hace nada', 'Vibra o suena pero no se ve', 'Prende y se reinicia']],
+        ['¿Tuvo algún golpe o se mojó?', ['Golpe', 'Se mojó', 'No', 'No sé']]
+      ] },
+      otra: { nombre: 'Otra falla', preguntas: [
+        ['¿Qué parte falla?', ['Cámara', 'Audio o micrófono', 'Señal o wifi', 'Botones', 'Software', 'Otra']]
+      ] }
+    };
+    const dialogo = document.getElementById('fallaDialogo');
+    const fform = document.getElementById('fallaForm');
+    const titulo = document.getElementById('fallaTitulo');
+    const caja = document.getElementById('fallaPreguntas');
+    const consejo = document.getElementById('fallaConsejo');
+    const modelo = document.getElementById('fallaModelo');
+    const detalle = document.getElementById('fallaDetalle');
+    const ferror = document.getElementById('fallaError');
+    let actual = null;
+
+    function abrir(clave) {
+      actual = FALLAS[clave];
+      titulo.textContent = 'Contanos más: ';
+      const n = document.createElement('span'); n.textContent = actual.nombre.toLowerCase(); titulo.append(n);
+      caja.innerHTML = '';
+      actual.preguntas.forEach((pq, i) => {
+        const fs = document.createElement('fieldset'); fs.className = 'falla-pregunta campo';
+        const lg = document.createElement('legend'); lg.textContent = pq[0];
+        const ops = document.createElement('div'); ops.className = 'problemas';
+        pq[1].forEach((op) => {
+          const l = document.createElement('label');
+          const r = document.createElement('input'); r.type = 'radio'; r.name = 'p' + i; r.value = op;
+          const t = document.createElement('span'); t.textContent = op;
+          l.append(r, t); ops.append(l);
+        });
+        fs.append(lg, ops); caja.append(fs);
+      });
+      consejo.hidden = !actual.consejo; consejo.textContent = actual.consejo || '';
+      ferror.classList.remove('ver'); detalle.value = '';
+      dialogo.showModal();
+    }
+
+    document.querySelectorAll('.falla[data-falla]').forEach((b) => b.addEventListener('click', () => abrir(b.dataset.falla)));
+    document.getElementById('fallaCerrar').addEventListener('click', () => dialogo.close());
+    dialogo.addEventListener('click', (e) => { if (e.target === dialogo) dialogo.close(); }); // tocar afuera cierra
+    modelo.addEventListener('input', () => ferror.classList.remove('ver'));
+
+    fform.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const m = modelo.value.trim();
+      if (!m) { ferror.classList.add('ver'); modelo.focus(); return; }
+      const lineas = ['Hola Mobile Phone! Quiero consultar por una reparación.', '', '▸ Falla: ' + actual.nombre, '▸ Equipo: ' + m];
+      actual.preguntas.forEach((pq, i) => {
+        const elegido = fform.querySelector('input[name="p' + i + '"]:checked');
+        if (elegido) lineas.push('▸ ' + pq[0] + ' ' + elegido.value);
+      });
+      if (detalle.value.trim()) lineas.push('▸ Detalle: ' + detalle.value.trim());
+      window.open('https://wa.me/5491126785588?text=' + encodeURIComponent(lineas.join('\n')), '_blank', 'noopener');
+      dialogo.close();
+    });
+  })();
 
   const errMarca = document.getElementById('errMarca');
   const errFecha = document.getElementById('errFecha');

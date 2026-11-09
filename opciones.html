@@ -2,7 +2,7 @@
 <!--
   Mobile Phone — Página de opciones para enviar a clientes (mobilephone.com.ar/opciones).
   El cliente elige qué quiere ver. WhatsApp: 5491126785588.
-  Fotos de la portada: img/portada-*.jpg (fotos de stock libres de uso).
+  Fotos de las franjas: img/portada-*.jpg (fotos de stock libres de uso). Todo entra en una pantalla de celular.
 -->
 <html lang="es-AR">
 <head>
@@ -19,7 +19,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="img/portada-celulares.jpg">
 <style>
   :root {
     --fondo: #05070D;
@@ -51,46 +50,39 @@
   .barra .wa-mini { margin-left: auto; display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .8rem; border-radius: 999px; border: 1px solid var(--linea); color: var(--acento); font-size: .82rem; font-weight: 500; }
   .barra .wa-mini svg { width: 16px; height: 16px; }
 
-  /* Portada: las fotos ocupan toda la pantalla de fondo y van cambiando */
-  .portada { position: relative; min-height: 100vh; min-height: 100svh; margin-top: -65px; padding: calc(65px + 1.5rem) 0 1.6rem; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; isolation: isolate; }
-  .portada > .contenedor { position: relative; z-index: 1; max-width: 1100px; }
-  .fondo { position: absolute; inset: 0; z-index: -1; background: var(--fondo); }
-  .diapo { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease; }
-  .diapo.activa { opacity: 1; }
-  .diapo img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.08); transition: transform 7s ease-out; }
-  .diapo.activa img { transform: scale(1); }
-  .fondo::after { content: ''; position: absolute; inset: 0; background:
-      linear-gradient(180deg, rgba(5,7,13,.7) 0%, rgba(5,7,13,.15) 28%, rgba(5,7,13,.35) 50%, rgba(5,7,13,.9) 78%, var(--fondo) 100%),
-      linear-gradient(90deg, rgba(5,7,13,.55), transparent 65%); }
-  .sello { display: inline-block; padding: .35rem .75rem; border-radius: 8px; background: var(--azul); font-family: var(--display); font-weight: 600; font-size: .74rem; letter-spacing: .14em; text-transform: uppercase; }
-  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.3rem, 9.5vw, 4.2rem); line-height: 1.03; margin: .9rem 0 .7rem; text-shadow: 0 4px 24px rgba(0,0,0,.45); }
-  h1 span { display: block; color: var(--acento); }
-  .bajada { color: rgba(255,255,255,.82); font-size: 1.05rem; line-height: 1.45; max-width: 32ch; }
-  .estado { display: flex; align-items: center; gap: 12px; margin-top: 1.3rem; }
-  .leyenda { display: inline-flex; flex-direction: column; padding: .55rem .9rem; border-radius: 14px; background: rgba(5,7,13,.5); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(8px); }
-  .leyenda b { font-family: var(--display); font-size: 1.08rem; }
-  .leyenda small { color: var(--gris); font-size: .8rem; }
-  .puntos { display: flex; gap: 6px; margin-left: auto; }
-  .puntos button { width: 8px; height: 8px; border-radius: 99px; border: 0; background: rgba(255,255,255,.4); cursor: pointer; transition: width .3s, background .3s; }
-  .puntos button[aria-current="true"] { width: 22px; background: var(--acento); }
-  .portada .cta { max-width: 520px; margin-left: 0; }
-  @media (min-width: 800px) { .portada { justify-content: center; padding-bottom: 3rem; } .estado { max-width: 520px; } }
+  /* Inicio: todo en una pantalla de celular (título, 3 franjas y reseñas) */
+  .inicio { padding: 1rem 0 .4rem; }
+  .sello { display: inline-block; padding: .3rem .7rem; border-radius: 8px; background: var(--azul); font-family: var(--display); font-weight: 600; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(1.8rem, 8vw, 2.6rem); line-height: 1.05; margin: .55rem 0 .25rem; }
+  h1 span { color: var(--acento); }
+  .bajada { color: var(--gris); font-size: .92rem; }
 
-  .cta { display: flex; align-items: center; justify-content: center; gap: .55rem; margin: 1.1rem auto 0; width: 100%; padding: 1rem; border-radius: 999px; background: var(--azul); font-family: var(--display); font-weight: 600; font-size: 1.08rem; box-shadow: 0 14px 34px rgba(22,119,255,.35); transition: background .2s, transform .2s; }
-  .cta:hover { background: var(--azul-hover); transform: translateY(-2px); }
-  .cta svg { width: 22px; height: 22px; }
-
-  /* Las tres opciones */
-  .opciones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 1.4rem; }
-  .opcion { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 168px; padding: 12px; border-radius: 18px; overflow: hidden; border: 1px solid var(--linea); background: var(--tarjeta); transition: transform .25s, border-color .25s, box-shadow .25s; }
-  .opcion img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; transition: opacity .25s, transform .4s; }
-  .opcion::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5,7,13,.05), rgba(5,7,13,.92) 72%); }
+  /* Las tres opciones como franjas con foto */
+  .opciones { display: grid; gap: 9px; margin-top: .85rem; }
+  .opcion { position: relative; display: flex; align-items: center; min-height: 92px; padding: 0 14px; border-radius: 16px; overflow: hidden; border: 1px solid var(--linea); background: var(--tarjeta); transition: transform .25s, border-color .25s, box-shadow .25s; }
+  .opcion img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .6; transition: opacity .25s, transform .4s; }
+  .opcion::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,7,13,.95) 35%, rgba(5,7,13,.1)); }
   .opcion > span { position: relative; z-index: 1; }
-  .opcion b { display: block; font-family: var(--display); font-size: 1.02rem; line-height: 1.15; }
-  .opcion small { display: block; color: var(--gris); font-size: .74rem; margin-top: 2px; line-height: 1.3; }
-  .opcion i { position: absolute; z-index: 1; top: 10px; right: 10px; width: 26px; height: 26px; border-radius: 99px; background: var(--azul); display: grid; place-items: center; font-style: normal; font-size: .9rem; }
-  .opcion:hover { transform: translateY(-3px); border-color: rgba(90,169,255,.6); box-shadow: 0 16px 36px rgba(22,119,255,.22); }
-  .opcion:hover img { opacity: .75; transform: scale(1.05); }
+  .opcion b { display: block; font-family: var(--display); font-size: 1.2rem; line-height: 1.15; }
+  .opcion small { display: block; color: var(--gris); font-size: .78rem; margin-top: 2px; }
+  .opcion i { position: absolute; z-index: 1; right: 12px; top: 50%; margin-top: -15px; width: 30px; height: 30px; border-radius: 99px; background: var(--azul); display: grid; place-items: center; font-style: normal; font-size: 1rem; }
+  .opcion:hover { transform: translateY(-2px); border-color: rgba(90,169,255,.6); box-shadow: 0 14px 30px rgba(22,119,255,.22); }
+  .opcion:hover img { opacity: .8; transform: scale(1.04); }
+
+  /* Reseñas de Google */
+  .opiniones { margin-top: .9rem; }
+  .rate { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--gris); }
+  .rate .nota { font-family: var(--display); font-weight: 700; font-size: 1.35rem; color: #fff; line-height: 1; }
+  .rate .est { color: #FBBC04; letter-spacing: .08em; }
+  .rate .glogo { width: 16px; height: 16px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285F4' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09Z'/%3E%3Cpath fill='%2334A853' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z'/%3E%3Cpath fill='%23FBBC05' d='M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.07H2.18a11 11 0 0 0 0 9.87l3.66-2.84Z'/%3E%3Cpath fill='%23EA4335' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.46 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38Z'/%3E%3C/svg%3E") no-repeat center / contain; }
+  .rate a { margin-left: auto; font-size: .76rem; color: var(--gris); }
+  .resenas { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; margin-top: .5rem; padding-bottom: 2px; scrollbar-width: none; }
+  .resenas::-webkit-scrollbar { display: none; }
+  .resena { position: relative; flex: 0 0 80%; max-width: 300px; scroll-snap-align: start; background: #fff; border-radius: 14px; padding: .6rem 2rem .7rem .8rem; font-size: .8rem; color: #3c4043; line-height: 1.35; }
+  .resena::after { content: ''; position: absolute; top: .65rem; right: .7rem; width: 16px; height: 16px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%234285F4' d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09Z'/%3E%3Cpath fill='%2334A853' d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z'/%3E%3Cpath fill='%23FBBC05' d='M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.07H2.18a11 11 0 0 0 0 9.87l3.66-2.84Z'/%3E%3Cpath fill='%23EA4335' d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.46 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38Z'/%3E%3C/svg%3E") no-repeat center / contain; }
+  .resena b { color: #202124; font-size: .82rem; margin-right: .35rem; }
+  .resena .est { color: #FBBC04; font-size: .72rem; }
+  .resena p { margin-top: .2rem; }
 
   /* Marcas */
   .bloque { margin-top: 1.2rem; padding: 14px; border-radius: 18px; border: 1px solid var(--linea); background: var(--tarjeta); }
@@ -115,10 +107,14 @@
   footer svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--acento); }
   footer .gremio { color: var(--acento); font-size: .84rem; }
 
-  .wa-flotante { position: fixed; right: 16px; bottom: 18px; z-index: 20; width: 58px; height: 58px; border-radius: 99px; background: #25D366; display: grid; place-items: center; box-shadow: 0 10px 28px rgba(0,0,0,.45); }
-  .wa-flotante svg { width: 30px; height: 30px; color: #fff; }
+  .wa-flotante { position: fixed; right: 16px; bottom: 18px; z-index: 20; width: 58px; height: 58px; border-radius: 50%; background: #25D366; color: #fff; display: grid; place-items: center; box-shadow: 0 8px 24px rgba(37,211,102,.45), 0 2px 6px rgba(0,0,0,.3); transition: transform .25s ease; }
+  .wa-flotante:hover { transform: scale(1.08); }
+  .wa-flotante::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #25D366; animation: wa-pulso 2.4s infinite; z-index: -1; }
+  @keyframes wa-pulso { 0% { transform: scale(1); opacity: .55; } 70% { transform: scale(1.55); opacity: 0; } 100% { transform: scale(1.55); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .wa-flotante::before { animation: none; } }
+  .wa-flotante svg { width: 32px; height: 32px; color: #fff; }
 
-  @media (prefers-reduced-motion: reduce) { .diapo, .diapo img { transition: none; } .opcion, .opcion img, .cta { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .opcion, .opcion img { transition: none; } }
 </style>
 </head>
 <body>
@@ -134,59 +130,43 @@
 </header>
 
 <main>
-  <section class="portada">
-    <!-- Fotos de fondo a pantalla completa: cambian solas cada 4,5 s (también deslizando con el dedo) -->
-    <div class="fondo" id="pista" aria-hidden="true">
-      <div class="diapo activa" data-titulo="Celulares" data-texto="Nuevos y usados, con garantía" data-link="/celulares">
+  <div class="contenedor">
+  <section class="inicio">
+    <span class="sello">Mobile Phone</span>
+    <h1>Todo para tu celular, <span>en un solo lugar</span></h1>
+    <p class="bajada">¿Qué estás buscando?</p>
+
+    <nav class="opciones" aria-label="¿Qué estás buscando?">
+      <a class="opcion" href="/celulares">
         <img src="img/portada-celulares.jpg" alt="" fetchpriority="high">
-      </div>
-      <div class="diapo" data-titulo="Accesorios" data-texto="Fundas, cargadores, auriculares y más" data-link="/accesorios">
-        <img src="img/portada-accesorios.jpg" alt="">
-      </div>
-      <div class="diapo" data-titulo="Servicio técnico" data-texto="Reparaciones con garantía" data-link="/servicio-tecnico">
-        <img src="img/portada-servicio.jpg" alt="">
-      </div>
-    </div>
-
-    <div class="contenedor">
-      <span class="sello">Mobile Phone · Servicio técnico</span>
-      <h1>Todo para tu celular, <span>en un solo lugar</span></h1>
-      <p class="bajada">Elegí lo que estás buscando y encontrá nuestros productos y servicios.</p>
-
-      <div class="estado">
-        <a class="leyenda" id="leyenda" href="/celulares"><b>Celulares</b><small>Nuevos y usados, con garantía</small></a>
-        <div class="puntos" id="puntos">
-          <button type="button" aria-label="Celulares" aria-current="true"></button>
-          <button type="button" aria-label="Accesorios"></button>
-          <button type="button" aria-label="Servicio técnico"></button>
-        </div>
-      </div>
-
-      <a class="cta" href="/celulares">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h3l2.4 11.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L21 7H6"/></svg>
-        Ver catálogo ›
+        <i aria-hidden="true">›</i>
+        <span><b>Celulares</b><small>Nuevos, con garantía</small></span>
       </a>
+      <a class="opcion" href="/accesorios">
+        <img src="img/portada-accesorios.jpg" alt="">
+        <i aria-hidden="true">›</i>
+        <span><b>Accesorios</b><small>Fundas, cargadores y más</small></span>
+      </a>
+      <a class="opcion" href="/servicio-tecnico">
+        <img src="img/portada-servicio.jpg" alt="">
+        <i aria-hidden="true">›</i>
+        <span><b>Servicio técnico</b><small>Diagnóstico gratis · En el día</small></span>
+      </a>
+    </nav>
+
+    <!-- Reseñas reales de Google Maps (las mismas de /servicio-tecnico) -->
+    <div class="opiniones" aria-label="Opiniones en Google">
+      <div class="rate"><span class="nota">5.0</span><span class="est">★★★★★</span><span class="glogo" aria-hidden="true"></span><span>Google</span><a href="https://www.google.com/maps/place/Servicio+T%C3%A9cnico+de+Celulares+-+Mobile+Phone/@-34.7314061,-58.4713969,17z/data=!4m6!3m5!1s0x95bccfaab801167b:0x5e98edf5cf3c2de1!8m2!3d-34.7314061!4d-58.4713969" target="_blank" rel="noopener">8 opiniones · Deslizá ›</a></div>
+      <div class="resenas">
+      <article class="resena"><b>Kn Aranda</b><span class="est">★★★★★</span><p>"Excelente!!!!! Tanto la atención como la rapidez y resolutivos que son, el lugar super impecable. Volvería a elegirlos!!"</p></article>
+      <article class="resena"><b>Raquel Raquel</b><span class="est">★★★★★</span><p>"He arreglado en varias oportunidades mi celular y siempre fue impecable tanto el arreglo, como el trato y el costo."</p></article>
+      <article class="resena"><b>andrea laura</b><span class="est">★★★★★</span><p>"Muy buena atención, te explican todo un 10 de 10"</p></article>
+      <article class="resena"><b>Dario Caballero</b><span class="est">★★★★★</span><p>"Mi celular al cambiar el módulo, parece nuevo y no tuve problema alguna. Recomendable."</p></article>
+      <article class="resena"><b>Ale Serron</b><span class="est">★★★★★</span><p>"Muy buena atención siempre arreglo ahí los celulares ☺️"</p></article>
+      <article class="resena"><b>Marco Villar</b><span class="est">★★★★★</span><p>"Recomendado siempre"</p></article>
+      </div>
     </div>
   </section>
-
-  <div class="contenedor">
-  <nav class="opciones" aria-label="¿Qué estás buscando?">
-    <a class="opcion" href="/celulares">
-      <img src="img/portada-celulares.jpg" alt="" loading="lazy">
-      <i aria-hidden="true">›</i>
-      <span><b>Celulares</b><small>Nuevos y usados</small></span>
-    </a>
-    <a class="opcion" href="/accesorios">
-      <img src="img/portada-accesorios.jpg" alt="" loading="lazy">
-      <i aria-hidden="true">›</i>
-      <span><b>Accesorios</b><small>Fundas, cargadores y más</small></span>
-    </a>
-    <a class="opcion" href="/servicio-tecnico">
-      <img src="img/portada-servicio.jpg" alt="" loading="lazy">
-      <i aria-hidden="true">›</i>
-      <span><b>Servicio técnico</b><small>Reparaciones y garantía</small></span>
-    </a>
-  </nav>
 
   <section class="bloque" aria-labelledby="t-marcas">
     <h2 id="t-marcas">★ Marcas disponibles <small>Deslizá para ver todas ›</small></h2>
@@ -231,36 +211,8 @@
 </main>
 
 <a class="wa-flotante" href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone!%20Quiero%20hacer%20una%20consulta" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0012.05 0zm5.422 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/></svg>
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<script>
-  // Fondo de la portada: cambia de foto cada 4,5 s; se pausa si el cliente toca un puntito; se puede deslizar con el dedo.
-  (function () {
-    var diapos = Array.prototype.slice.call(document.querySelectorAll('#pista .diapo'));
-    var puntos = Array.prototype.slice.call(document.querySelectorAll('#puntos button'));
-    var leyenda = document.getElementById('leyenda');
-    var actual = 0, pausa = false;
-    function ir(i) {
-      actual = (i + diapos.length) % diapos.length;
-      diapos.forEach(function (d, j) { d.classList.toggle('activa', j === actual); });
-      puntos.forEach(function (b, j) { b.setAttribute('aria-current', j === actual ? 'true' : 'false'); });
-      var d = diapos[actual].dataset;
-      leyenda.href = d.link;
-      leyenda.innerHTML = '<b>' + d.titulo + '</b><small>' + d.texto + '</small>';
-    }
-    puntos.forEach(function (b, i) { b.addEventListener('click', function () { pausa = true; ir(i); }); });
-    var x0 = null, portada = document.querySelector('.portada');
-    portada.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
-    portada.addEventListener('touchend', function (e) {
-      if (x0 === null) return;
-      var dx = e.changedTouches[0].clientX - x0; x0 = null;
-      if (Math.abs(dx) > 45) { pausa = true; ir(actual + (dx < 0 ? 1 : -1)); }
-    }, { passive: true });
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setInterval(function () { if (!pausa && !document.hidden) ir(actual + 1); }, 4500);
-    }
-  })();
-</script>
 </body>
 </html>
