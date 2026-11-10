@@ -1230,6 +1230,7 @@
   .cel-card:hover { transform: translateY(-4px); border-color: rgba(22,119,255,0.45); }
   .cel-foto { position: relative; aspect-ratio: 1 / 1; background: radial-gradient(circle at 50% 40%, rgba(22,119,255,0.18), transparent 65%), #000; display: grid; place-items: center; }
   .cel-foto img { width: 100%; height: 100%; object-fit: cover; }
+  .cel-card .cel-foto:has(img:not(.sin-foto)) { cursor: zoom-in; }
   .cel-foto img.sin-foto { width: 38%; height: auto; object-fit: contain; opacity: .5; }
   .cel-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
   .cel-badge { font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .28rem .55rem; border-radius: 999px; background: rgba(0,0,0,.7); border: 1px solid rgba(255,255,255,.15); }
@@ -1512,7 +1513,11 @@
     function enganchar(desde) {
       [...grid.querySelectorAll('.cel-card')].slice(desde).forEach((el) => {
         const abrirEste = () => abrir(el.dataset.id, true);
-        el.addEventListener('click', abrirEste);
+        // Tocar la foto la abre a pantalla completa; el resto de la tarjeta abre el detalle.
+        el.addEventListener('click', (e) => {
+          const p = e.target.closest('.cel-foto') && todos.find((x) => x.id === el.dataset.id);
+          if (p && p.fotos.length) visor.abrir(p.fotos, 0, p.nombre); else abrirEste();
+        });
         el.addEventListener('keydown', (e) => { if (e.key === 'Enter') abrirEste(); });
       });
     }
