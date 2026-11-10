@@ -1230,7 +1230,6 @@
   .cel-card:hover { transform: translateY(-4px); border-color: rgba(22,119,255,0.45); }
   .cel-foto { position: relative; aspect-ratio: 1 / 1; background: radial-gradient(circle at 50% 40%, rgba(22,119,255,0.18), transparent 65%), #000; display: grid; place-items: center; }
   .cel-foto img { width: 100%; height: 100%; object-fit: cover; }
-  .cel-card .cel-foto:has(img:not(.sin-foto)) { cursor: zoom-in; }
   .cel-foto img.sin-foto { width: 38%; height: auto; object-fit: contain; opacity: .5; }
   .cel-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
   .cel-badge { font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; padding: .28rem .55rem; border-radius: 999px; background: rgba(0,0,0,.7); border: 1px solid rgba(255,255,255,.15); }
@@ -1267,6 +1266,9 @@
   .cel-card { cursor: pointer; }
   .cel-modal { width: min(920px, calc(100% - 24px)); max-height: calc(100% - 24px); padding: 0; border: 1px solid var(--line); border-radius: 20px; background: #0d0d0f; color: #fff; overflow: auto; }
   .cel-modal::backdrop { background: rgba(0,0,0,.75); }
+  /* El detalle ocupa toda la pantalla; en computadora el contenido queda centrado. */
+  .cel-modal { width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; border: 0; border-radius: 0; }
+  .cel-modal-cuerpo { max-width: 1100px; margin: 0 auto; }
   .cel-cerrar { position: sticky; top: .6rem; float: right; margin: .6rem .6rem 0 0; z-index: 2; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.12); color: #fff; font-size: 1.6rem; line-height: 1; cursor: pointer; }
   .cel-modal-cuerpo { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.5rem; padding: 1.5rem; }
   .cel-galeria-grande { aspect-ratio: 1 / 1; background: #000; border-radius: 14px; overflow: hidden; display: grid; place-items: center; }
@@ -1322,13 +1324,13 @@
     .cel-filtros input { flex: 1 1 auto; min-width: 0; padding: .65rem .8rem; font-size: .9rem; }
     .cel-filtros select { padding: .65rem .5rem; font-size: .85rem; max-width: 42%; }
     .cel-cuenta { margin: .2rem 0 .7rem; }
-    #acGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .45rem; }
+    #acGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
     #acGrid .cel-card { border-radius: 12px; }
     #acGrid .cel-info { padding: .45rem .45rem .55rem; gap: .25rem; }
-    #acGrid .cel-nombre { font-size: .68rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    #acGrid .cel-nombre { font-size: .82rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     #acGrid .cel-desc { display: none; }
-    #acGrid .cel-precio { font-size: .84rem; }
-    #acGrid .cel-off, #acGrid .cel-trans { font-size: .56rem; }
+    #acGrid .cel-precio { font-size: 1.05rem; }
+    #acGrid .cel-off, #acGrid .cel-trans { font-size: .66rem; }
     #acGrid .cel-ahorro { display: none; }
     #acGrid .cel-badges { display: none; }
     #acGrid .btn-consultar { padding: .4rem .2rem; font-size: .62rem; letter-spacing: 0; white-space: normal; line-height: 1.15; }
@@ -1513,11 +1515,7 @@
     function enganchar(desde) {
       [...grid.querySelectorAll('.cel-card')].slice(desde).forEach((el) => {
         const abrirEste = () => abrir(el.dataset.id, true);
-        // Tocar la foto la abre a pantalla completa; el resto de la tarjeta abre el detalle.
-        el.addEventListener('click', (e) => {
-          const p = e.target.closest('.cel-foto') && todos.find((x) => x.id === el.dataset.id);
-          if (p && p.fotos.length) visor.abrir(p.fotos, 0, p.nombre); else abrirEste();
-        });
+        el.addEventListener('click', abrirEste);
         el.addEventListener('keydown', (e) => { if (e.key === 'Enter') abrirEste(); });
       });
     }
