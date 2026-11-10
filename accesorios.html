@@ -1317,6 +1317,15 @@
   #acCategorias::-webkit-scrollbar { display: none; }
   #acCategorias button { flex: 0 0 auto; white-space: nowrap; padding: .35rem .8rem; font-size: .78rem; }
   #acGrid { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); justify-content: stretch; gap: 1rem; }
+  /* Ofertas: más vendidos y de bajo precio, en una fila que se desliza */
+  .ac-ofertas { margin: 0 0 1.2rem; }
+  .ac-ofertas h2 { font-family: var(--font-display); font-size: 1.15rem; margin: 0 0 .6rem; color: #fff; }
+  .ac-ofertas-fila { display: flex; gap: .75rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: .3rem; -webkit-overflow-scrolling: touch; }
+  .ac-ofertas-fila::-webkit-scrollbar { display: none; }
+  .ac-ofertas-fila .cel-card { flex: 0 0 200px; scroll-snap-align: start; }
+  .ac-ofertas-fila .cel-badges, .ac-ofertas-fila .cel-desc { display: none; }
+  .ac-etiqueta { position: absolute; top: .45rem; left: .45rem; z-index: 1; background: #00a650; color: #fff; font-size: .68rem; font-weight: 700; padding: .2rem .5rem; border-radius: 6px; }
+  .ac-etiqueta--vendido { background: #ff6a00; }
   @media (max-width: 720px) {
     .cel-pagina .sec-head { margin-bottom: 1rem; }
     .cel-pagina .sec-desc { display: none; }
@@ -1324,7 +1333,14 @@
     .cel-filtros input { flex: 1 1 auto; min-width: 0; padding: .65rem .8rem; font-size: .9rem; }
     .cel-filtros select { padding: .65rem .5rem; font-size: .85rem; max-width: 42%; }
     .cel-cuenta { margin: .2rem 0 .7rem; }
-    #acGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+    #acGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+    /* En el celular los productos ocupan todo el ancho */
+    .cel-pagina .container { padding: 0 8px; }
+    .ac-ofertas-fila .cel-card { flex: 0 0 44%; border-radius: 12px; }
+    .ac-ofertas-fila .cel-info { padding: .45rem .45rem .55rem; gap: .25rem; }
+    .ac-ofertas-fila .cel-nombre { font-size: .82rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .ac-ofertas-fila .cel-precio { font-size: 1.05rem; }
+    .ac-ofertas-fila .btn-consultar { padding: .4rem .2rem; font-size: .62rem; letter-spacing: 0; }
     #acGrid .cel-card { border-radius: 12px; }
     #acGrid .cel-info { padding: .45rem .45rem .55rem; gap: .25rem; }
     #acGrid .cel-nombre { font-size: .82rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -1384,6 +1400,10 @@
       <span class="eyebrow">Tienda</span>
       <h1 class="sec-titulo">Accesorios <span>disponibles</span></h1>
       <p class="sec-desc">Cargadores, cables, auriculares, parlantes, fundas y mucho más. Retiro en el local: Epecuén 645, Ingeniero Budge.</p>
+    </div>
+    <div class="ac-ofertas" id="acOfertas" hidden>
+      <h2>🔥 Ofertas</h2>
+      <div class="ac-ofertas-fila" id="acOfertasFila"></div>
     </div>
     <div class="cel-filtros">
       <input type="search" id="acBuscar" placeholder="Buscá cargador, auricular, funda, marca…" aria-label="Buscar accesorio">
@@ -1500,17 +1520,29 @@
     } catch (e) { todos = []; }
     todos.forEach((a) => { a._texto = sinAcentos([a.nombre, a.marca, a.categoria, a.descripcion, ...a.variantes.map((v) => v.color)].join(' ')) + ' ' + sinAcentos(a.nombre).replace(/[\s\-\/.,]+/g, ''); });
 
-    function tarjeta(a) {
+    function tarjeta(a, etiqueta) {
       const varios = a.variantes.length > 1;
       const foto = a.fotos[0] ? '<img src="' + esc(a.fotos[0]) + '" alt="' + esc(a.nombre) + '" loading="lazy">' : '<img class="sin-foto" src="img/emblema.png" alt="">';
       const d = resumen(a.descripcion);
       return '<article class="cel-card" tabindex="0" data-id="' + esc(a.id) + '">' +
-        '<div class="cel-foto">' + foto + '<div class="cel-badges">' + (a.categoria ? '<span class="cel-badge">' + esc(a.categoria) + '</span>' : '') + '</div></div>' +
+        '<div class="cel-foto">' + (etiqueta || '') + foto + '<div class="cel-badges">' + (a.categoria ? '<span class="cel-badge">' + esc(a.categoria) + '</span>' : '') + '</div></div>' +
         '<div class="cel-info"><div class="cel-nombre">' + esc(a.nombre) + '</div>' +
         (d ? '<p class="cel-desc">' + esc(d) + '</p>' : '') +
         '<div class="cel-precio">' + (varios ? 'Desde ' : '') + pesos(minimo(a)) + '</div>' +
         '<span class="btn-consultar">Ver detalles</span></div></article>';
     }
+
+    // Ofertas: primero los más vendidos (los marca LM Gestión), después los más baratos con foto. Hasta 10.
+    const ofertas = [
+      ...todos.filter((a) => a.masVendido).sort((a, b) => minimo(a) - minimo(b)),
+      ...todos.filter((a) => !a.masVendido && a.fotos.length).sort((a, b) => minimo(a) - minimo(b)),
+    ].slice(0, 10);
+    const cajaOfertas = document.getElementById('acOfertas'), filaOfertas = document.getElementById('acOfertasFila');
+    filaOfertas.innerHTML = ofertas.map((a) => tarjeta(a, a.masVendido ? '<span class="ac-etiqueta ac-etiqueta--vendido">Más vendido</span>' : '<span class="ac-etiqueta">Oferta</span>')).join('');
+    filaOfertas.querySelectorAll('.cel-card').forEach((el) => {
+      el.addEventListener('click', () => abrir(el.dataset.id, true));
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter') abrir(el.dataset.id, true); });
+    });
 
     function enganchar(desde) {
       [...grid.querySelectorAll('.cel-card')].slice(desde).forEach((el) => {
@@ -1545,6 +1577,7 @@
       else if (o === 'mayor') lista.sort((a, b) => minimo(b) - minimo(a));
       else if (o === 'nombre') lista.sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
       pintarCategorias();
+      cajaOfertas.hidden = !ofertas.length || Boolean(q) || Boolean(categoria);
       cuenta.textContent = todos.length ? lista.length + (lista.length === 1 ? ' accesorio' : ' accesorios') : '';
       grid.innerHTML = ''; mostrados = 0;
       if (!lista.length) {

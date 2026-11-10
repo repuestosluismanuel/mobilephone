@@ -1345,10 +1345,22 @@
   .cel-mas-filtros[open] summary { border-color: var(--azul); margin-bottom: .7rem; }
   .cel-mas-filtros .cel-chips { justify-content: flex-start; }
   .cel-filtros-fila { display: flex; justify-content: center; }
+  /* Ofertas: más vendidos, ofertas y de bajo precio, en una fila que se desliza */
+  .ac-ofertas { margin: 1.2rem 0; }
+  .ac-ofertas h2 { font-family: var(--font-display); font-size: 1.15rem; margin: 0 0 .6rem; color: #fff; }
+  .ac-ofertas-fila { display: flex; gap: .75rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: .3rem; -webkit-overflow-scrolling: touch; }
+  .ac-ofertas-fila::-webkit-scrollbar { display: none; }
+  .ac-ofertas-fila .cel-card { flex: 0 0 230px; scroll-snap-align: start; }
+  .ac-ofertas-fila .cel-badges, .ac-ofertas-fila .cel-desc { display: none; }
+  .ac-etiqueta { position: absolute; top: .45rem; left: .45rem; z-index: 1; background: #00a650; color: #fff; font-size: .68rem; font-weight: 700; padding: .2rem .5rem; border-radius: 6px; }
+  .ac-etiqueta--vendido { background: #ff6a00; }
   @media (max-width: 680px) {
     .cel-pagina { padding-top: 5.5rem; }
     .cel-hero { aspect-ratio: 4 / 5; min-height: 0; border-radius: 18px; }
-    .cel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; }
+    .cel-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+    /* En el celular los productos ocupan todo el ancho */
+    .cel-pagina .container { padding: 0 8px; }
+    .ac-ofertas-fila .cel-card { flex: 0 0 44%; }
     .cel-card { border-radius: 12px; }
     .cel-info { padding: .45rem .45rem .55rem; gap: .25rem; }
     .cel-nombre { font-size: .82rem; line-height: 1.22; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
@@ -1423,6 +1435,10 @@
         <p>Nuevos y usados, revisados en nuestro servicio técnico y con garantía. Tocá un equipo para ver sus fotos.</p>
         <a href="#equipos">Ver equipos ↓</a>
       </div>
+    </div>
+    <div class="ac-ofertas" id="acOfertas" hidden>
+      <h2>🔥 Ofertas</h2>
+      <div class="ac-ofertas-fila" id="acOfertasFila"></div>
     </div>
     <div class="cel-filtros" id="equipos">
       <input type="search" id="celBuscar" placeholder="Buscá por marca, modelo o capacidad…" aria-label="Buscar celular">
@@ -1645,7 +1661,7 @@
         '<div class="cel-ficha-titulo">PARA TENER EN CUENTA</div><ul class="cel-saber">' + saber.map((t) => '<li>' + esc(t) + '</li>').join('') + '</ul>';
     }
 
-    function tarjeta(c) {
+    function tarjeta(c, etiqueta) {
       const v = c.variantes.slice().sort((a, b) => a.precio - b.precio)[0];
       const varios = c.variantes.length > 1;
       const datos = [v.capacidad, v.ram ? v.ram + ' RAM' : null, varios ? null : v.color, c.bateria ? 'Batería ' + c.bateria + '%' : null, c.estado].filter(Boolean).join(' · ');
@@ -1654,7 +1670,7 @@
       const foto = c.fotos[0] ? '<img src="' + esc(c.fotos[0]) + '" alt="' + esc(c.nombre) + '" loading="lazy">' : '<img class="sin-foto" src="img/emblema.png" alt="">';
       const d = descSinNombre(c);
       return '<article class="cel-card" tabindex="0" data-id="' + esc(c.id) + '">' +
-        '<div class="cel-foto">' + foto + '<div class="cel-badges">' + badges + '</div></div>' +
+        '<div class="cel-foto">' + (etiqueta || '') + foto + '<div class="cel-badges">' + badges + '</div></div>' +
         '<div class="cel-info"><div class="cel-nombre">' + esc(c.nombre) + '</div>' +
         (datos ? '<div class="cel-datos">' + esc(datos) + '</div>' : '') +
         (d ? '<p class="cel-desc">' + esc(d) + '</p>' : '') +
@@ -1662,8 +1678,22 @@
         '<span class="btn-consultar">Ver detalles</span></div></article>';
     }
 
+    // Ofertas: primero los más vendidos (los marca LM Gestión), después los marcados en oferta y los más baratos con foto. Hasta 10.
+    const ofertas = [
+      ...todos.filter((c) => c.masVendido).sort((a, b) => minimo(a) - minimo(b)),
+      ...todos.filter((c) => !c.masVendido && c.oferta).sort((a, b) => minimo(a) - minimo(b)),
+      ...todos.filter((c) => !c.masVendido && !c.oferta && c.fotos.length).sort((a, b) => minimo(a) - minimo(b)),
+    ].slice(0, 10);
+    const cajaOfertas = document.getElementById('acOfertas'), filaOfertas = document.getElementById('acOfertasFila');
+    filaOfertas.innerHTML = ofertas.map((c) => tarjeta(c, c.masVendido ? '<span class="ac-etiqueta ac-etiqueta--vendido">Más vendido</span>' : '<span class="ac-etiqueta">Oferta</span>')).join('');
+    filaOfertas.querySelectorAll('.cel-card').forEach((el) => {
+      el.addEventListener('click', () => abrir(el.dataset.id, true));
+      el.addEventListener('keydown', (e) => { if (e.key === 'Enter') abrir(el.dataset.id, true); });
+    });
+
     function pintar() {
       const q = sinAcentos(buscar.value.trim());
+      cajaOfertas.hidden = !ofertas.length || Boolean(q) || Boolean(filtro.marca) || Boolean(filtro.cond);
       let lista = todos.filter((c) => (!filtro.marca || c._marca === filtro.marca) && (!filtro.cond || c.condicion === filtro.cond) && (!q || q.split(/\s+/).every((p) => c._texto.includes(p))));
       const o = orden.value;
       lista.sort((a, b) => o === 'menor' ? minimo(a) - minimo(b) : o === 'mayor' ? minimo(b) - minimo(a) : o === 'nombre' ? a.nombre.localeCompare(b.nombre, 'es') : Number(b.destacado) - Number(a.destacado) || Number(b.fotos.length > 0) - Number(a.fotos.length > 0));
