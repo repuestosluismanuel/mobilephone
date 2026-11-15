@@ -89,6 +89,15 @@
   .falla .ico { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: rgba(22,119,255,0.14); color: var(--acento); }
   .falla .ico svg { width: 22px; height: 22px; }
 
+  /* Fallas con foto real (fotos libres de Pexels: 10963256, 32932370, 32942100, 19041520, 5484738, 6755056). */
+  .falla { position: relative; overflow: hidden; isolation: isolate; aspect-ratio: 1 / 1.05; min-height: 0; justify-content: flex-end; align-items: flex-start; padding: .55rem; text-align: left; font-size: .82rem; line-height: 1.15; }
+  .falla::before { content: ""; position: absolute; inset: 0; z-index: -2; background: var(--foto) center / cover no-repeat; transition: transform .4s ease; }
+  .falla::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.85) 100%); }
+  .falla:hover::before, .falla:focus-visible::before { transform: scale(1.06); }
+  .falla .ico { width: 30px; height: 30px; border-radius: 9px; background: rgba(22,119,255,.85); color: #fff; }
+  .falla .ico svg { width: 17px; height: 17px; }
+  @media (min-width: 700px) { .falla { font-size: .95rem; padding: .8rem; } .falla .ico { width: 36px; height: 36px; } }
+
   /* Ventana de preguntas */
   .falla-dialogo { width: 100%; max-width: 480px; max-height: 92vh; margin: auto auto 0; border: 1px solid rgba(22,119,255,0.4); border-radius: 20px 20px 0 0; background: var(--tarjeta); color: #fff; padding: 0; }
   .falla-dialogo::backdrop { background: rgba(0,0,0,0.7); }
@@ -176,12 +185,12 @@
   <section id="fallas" aria-labelledby="t-fallas">
     <h2 id="t-fallas">¿Qué le pasa <span>a tu celu?</span></h2>
     <div class="fallas">
-      <button type="button" class="falla" data-falla="pantalla"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8l3 3-2 2 4 3"/></svg></span>Pantalla rota</button>
-      <button type="button" class="falla" data-falla="carga"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v5M15 3v5M6 8h12v4a6 6 0 0 1-12 0V8z"/><path d="M12 18v3"/></svg></span>No carga</button>
-      <button type="button" class="falla" data-falla="bateria"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><line x1="21" y1="10" x2="21" y2="14"/><rect x="5" y="10" width="8" height="4" fill="currentColor" stroke="none"/></svg></span>Batería</button>
-      <button type="button" class="falla" data-falla="mojado"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>Se mojó</button>
-      <button type="button" class="falla" data-falla="prende"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v8"/><path d="M6.3 7.5a8 8 0 1 0 11.4 0"/></svg></span>No prende</button>
-      <button type="button" class="falla" data-falla="otra"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="8" cy="12" r=".6" fill="currentColor"/><circle cx="12" cy="12" r=".6" fill="currentColor"/><circle cx="16" cy="12" r=".6" fill="currentColor"/></svg></span>Otra falla</button>
+      <button type="button" class="falla" data-falla="pantalla" style="--foto:url('img/fallas/pantalla.jpg')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8l3 3-2 2 4 3"/></svg></span><span class="txt">Pantalla rota</span></button>
+      <button type="button" class="falla" data-falla="carga" style="--foto:url('img/fallas/carga.jpg')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v5M15 3v5M6 8h12v4a6 6 0 0 1-12 0V8z"/><path d="M12 18v3"/></svg></span><span class="txt">No carga</span></button>
+      <button type="button" class="falla" data-falla="bateria" style="--foto:url('img/fallas/bateria.jpg')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><line x1="21" y1="10" x2="21" y2="14"/><rect x="5" y="10" width="8" height="4" fill="currentColor" stroke="none"/></svg></span><span class="txt">Batería</span></button>
+      <button type="button" class="falla" data-falla="mojado" style="--foto:url('img/fallas/mojado.jpg')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span><span class="txt">Se mojó</span></button>
+      <button type="button" class="falla" data-falla="prende" style="--foto:url('img/fallas/prende.jpg')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v8"/><path d="M6.3 7.5a8 8 0 1 0 11.4 0"/></svg></span><span class="txt">No prende</span></button>
+      <button type="button" class="falla" data-falla="otra" style="--foto:url('img/fallas/otra.jpg')"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="8" cy="12" r=".6" fill="currentColor"/><circle cx="12" cy="12" r=".6" fill="currentColor"/><circle cx="16" cy="12" r=".6" fill="currentColor"/></svg></span><span class="txt">Otra falla</span></button>
     </div>
     <p class="marcas">Tocá la falla y te armamos el mensaje de WhatsApp · Todas las marcas</p>
   </section>
