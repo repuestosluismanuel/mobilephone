@@ -1366,6 +1366,20 @@
     .op-tx small { font-size: .76rem; }
     .portada-nota { text-align: center; }
   }
+
+  /* ══ Portada con dos fotos: el taller y el local ══ */
+  .portada-fotos { display: grid; grid-template-columns: 1fr 1fr; background: none; }
+  .pf { display: block; background-size: cover; background-repeat: no-repeat; }
+  .pf--taller { background-image: url("img/taller.webp"); background-position: center 70%; }
+  .pf--local { background-image: url("img/frente-local.webp"); background-position: center 35%; }
+  .portada-fotos::after { background: linear-gradient(90deg, rgba(5,10,25,.82) 0%, rgba(5,10,25,.55) 42%, rgba(5,10,25,.12) 62%, rgba(5,10,25,0) 100%); }
+  .portada h1, .portada-sub, .portada-nota { text-shadow: 0 2px 14px rgba(0,0,0,.6); }
+  @media (max-width: 700px) {
+    .portada { position: relative; padding-top: calc(var(--topbar-h) + var(--nav-h)); }
+    .portada-fotos { position: relative; aspect-ratio: auto; height: 300px; gap: 2px; }
+    .portada-fotos::after { display: block; background: linear-gradient(180deg, rgba(5,10,25,0) 40%, rgba(10,20,40,.85) 85%, #0a1428 100%); }
+    .portada-texto { position: relative; margin-top: -90px; padding-top: 0; background: linear-gradient(transparent, #0a1428 90px, var(--negro)); }
+  }
 </style>
 </head>
 <body id="inicio">
@@ -1411,7 +1425,7 @@
 
 <!-- ══ PORTADA ══ -->
 <section class="portada" id="contenido-principal">
-  <div class="portada-foto" role="img" aria-label="Frente del local Mobile Phone en Ingeniero Budge"></div>
+  <div class="portada-foto portada-fotos"><span class="pf pf--taller" role="img" aria-label="Mesa de trabajo del servicio técnico"></span><span class="pf pf--local" role="img" aria-label="Frente del local Mobile Phone en Ingeniero Budge"></span></div>
   <div class="container portada-texto">
     <h1>¿Qué <span>necesitás</span> hoy?</h1>
     <p class="portada-sub">Servicio técnico, celulares y accesorios · Lomas de Zamora</p>
