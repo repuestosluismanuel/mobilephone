@@ -87,6 +87,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* Paleta y medidas centrales. Cambiar un color acá lo cambia en todo el sitio.
      Colores de marca Mobile Phone: azul + blanco + negro. */
@@ -1283,6 +1284,59 @@
   @media (min-width: 900px) { .hero-ctas { margin-inline: -140px; flex-wrap: nowrap; } }
   @media (max-width: 680px) { .hero-stats .divider { display: none; } .hero-logo { width: 110px; } .hero-ctas a { width: 100%; justify-content: center; } }
   .ig-card-desc { color: rgba(255,255,255,0.65); font-size: 0.92rem; max-width: 520px; }
+
+  /* ══ Diseño nuevo: Inter, portada con foto, sobre nosotros, sistema de trabajo ══ */
+  body, button, input, select, textarea { font-family: 'Inter', system-ui, sans-serif; }
+  :root { --font-display: 'Inter', system-ui, sans-serif; }
+  .portada { position: relative; min-height: 640px; display: flex; align-items: flex-end; padding: calc(var(--topbar-h) + var(--nav-h) + 2rem) 0 4.5rem; overflow: hidden; }
+  .portada-foto { position: absolute; inset: 0; background: url("img/frente-local.webp") center 35% / cover; }
+  .portada-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,10,25,.95) 0%, rgba(5,10,25,.75) 40%, rgba(5,10,25,.1) 80%); }
+  .portada-texto { position: relative; z-index: 1; width: 100%; }
+  .portada h1 { font-size: clamp(2.4rem, 5.2vw, 4rem); line-height: 1.02; font-weight: 800; letter-spacing: -0.02em; max-width: 12ch; }
+  .portada h1 span { color: var(--acento); }
+  .portada-zona { margin-top: 1rem; font-size: .8rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; }
+  .portada-sub { margin-top: .4rem; max-width: 34rem; font-size: 1.1rem; color: #d5dbe6; }
+  .portada-presu { display: flex; align-items: center; gap: .9rem; max-width: 33rem; margin-top: 1.6rem; padding: .9rem 1.1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,.28); border-left: 3px solid var(--azul); background: rgba(255,255,255,.04); backdrop-filter: blur(6px); color: #fff; text-decoration: none; transition: border-color .2s, background .2s; }
+  .portada-presu:hover { background: rgba(22,119,255,.12); border-color: var(--acento); }
+  .portada-presu .ic { flex: 0 0 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(90,169,255,.45); display: grid; place-items: center; color: var(--acento); }
+  .portada-presu .ic svg { width: 21px; height: 21px; }
+  .portada-presu b { display: block; font-size: 1.2rem; font-weight: 700; }
+  .portada-presu small { display: block; margin-top: .15rem; color: #b9c3d3; font-size: .85rem; }
+  .portada-presu .fl { margin-left: auto; color: var(--acento); font-size: 1.5rem; }
+  .portada-ctas { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1rem; }
+  .taller { display: grid; grid-template-columns: 1fr 1fr; border-radius: 18px; overflow: hidden; }
+  .taller-foto { min-height: 420px; background: url("img/taller.webp") center 70% / cover; }
+  .taller-texto { background: var(--azul); padding: 2.4rem 2.3rem; }
+  .taller-eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: #cfe3ff; }
+  .taller-texto h3 { margin: .6rem 0 1.1rem; font-size: 1.9rem; line-height: 1.15; font-weight: 800; }
+  .taller-texto h3 span { color: var(--negro); }
+  .taller-texto p { margin-bottom: .9rem; color: #E6F1FB; line-height: 1.6; }
+  .taller-btn { display: inline-block; margin-top: .4rem; padding: .8rem 1.3rem; border-radius: 10px; background: #fff; color: var(--azul-hover); font-weight: 700; text-decoration: none; }
+  .sistema { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: .9rem; }
+  .sistema li { background: var(--gris-medio); border-radius: 14px; padding: 1.25rem; border-top: 4px solid var(--azul); }
+  .sistema .n { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--azul); font-weight: 800; font-size: 1.1rem; margin-bottom: .75rem; }
+  .sistema b { font-size: 1.05rem; }
+  .sistema p { margin-top: .35rem; color: #bbb; font-size: .9rem; line-height: 1.5; }
+  .sistema-seg { display: block; margin-top: 1.1rem; padding: 1rem 1.25rem; border-radius: 14px; border: 1px solid var(--azul); background: #0f2a52; color: #d5e6ff; text-decoration: none; }
+  .sistema-seg b { color: #fff; }
+  @media (max-width: 700px) {
+    .portada { display: block; min-height: 0; padding: calc(var(--topbar-h) + var(--nav-h)) 0 0; background: var(--negro); }
+    .portada-foto { position: relative; inset: auto; aspect-ratio: 1448 / 1086; background-position: center; }
+    .portada-foto::after { display: none; }
+    .portada-texto { padding-top: 1.4rem; padding-bottom: 2.2rem; background: linear-gradient(#0a1428, var(--negro)); }
+    .portada-zona { font-size: .7rem; letter-spacing: .15em; }
+    .portada-sub { font-size: 1rem; }
+    .portada-presu b { font-size: 1.05rem; }
+    .portada-presu small { font-size: .78rem; }
+    .portada-presu .ic { flex-basis: 40px; height: 40px; }
+    .taller { grid-template-columns: 1fr; }
+    .taller-foto { min-height: 240px; }
+    .taller-texto { padding: 1.6rem 1.2rem; }
+    .taller-texto h3 { font-size: 1.5rem; }
+    .sistema { grid-template-columns: 1fr; gap: .6rem; }
+    .sistema li { display: flex; gap: .9rem; padding: .9rem; border-top: 0; border-left: 4px solid var(--azul); border-radius: 0 12px 12px 0; }
+    .sistema .n { flex: 0 0 34px; height: 34px; margin: 0; }
+  }
 </style>
 </head>
 <body id="inicio">
@@ -1306,12 +1360,13 @@
       <div class="nav-right">
         <ul class="nav-links" id="navLinks">
           <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#sobre-nosotros">Nosotros</a></li>
           <li><a href="#resenas">Reseñas</a></li>
           <li><a href="#que-hacemos">Qué hacemos</a></li>
           <li><a href="#servicios">Reparación</a></li>
           <li><a href="/celulares">Celulares</a></li>
           <li><a href="/accesorios">Accesorios</a></li>
-          <li><a href="#contacto">Contacto</a></li>
+          <li><a href="#ubicacion">Contacto</a></li>
         </ul>
         <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Vi%20su%20p%C3%A1gina%20y%20quiero%20consultar" class="nav-cta" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -1325,44 +1380,54 @@
   </nav>
 </header>
 
-<!-- ══ HERO ══ -->
-<section class="hero" id="contenido-principal">
-  <div class="hero-content">
-    <img src="img/emblema.png" alt="" class="hero-logo">
-    <div class="badge">✦ Ingeniero Budge, Lomas de Zamora</div>
-    <div class="hero-main">
-    <h1 class="hero-titulo">Tu celu <span>en manos</span><br>de <span>expertos.</span></h1>
-    <p class="hero-sub">
-      Servicio técnico y venta de accesorios.
-      10 años en el rubro, cuidando el equipo que usás todos los días.
-    </p>
-    <div class="hero-trust">
-      <span><i>✓</i> Diagnóstico gratis</span>
-      <span><i>✓</i> Entrega en el día</span>
-      <span><i>✓</i> Con garantía</span>
+<!-- ══ PORTADA ══ -->
+<section class="portada" id="contenido-principal">
+  <div class="portada-foto" role="img" aria-label="Frente del local Mobile Phone en Ingeniero Budge"></div>
+  <div class="container portada-texto">
+    <h1>Especialistas en <span>soluciones móviles</span></h1>
+    <p class="portada-zona">Multimarca · Lomas de Zamora</p>
+    <p class="portada-sub">Venta de celulares, accesorios y servicio técnico con reparaciones en el día.</p>
+    <a href="/servicio-tecnico#fallas" class="portada-presu">
+      <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M21 3l-9 9"/><path d="M5 12v7a2 2 0 0 0 2 2h7"/></svg></span>
+      <span><b>Solicitá tu presupuesto</b><small>Contanos la falla y te respondemos con el precio y el tiempo de reparación.</small></span>
+      <span class="fl" aria-hidden="true">→</span>
+    </a>
+    <div class="portada-ctas">
+      <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Vi%20su%20p%C3%A1gina%20y%20quiero%20consultar" class="btn-principal" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>
+      <a href="/celulares" class="btn-secundario">Ver celulares</a>
     </div>
-    <div class="hero-ctas">
-      <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Vi%20su%20p%C3%A1gina%20y%20quiero%20consultar%20sobre%20una%20reparaci%C3%B3n" class="btn-principal" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Escribinos por WhatsApp
-      </a>
-      <a href="/celulares" class="btn-secundario">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="10.5" y1="18" x2="13.5" y2="18"/></svg>
-        Ver celulares
-      </a>
-      <a href="/accesorios" class="btn-secundario">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4V2a1 1 0 012 0v2h6V2a1 1 0 012 0v2h1a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h3zm12 6H5v10h14V10zm-9 3h2v2h-2v-2z"/></svg>
-        Ver catálogo de accesorios
-      </a>
+  </div>
+</section>
+
+<!-- ══ SOBRE NOSOTROS (foto del taller) ══ -->
+<section class="section" id="sobre-nosotros">
+  <div class="container">
+    <div class="sec-head reveal"><h2 class="sec-titulo">Nuestros <span>servicios</span></h2></div>
+    <div class="taller reveal">
+      <div class="taller-foto" role="img" aria-label="Mesa de trabajo del servicio técnico"></div>
+      <div class="taller-texto">
+        <span class="taller-eyebrow">Sobre nosotros</span>
+        <h3>Calidad, rapidez y <span>confianza</span> en cada trabajo.</h3>
+        <p>En Mobile Phone ofrecemos soluciones tecnológicas con atención profesional y transparente.</p>
+        <p>Contamos con un sistema de trabajo organizado y stock de repuestos originales y alternativos para agilizar cada reparación y brindarte un servicio confiable.</p>
+        <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Quiero%20consultar%20por%20una%20reparaci%C3%B3n" class="taller-btn" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+      </div>
     </div>
-    </div>
-    <div class="hero-stats">
-      <div class="stat"><span class="stat-num">10</span><span class="stat-label">Años en el rubro</span></div>
-      <div class="divider"></div>
-      <div class="stat"><span class="stat-num">Todas</span><span class="stat-label">Las marcas</span></div>
-      <div class="divider"></div>
-      <div class="stat"><span class="stat-num">En el día</span><span class="stat-label">Tu equipo funcionando</span></div>
-    </div>
+  </div>
+</section>
+
+<!-- ══ SISTEMA DE TRABAJO ══ -->
+<section class="section section--alt" id="sistema">
+  <div class="container">
+    <div class="sec-head reveal"><h2 class="sec-titulo">Nuestro <span>sistema de trabajo</span></h2></div>
+    <ol class="sistema reveal">
+      <li><span class="n">1</span><div><b>Recibimos tu equipo</b><p>Te damos el N.º de orden y un comprobante con QR.</p></div></li>
+      <li><span class="n">2</span><div><b>Diagnóstico</b><p>El técnico revisa el equipo y encuentra la falla.</p></div></li>
+      <li><span class="n">3</span><div><b>Presupuesto por WhatsApp</b><p>Te pasamos el precio y vos lo aprobás desde el link.</p></div></li>
+      <li><span class="n">4</span><div><b>Reparación</b><p>Con repuestos originales o alternativos, según elijas.</p></div></li>
+      <li><span class="n">5</span><div><b>Listo para retirar</b><p>Te avisamos al instante. Retirás con 90 días de garantía.</p></div></li>
+    </ol>
+    <a href="/mi-reparacion" class="sistema-seg reveal"><b>📲 Seguí tu reparación en línea.</b> Con el QR de tu comprobante ves en qué estado está tu equipo, en cualquier momento.</a>
   </div>
 </section>
 
@@ -1530,39 +1595,6 @@
   </div>
 </section>
 
-<!-- ══ PROCESO ══ -->
-<section class="section">
-  <div class="container">
-    <div class="sec-head reveal">
-      <span class="eyebrow">Proceso</span>
-      <h2 class="sec-titulo">Así de <span>simple</span></h2>
-      <p class="sec-desc">Sin vueltas, de principio a fin.</p>
-    </div>
-    <div class="pasos-grid reveal">
-      <div class="paso-item">
-        <div class="paso-num">1</div>
-        <div class="paso-titulo">Nos escribís por WhatsApp</div>
-        <div class="paso-desc">Contanos qué le pasa al celu. Te respondemos rápido.</div>
-      </div>
-      <div class="paso-item">
-        <div class="paso-num">2</div>
-        <div class="paso-titulo">Diagnóstico gratis</div>
-        <div class="paso-desc">Lo revisamos y te damos un presupuesto claro. Sin sorpresas.</div>
-      </div>
-      <div class="paso-item">
-        <div class="paso-num">3</div>
-        <div class="paso-titulo">Lo reparamos en el día</div>
-        <div class="paso-desc">Con repuestos de calidad. La mayoría se entrega en horas.</div>
-      </div>
-      <div class="paso-item">
-        <div class="paso-num">4</div>
-        <div class="paso-titulo">Lo retirás funcionando</div>
-        <div class="paso-desc">Con garantía. Y si tenés dudas, seguimos en contacto.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ══ SERVICIOS ══ -->
 <section class="section section--alt" id="servicios">
   <div class="container">
@@ -1701,40 +1733,6 @@
         <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Quiero%20consultar%20por%20un%20cargador%20o%20auriculares" class="btn-consultar" target="_blank" rel="noopener">Consultar</a>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ══ CTA FINAL ══ -->
-<section class="section cta-final" id="contacto">
-  <div class="container">
-    <h2 class="cta-titulo">¿Tu celu tiene <span>un problema?</span></h2>
-    <p class="cta-sub">Dejanos tus datos y te respondemos hoy por WhatsApp.</p>
-    <form class="cta-form" id="ctaForm">
-      <div class="cta-form-field">
-        <label for="ctaNombre">Tu nombre</label>
-        <input type="text" id="ctaNombre" name="nombre" placeholder="Ej: Juan Pérez" required>
-      </div>
-      <div class="cta-form-field">
-        <label for="ctaTipo">¿Qué necesitás?</label>
-        <select id="ctaTipo" name="tipo" required>
-          <option value="" disabled selected>Elegí una opción</option>
-          <option>Cambio de pantalla</option>
-          <option>Cambio de batería</option>
-          <option>Cambio de pin de carga</option>
-          <option>Reparación de placa</option>
-          <option>Accesorios / venta</option>
-          <option>Otra consulta</option>
-        </select>
-      </div>
-      <div class="cta-form-field">
-        <label for="ctaDetalle">Contanos qué le pasa (opcional)</label>
-        <textarea id="ctaDetalle" name="detalle" rows="3" placeholder="Modelo del celular, qué falla tiene..."></textarea>
-      </div>
-      <button type="submit" class="btn-principal">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Enviar por WhatsApp
-      </button>
-    </form>
   </div>
 </section>
 
