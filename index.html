@@ -1428,6 +1428,26 @@
     .op--principal .op-tx small { color: #c3cad6; }
     .op--principal .op-fl { background: var(--azul); color: #fff; }
   }
+
+  /* ══ Celular: portada minimalista (se aprecia la foto) con foto real en cada opción ══ */
+  @media (max-width: 700px) {
+    .portada-fotos::after { background: linear-gradient(0deg, rgba(5,10,25,.92) 0%, rgba(5,10,25,.6) 30%, rgba(5,10,25,0) 55%); }
+    .pf--local { background-size: cover; background-position: 50% 50%; }
+    .portada h1 { font-size: 1.85rem; }
+    .portada-sub, .portada-nota { display: none; }
+    .portada-texto { padding-bottom: 5rem; }
+    .opciones3 { gap: .45rem; margin-top: 1rem; }
+    .op { min-height: 0; padding: .45rem .7rem .45rem .45rem; gap: .75rem; border-radius: 12px; }
+    .op:not(.op--principal) { background: rgba(8,10,16,.4); }
+    .op-tx small { display: none; }
+    .op-tx b { font-size: .95rem; }
+    .op-fl { flex-basis: 26px; height: 26px; }
+    .op-ic { width: 46px; height: 46px; flex: 0 0 46px; border-radius: 10px; background: center / cover no-repeat; box-shadow: 0 0 0 1px rgba(255,255,255,.18); }
+    .op-ic svg { display: none; }
+    .opciones3 .op:nth-child(1) .op-ic { background-image: url("img/portada-servicio.jpg"); }
+    .opciones3 .op:nth-child(2) .op-ic { background-image: url("img/portada-celulares.jpg"); }
+    .opciones3 .op:nth-child(3) .op-ic { background-image: url("img/portada-accesorios.jpg"); }
+  }
 </style>
 </head>
 <body id="inicio">
