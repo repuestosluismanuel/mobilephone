@@ -1380,6 +1380,36 @@
     .portada-fotos::after { display: block; background: linear-gradient(180deg, rgba(5,10,25,0) 40%, rgba(10,20,40,.85) 85%, #0a1428 100%); }
     .portada-texto { position: relative; margin-top: -90px; padding-top: 0; background: linear-gradient(transparent, #0a1428 90px, var(--negro)); }
   }
+
+  /* ══ Portada como LM Tecnología: las dos fotos se deslizan solas ══ */
+  .portada { background: #050a19; }
+  .portada-foto.portada-fotos { display: block; position: absolute; inset: 0 0 0 auto; width: 62%; height: auto; aspect-ratio: auto; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 35%); mask-image: linear-gradient(to right, transparent, #000 35%); }
+  .pf { position: absolute; inset: 0; animation: mp-desliza 12s ease-in-out infinite; }
+  .pf--local { background-position: center 40%; }
+  .pf--taller { background-position: center 65%; animation-delay: -6s; }
+  .pf::before { content: attr(data-etiqueta); position: absolute; right: 2rem; bottom: 2rem; z-index: 2; padding: .35rem .7rem .35rem 1.45rem; border-radius: 999px; font-size: .7rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.92); text-shadow: 0 1px 8px rgba(0,0,0,.7);
+    background: radial-gradient(circle, var(--acento) 3.5px, transparent 4.5px) .6rem center / 9px 9px no-repeat, rgba(5,10,25,.6); backdrop-filter: blur(4px); }
+  .portada-fotos::after { z-index: 1; background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.45)); }
+  @keyframes mp-desliza {
+    0%, 42% { transform: translateX(0); }
+    50% { transform: translateX(-100%); }
+    50.1%, 92% { transform: translateX(100%); }
+    100% { transform: translateX(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pf { animation: none; }
+    .pf--taller { display: none; }
+  }
+  @media (max-width: 700px) {
+    .portada { display: flex; align-items: flex-end; min-height: calc(100svh - var(--topbar-h) - 6px); padding: calc(var(--topbar-h) + var(--nav-h)) 0 0; }
+    .portada-foto.portada-fotos { inset: 0; width: 100%; -webkit-mask-image: none; mask-image: none; }
+    .pf--local { background-color: #050a19; background-size: auto 46%; background-position: center calc(var(--nav-h) + 10px); }
+    .pf--taller { background-position: 38% 60%; }
+    .pf::before { right: auto; left: 1.1rem; bottom: auto; top: calc(var(--topbar-h) + var(--nav-h) + 1rem); }
+    .portada-fotos::after { display: block; background: linear-gradient(0deg, #050a19 0%, rgba(5,10,25,.92) 38%, rgba(5,10,25,.45) 60%, rgba(5,10,25,0) 78%); }
+    .portada-texto { margin-top: 0; padding-top: 0; padding-bottom: 1.6rem; background: none; }
+  }
 </style>
 </head>
 <body id="inicio">
@@ -1425,7 +1455,7 @@
 
 <!-- ══ PORTADA ══ -->
 <section class="portada" id="contenido-principal">
-  <div class="portada-foto portada-fotos"><span class="pf pf--taller" role="img" aria-label="Mesa de trabajo del servicio técnico"></span><span class="pf pf--local" role="img" aria-label="Frente del local Mobile Phone en Ingeniero Budge"></span></div>
+  <div class="portada-foto portada-fotos"><span class="pf pf--local" role="img" aria-label="Frente del local Mobile Phone en Ingeniero Budge" data-etiqueta="Nuestro local"></span><span class="pf pf--taller" role="img" aria-label="Mesa de trabajo del servicio técnico" data-etiqueta="Nuestro taller"></span></div>
   <div class="container portada-texto">
     <h1>¿Qué <span>necesitás</span> hoy?</h1>
     <p class="portada-sub">Servicio técnico, celulares y accesorios · Lomas de Zamora</p>
