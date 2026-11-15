@@ -1448,6 +1448,20 @@
     .opciones3 .op:nth-child(2) .op-ic { background-image: url("img/portada-celulares.jpg"); }
     .opciones3 .op:nth-child(3) .op-ic { background-image: url("img/portada-accesorios.jpg"); }
   }
+
+  /* ══ Celular: foto arriba sin nada encima y, debajo, «¿Qué necesitás hoy?» con tres cuadros ══ */
+  @media (max-width: 700px) {
+    .portada { display: block; min-height: 0; padding: calc(var(--topbar-h) + var(--nav-h)) 0 0; background: #050a19; }
+    .portada-foto.portada-fotos { position: relative; inset: auto; width: auto; height: 52vh; }
+    .portada-fotos::after { background: linear-gradient(0deg, rgba(5,10,25,.55) 0%, rgba(5,10,25,0) 25%); }
+    .pf::before { top: .9rem; }
+    .portada-texto { padding-top: 1.3rem; padding-bottom: 2rem; }
+    .opciones3 { grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+    .op { flex-direction: column; align-items: stretch; padding: .4rem; gap: .45rem; border-radius: 14px; }
+    .op-ic { width: 100%; height: auto; aspect-ratio: 1 / 1; flex: none; }
+    .op-fl { display: none; }
+    .op-tx b { font-size: .8rem; line-height: 1.2; text-align: center; }
+  }
 </style>
 </head>
 <body id="inicio">
