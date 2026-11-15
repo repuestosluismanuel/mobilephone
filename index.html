@@ -1306,12 +1306,12 @@
   .portada-ctas { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1rem; }
   .taller { display: grid; grid-template-columns: 1fr 1fr; border-radius: 18px; overflow: hidden; }
   .taller-foto { min-height: 420px; background: url("img/taller.webp") center 70% / cover; }
-  .taller-texto { background: var(--azul); padding: 2.4rem 2.3rem; }
-  .taller-eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: #cfe3ff; }
+  .taller-texto { background: var(--gris-medio); border: 1px solid var(--line); border-left: 0; border-radius: 0 18px 18px 0; padding: 2.4rem 2.3rem; }
+  .taller-eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--acento); }
   .taller-texto h3 { margin: .6rem 0 1.1rem; font-size: 1.9rem; line-height: 1.15; font-weight: 800; }
-  .taller-texto h3 span { color: var(--negro); }
-  .taller-texto p { margin-bottom: .9rem; color: #E6F1FB; line-height: 1.6; }
-  .taller-btn { display: inline-block; margin-top: .4rem; padding: .8rem 1.3rem; border-radius: 10px; background: #fff; color: var(--azul-hover); font-weight: 700; text-decoration: none; }
+  .taller-texto h3 span { color: var(--acento); }
+  .taller-texto p { margin-bottom: .9rem; color: #c9ced6; line-height: 1.6; }
+  .taller-btn { display: inline-block; margin-top: .4rem; padding: .8rem 1.3rem; border-radius: 10px; background: var(--azul); color: #fff; font-weight: 700; text-decoration: none; }
   .sistema { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: .9rem; }
   .sistema li { background: var(--gris-medio); border-radius: 14px; padding: 1.25rem; border-top: 4px solid var(--azul); }
   .sistema .n { display: inline-grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--azul); font-weight: 800; font-size: 1.1rem; margin-bottom: .75rem; }
@@ -1331,7 +1331,7 @@
     .portada-presu .ic { flex-basis: 40px; height: 40px; }
     .taller { grid-template-columns: 1fr; }
     .taller-foto { min-height: 240px; }
-    .taller-texto { padding: 1.6rem 1.2rem; }
+    .taller-texto { padding: 1.6rem 1.2rem; border-left: 1px solid var(--line); border-top: 0; border-radius: 0 0 18px 18px; }
     .taller-texto h3 { font-size: 1.5rem; }
     .sistema { grid-template-columns: 1fr; gap: .6rem; }
     .sistema li { display: flex; gap: .9rem; padding: .9rem; border-top: 0; border-left: 4px solid var(--azul); border-radius: 0 12px 12px 0; }
@@ -1425,7 +1425,7 @@
       <li><span class="n">2</span><div><b>Diagnóstico</b><p>El técnico revisa el equipo y encuentra la falla.</p></div></li>
       <li><span class="n">3</span><div><b>Presupuesto por WhatsApp</b><p>Te pasamos el precio y vos lo aprobás desde el link.</p></div></li>
       <li><span class="n">4</span><div><b>Reparación</b><p>Con repuestos originales o alternativos, según elijas.</p></div></li>
-      <li><span class="n">5</span><div><b>Listo para retirar</b><p>Te avisamos al instante. Retirás con 90 días de garantía.</p></div></li>
+      <li><span class="n">5</span><div><b>Listo para retirar</b><p>Te avisamos al instante. Retirás con 30 días de garantía en la reparación.</p></div></li>
     </ol>
     <a href="/mi-reparacion" class="sistema-seg reveal"><b>📲 Seguí tu reparación en línea.</b> Con el QR de tu comprobante ves en qué estado está tu equipo, en cualquier momento.</a>
   </div>
