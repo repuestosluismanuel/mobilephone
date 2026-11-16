@@ -1462,6 +1462,21 @@
     .op-fl { display: none; }
     .op-tx b { font-size: .8rem; line-height: 1.2; text-align: center; }
   }
+
+  /* ══ Capacitación con video ══ */
+  .capacitacion { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 3rem; align-items: center; justify-content: center; }
+  .capacitacion-video { position: relative; border-radius: 22px; overflow: hidden; border: 1px solid rgba(90,169,255,.35); box-shadow: 0 24px 48px -20px rgba(0,0,0,.9), 0 0 40px -18px rgba(22,119,255,.8); background: #000; }
+  .capacitacion-video video { display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: cover; }
+  .capacitacion-texto .sec-titulo { text-align: left; margin-top: .4rem; }
+  .capacitacion-texto .sec-desc { text-align: left; margin: .8rem 0 0; max-width: 30rem; }
+  .capacitacion-quien { margin-top: 1rem; display: inline-flex; align-items: center; gap: .5rem; padding: .4rem .9rem; border-radius: 999px; background: rgba(22,119,255,.14); border: 1px solid rgba(90,169,255,.35); color: #d5e6ff; }
+  .capacitacion-quien b { color: #fff; }
+  @media (max-width: 700px) {
+    .capacitacion { grid-template-columns: 1fr; gap: 1.4rem; }
+    .capacitacion-texto { order: -1; text-align: center; }
+    .capacitacion-texto .sec-titulo, .capacitacion-texto .sec-desc { text-align: center; margin-left: auto; margin-right: auto; }
+    .capacitacion-video { width: min(100%, 320px); margin: 0 auto; }
+  }
 </style>
 </head>
 <body id="inicio">
@@ -1728,71 +1743,19 @@
   </div>
 </section>
 
-<!-- ══ SERVICIOS ══ -->
+<!-- ══ CAPACITACIÓN (en lugar de «Lo que arreglamos») ══ -->
 <section class="section section--alt" id="servicios">
-  <div class="container">
-    <div class="sec-head reveal">
-      <span class="eyebrow">Reparaciones</span>
-      <h2 class="sec-titulo">Lo que <span>arreglamos</span></h2>
-      <p class="sec-desc">Todas las marcas. Diagnóstico gratis. Presupuesto sin compromiso.</p>
-      <div class="marcas-chips">
-        <span class="marca-chip">Samsung</span>
-        <span class="marca-chip">Motorola</span>
-        <span class="marca-chip">iPhone</span>
-        <span class="marca-chip">Xiaomi y más</span>
-      </div>
+  <div class="container capacitacion reveal">
+    <div class="capacitacion-video">
+      <video controls playsinline preload="metadata" poster="img/capacitacion.jpg" aria-label="Mauricio Cáceres, referente del rubro, hablando de Mobile Phone">
+        <source src="img/capacitacion.mp4" type="video/mp4">
+      </video>
     </div>
-    <div class="servicios-grid reveal">
-      <div class="servicio-item">
-        <div class="servicio-info">
-          <div class="servicio-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><line x1="9" y1="18" x2="15" y2="18"/></svg></div>
-          <div>
-            <div class="servicio-nombre">Cambio de pantalla</div>
-            <div class="servicio-tiempo">⏱ En el día</div>
-          </div>
-        </div>
-        <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Quiero%20consultar%20por%20cambio%20de%20pantalla" class="btn-consultar" target="_blank" rel="noopener">Consultar</a>
-      </div>
-      <div class="servicio-item">
-        <div class="servicio-info">
-          <div class="servicio-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><line x1="21" y1="10" x2="21" y2="14"/><rect x="5" y="10" width="8" height="4" fill="currentColor" stroke="none"/></svg></div>
-          <div>
-            <div class="servicio-nombre">Cambio de batería</div>
-            <div class="servicio-tiempo">⏱ En el día</div>
-          </div>
-        </div>
-        <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Quiero%20consultar%20por%20cambio%20de%20bater%C3%ADa" class="btn-consultar" target="_blank" rel="noopener">Consultar</a>
-      </div>
-      <div class="servicio-item">
-        <div class="servicio-info">
-          <div class="servicio-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3v5M15 3v5M6 8h12v4a6 6 0 0 1-12 0V8z"/><path d="M12 18v3"/></svg></div>
-          <div>
-            <div class="servicio-nombre">Cambio de pin de carga</div>
-            <div class="servicio-tiempo">⏱ En el día</div>
-          </div>
-        </div>
-        <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Quiero%20consultar%20por%20cambio%20de%20pin%20de%20carga" class="btn-consultar" target="_blank" rel="noopener">Consultar</a>
-      </div>
-      <div class="servicio-item">
-        <div class="servicio-info">
-          <div class="servicio-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 4.6L3 17.2V21h3.8l6.3-6.3a4 4 0 0 0 4.6-5.4l-2.6 2.6-2-2 2.6-2.6z"/></svg></div>
-          <div>
-            <div class="servicio-nombre">Reparación de placa</div>
-            <div class="servicio-tiempo">⏱ Según complejidad</div>
-          </div>
-        </div>
-        <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Quiero%20consultar%20por%20reparaci%C3%B3n%20de%20placa" class="btn-consultar" target="_blank" rel="noopener">Consultar</a>
-      </div>
-      <div class="servicio-item">
-        <div class="servicio-info">
-          <div class="servicio-icono"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></div>
-          <div>
-            <div class="servicio-nombre">Diagnóstico de fallas complejas</div>
-            <div class="servicio-tiempo">⏱ Mojados, reinicios, no prende</div>
-          </div>
-        </div>
-        <a href="https://wa.me/5491126785588?text=Hola%20Mobile%20Phone%21%20Quiero%20consultar%20por%20una%20falla%20compleja%20%28mojado%20/%20se%20reinicia%20/%20no%20prende%29" class="btn-consultar" target="_blank" rel="noopener">Consultar</a>
-      </div>
+    <div class="capacitacion-texto">
+      <span class="eyebrow">Capacitación</span>
+      <h2 class="sec-titulo">Nos capacitamos con <span>referentes de este rubro</span></h2>
+      <p class="capacitacion-quien"><b>Mauricio Cáceres</b></p>
+      <p class="sec-desc">Nos formamos con los que más saben para darte reparaciones de calidad, con técnica y herramientas profesionales.</p>
     </div>
   </div>
 </section>
