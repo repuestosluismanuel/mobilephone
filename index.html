@@ -1477,6 +1477,15 @@
     .capacitacion-texto .sec-titulo, .capacitacion-texto .sec-desc { text-align: center; margin-left: auto; margin-right: auto; }
     .capacitacion-video { width: min(100%, 320px); margin: 0 auto; }
   }
+
+  /* ══ Capacitación: enlace al canal de YouTube de Mauricio Cáceres ══ */
+  .capacitacion-quien-sub { margin: .55rem 0 0; font-size: .85rem; color: #9fb3d1; }
+  .capacitacion-quien-sub b { color: #fff; }
+  .btn-yt { margin-top: 1.1rem; display: inline-flex; align-items: center; gap: .55rem; padding: .75rem 1.25rem; border-radius: 999px; background: #ff0000; color: #fff; font-weight: 700; text-decoration: none; box-shadow: 0 10px 24px -10px rgba(255,0,0,.75); transition: filter .2s, transform .2s; }
+  .btn-yt:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-yt svg { width: 22px; height: 22px; }
+  .btn-yt svg path:first-child { fill: #fff; }
+  @media (max-width: 700px) { .capacitacion-texto .btn-yt { display: flex; justify-content: center; width: fit-content; margin-left: auto; margin-right: auto; } }
 </style>
 </head>
 <body id="inicio">
@@ -1755,6 +1764,8 @@
       <span class="eyebrow">Capacitación</span>
       <h2 class="sec-titulo">Nos capacitamos con <span>referentes de este rubro</span></h2>
       <p class="capacitacion-quien"><b>Mauricio Cáceres</b></p>
+      <p class="capacitacion-quien-sub">Fundador de <b>Planeta GSM</b> · 154 mil suscriptores</p>
+      <a class="btn-yt" href="https://www.youtube.com/@PlanetaGSM-Repair" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/><path fill="#ff0000" d="M9.6 15.6 15.8 12 9.6 8.4z"/></svg> Ver sus videos en YouTube</a>
       <p class="sec-desc">Nos formamos con los que más saben para darte reparaciones de calidad, con técnica y herramientas profesionales.</p>
     </div>
   </div>
